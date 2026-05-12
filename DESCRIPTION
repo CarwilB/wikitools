@@ -1,0 +1,16 @@
+Package: wikitools
+Type: Package
+Title: Tools to Engage with Wikipedia and Wikidata
+Version: 0.1.0
+Authors@R: 
+    person(
+    "Carwil", "Bjork-James",
+    email = "c.bjork-james@vanderbilt.edu",
+    role = c("aut", "cre", "cph"),
+    comment = c(ORCID = "0000-0002-4977-0458")
+  )
+Description: More about what it does (maybe more than one line).
+    Continuation lines should be indented.
+License: MIT
+Encoding: UTF-8
+LazyData: true
