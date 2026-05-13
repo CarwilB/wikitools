@@ -5,10 +5,8 @@
 #' @title Add a Wikidata Property to a Data Frame
 #' @description Fetches a single-valued property from Wikidata and appends it as
 #'   a new column to a data frame that contains a `qid` column.
-#' Fetches a single-valued property from Wikidata and appends it as a new
-#' column to a data frame that contains a `qid` column. Handles entity-type,
-#' string, and time values. Issues a message when an item has multiple
-#' statements for the requested property.
+#'   Handles entity-type, string, and time values and reports when multiple
+#'   statements are present for the requested property.
 #'
 #' @param df A data frame with a `qid` column.
 #' @param property Character. Wikidata property ID (e.g., "P14142").
@@ -509,9 +507,6 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @description Retrieves all instances (P31) or subclasses (P279) of a given
 #'   class from Wikidata with labels, descriptions, optional properties, and
 #'   linked Wikipedia article titles.
-#' Retrieves all instances (P31) or subclasses (P279) of a given class from
-#' Wikidata with their labels, descriptions, optional extra properties,
-#' instance-of/subclass-of statements, and Wikipedia articles.
 #'
 #' Items are fetched from the Wikidata API in batches of \code{batch_size}
 #' (default 50, the API maximum) to avoid rate-limiting errors.
@@ -675,10 +670,8 @@ get_wikidata_instances <- function(class_qid,
 #' @title Resume a Partially-Completed get_wikidata_instances() Query
 #' @description Continues a partially completed class retrieval by skipping
 #'   already fetched QIDs and retrieving only remaining entities.
-#' Use this when \code{get_wikidata_instances()} was interrupted part-way
-#' through and you have a partial result. Re-runs the SPARQL query to obtain
-#' the full QID list, skips already-retrieved QIDs, fetches the remainder in
-#' batches, then returns the combined, de-duplicated tibble.
+#'   Re-runs SPARQL to get the full QID list, skips already retrieved entries,
+#'   fetches the remainder in batches, and returns a de-duplicated result.
 #'
 #' @param partial_result A tibble previously returned (or partially returned)
 #'   by \code{get_wikidata_instances()}. Must contain a \code{qid} column.
@@ -818,10 +811,6 @@ resume_get_wikidata_instances <- function(partial_result,
 #' @title Simplify Single-Value List Columns in a Data Frame
 #' @description Converts list columns whose elements all have length 0 or 1 into
 #'   plain character vectors while leaving multi-valued list columns unchanged.
-#' Finds list columns where every element contains 0 or 1 values and replaces
-#' them with a plain character column: the single value, or \code{NA} for
-#' empty elements. List columns with any element containing 2 or more values
-#' are left unchanged.
 #'
 #' @param df A data frame or tibble.
 #'
