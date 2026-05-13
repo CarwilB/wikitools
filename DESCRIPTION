@@ -16,3 +16,4 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/CarwilB/wikitools
 BugReports: https://github.com/CarwilB/wikitools/issues
+Config/roxygen2/version: 8.0.0
