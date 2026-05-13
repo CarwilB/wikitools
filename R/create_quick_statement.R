@@ -248,6 +248,26 @@ add_quick_statement_column_q <- function(dataframe, qid_col, property, value_col
     ungroup()
 }
 
+#' Add a QuickStatements Column with Negation to a Data Frame
+#'
+#' Like \code{add_quick_statement_column} but negates the statement by prepending a
+#' "-" to the command. This is useful for removing statements via QuickStatements.
+#' Note that qualifiers and references cannot be used with negated statements.
+#' The \code{property} argument must be a statement property (e.g., \code{"P123"}).
+#'
+#' @param dataframe A data frame (or tibble).
+#' @param qid_col Unquoted column name containing Wikidata item IDs.
+#' @param property Character. The property ID (e.g., \code{"P123"}).
+#' @param value_col Unquoted column name containing statement values.
+#'
+#' @return The input data frame with an additional \code{quick_statement} column
+#'  containing negated statements.
+#'
+#' @examples
+#' departments %>%
+#'   remove_quick_statement_column(qid, "P14142", cod.dep)
+#'
+#' @export
 remove_quick_statement_column <- function(dataframe, qid_col, property, value_col, ...){
   dataframe %>%
     rowwise() %>%

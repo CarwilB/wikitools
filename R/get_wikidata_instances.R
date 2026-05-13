@@ -15,6 +15,8 @@
 #'
 #' @examples
 #' departments |> add_wikidata_property("P14142", name = "ine_code")
+#'
+#' @export
 add_wikidata_property <- function(df, property, name = property) {
 
   if (!"qid" %in% names(df)) stop("df must contain a 'qid' column")
