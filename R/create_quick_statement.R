@@ -199,10 +199,10 @@ create_quick_statement <- function(qid,
 #'
 #' @export
 add_quick_statement_column <- function(dataframe, qid_col, property, value_col, ...){
-  dataframe %>%
-    rowwise() %>%
-    mutate(quick_statement = create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...)) %>%
-    ungroup()
+  dataframe |>
+    dplyr::rowwise() |>
+    dplyr::mutate(quick_statement = create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...)) |>
+    dplyr::ungroup()
 }
 
 #' Add a QuickStatements Column with Qualifiers to a Data Frame
@@ -238,23 +238,24 @@ add_quick_statement_column <- function(dataframe, qid_col, property, value_col, 
 #' @export
 add_quick_statement_column_q <- function(dataframe, qid_col, property, value_col,
                                           qualifiers = NULL, ...) {
-  dataframe %>%
-    rowwise() %>%
-    mutate(quick_statement = create_quick_statement(
+  dataframe |>
+    dplyr::rowwise() |>
+    dplyr::mutate(quick_statement = create_quick_statement(
       {{ qid_col }}, property, as.character({{ value_col }}),
       qualifiers = qualifiers,
       ...
-    )) %>%
-    ungroup()
+    )) |>
+    dplyr::ungroup()
 }
 
-#' Add a QuickStatements Column with Negation to a Data Frame
+#' Add a QuickStatements Column for Removing Statements to a Data Frame
 #'
 #' Like \code{add_quick_statement_column} but negates the statement by prepending a
 #' "-" to the command. This is useful for removing statements via QuickStatements.
 #' Note that qualifiers and references cannot be used with negated statements.
 #' The \code{property} argument must be a statement property (e.g., \code{"P123"}).
 #'
+#' @param ... Additional arguments passed to `create_quick_statement()`.
 #' @param dataframe A data frame (or tibble).
 #' @param qid_col Unquoted column name containing Wikidata item IDs.
 #' @param property Character. The property ID (e.g., \code{"P123"}).
@@ -269,9 +270,8 @@ add_quick_statement_column_q <- function(dataframe, qid_col, property, value_col
 #'
 #' @export
 remove_quick_statement_column <- function(dataframe, qid_col, property, value_col, ...){
-  dataframe %>%
-    rowwise() %>%
-    mutate(quick_statement = str_c("-", create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...))) %>%
-    ungroup()
+  dataframe |>
+    dplyr::rowwise() |>
+    dplyr::mutate(quick_statement = paste0("-", create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...))) |>
+    dplyr::ungroup()
 }
-
