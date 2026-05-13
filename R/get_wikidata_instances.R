@@ -2,6 +2,9 @@
 
 #' Add a Wikidata Property to a Data Frame
 #'
+#' @title Add a Wikidata Property to a Data Frame
+#' @description Fetches a single-valued property from Wikidata and appends it as
+#'   a new column to a data frame that contains a `qid` column.
 #' Fetches a single-valued property from Wikidata and appends it as a new
 #' column to a data frame that contains a `qid` column. Handles entity-type,
 #' string, and time values. Issues a message when an item has multiple
@@ -15,6 +18,13 @@
 #'
 #' @examples
 #' departments |> add_wikidata_property("P14142", name = "ine_code")
+#' @importFrom dplyr across bind_rows distinct mutate where
+#' @importFrom httr GET content status_code user_agent
+#' @importFrom jsonlite fromJSON
+#' @importFrom purrr compact map map_chr map_int
+#' @importFrom stringr str_extract str_replace
+#' @importFrom tibble tibble
+#' @export
 add_wikidata_property <- function(df, property, name = property) {
 
   if (!"qid" %in% names(df)) stop("df must contain a 'qid' column")
@@ -72,19 +82,17 @@ add_wikidata_property <- function(df, property, name = property) {
   df
 }
 
-# ---- .extract_numeric_list_property -----------------------------------------
-# Internal helper: extract all claims for a single quantity property from one
-# entity, including per-claim year (P585 qualifier) and reference (P854 URL
-# or P248 "stated in" QID). Returns a flat named list of scalars suitable for
-# inclusion in a bind_rows() record.
-#
-# Output columns for pname = "population", max_vals = 10:
-#   population         — most recent value (numeric; sorted by year desc, NAs last)
-#   population_n       — total number of claims (integer)
-#   population_1       — value of claim 1 (numeric)
-#   population_1_year  — year of claim 1 (integer, from P585, or NA)
-#   population_1_ref   — reference of claim 1 (character URL or "wd:Qxxx", or NA)
-#   ... up to population_10 / population_10_year / population_10_ref
+#' Extract Numeric Multi-Claim Property Values
+#'
+#' @title Extract Numeric Multi-Claim Property Values
+#' @description Internal helper that extracts value, year, and reference fields
+#'   from all claims for one quantity property in a Wikidata entity.
+#' @param entity A single Wikidata entity object.
+#' @param pid Character. Property ID to extract (e.g., `"P1082"`).
+#' @param pname Character. Output column prefix.
+#' @param max_vals Integer. Maximum number of claim slots to emit.
+#' @return A named list of scalar values suitable for row-binding.
+#' @keywords internal
 
 .extract_numeric_list_property <- function(entity, pid, pname, max_vals = 10) {
 
@@ -204,9 +212,15 @@ add_wikidata_property <- function(df, property, name = property) {
   out
 }
 
-# ---- .extract_instance_or_subclass ------------------------------------------
-# Internal helper: extract all P31 (instance of) or P279 (subclass of) statements
-# from a single entity, returning a character vector of QIDs.
+#' Extract Instance/Subclass QIDs
+#'
+#' @title Extract Instance/Subclass QIDs
+#' @description Internal helper that extracts all P31 (instance of) or P279
+#'   (subclass of) target QIDs from one entity.
+#' @param entity A single Wikidata entity object.
+#' @param property_id Character. Either `"P31"` or `"P279"`.
+#' @return A character vector of QIDs.
+#' @keywords internal
 
 .extract_instance_or_subclass <- function(entity, property_id = "P31") {
   if ("claims" %in% names(entity) && property_id %in% names(entity$claims)) {
@@ -219,9 +233,17 @@ add_wikidata_property <- function(df, property, name = property) {
   } else character(0)
 }
 
-# ---- .build_sparql_query ------------------------------------------------
-# Internal helper: build a SPARQL query to retrieve items that are instances
-# (P31) or subclasses (P279) of a given class.
+#' Build SPARQL Query for Class Retrieval
+#'
+#' @title Build SPARQL Query for Class Retrieval
+#' @description Internal helper that builds a SPARQL query for retrieving items
+#'   by `instance of` or `subclass of` with an optional country filter.
+#' @param class_qid Character class QID.
+#' @param country Optional character country QID.
+#' @param property_id Character. `"P31"` or `"P279"`.
+#' @param limit Integer result limit.
+#' @return A character SPARQL query string.
+#' @keywords internal
 
 .build_sparql_query <- function(class_qid, country = NULL, property_id = "P31", limit = 1000) {
   if (!property_id %in% c("P31", "P279")) {
@@ -238,10 +260,21 @@ add_wikidata_property <- function(df, property, name = property) {
   )
 }
 
-# ---- .parse_entity -----------------------------------------------------------
-# Internal helper: parse a single Wikidata entity object into a named list
-# suitable for bind_rows(). Used by get_wikidata_instances() and
-# resume_get_wikidata_instances().
+#' Parse a Wikidata Entity Record
+#'
+#' @title Parse a Wikidata Entity Record
+#' @description Internal helper that parses one Wikidata entity into a named
+#'   list record for tabular binding.
+#' @param entity A single Wikidata entity object.
+#' @param qid Character QID for the entity.
+#' @param property Optional character vector of extra property IDs.
+#' @param property_names Character vector of output names for `property`.
+#' @param languages Character vector of language codes.
+#' @param numeric_list_properties Optional character vector of numeric-list property IDs.
+#' @param numeric_list_property_names Character vector of output prefixes.
+#' @param object_type Character. `"instance"` or `"subclass"`.
+#' @return A named list representing one parsed entity row.
+#' @keywords internal
 
 .parse_entity <- function(entity, qid, property, property_names, languages,
                           numeric_list_properties     = NULL,
@@ -338,10 +371,23 @@ add_wikidata_property <- function(df, property, name = property) {
   out
 }
 
-# ---- .fetch_qids_in_batches --------------------------------------------------
-# Internal helper: fetch a vector of QIDs from wbgetentities in batches of
-# `batch_size` (max 50), with `batch_delay` seconds between batches.
-# Returns a list of parsed entity records suitable for bind_rows().
+#' Fetch QIDs from Wikidata in Batches
+#'
+#' @title Fetch QIDs from Wikidata in Batches
+#' @description Internal helper that calls `wbgetentities` in batches and parses
+#'   each returned entity into row records.
+#' @param qids Character vector of QIDs to fetch.
+#' @param property Optional character vector of extra property IDs.
+#' @param property_names Character vector of output names.
+#' @param languages Character vector of languages for labels/descriptions.
+#' @param batch_size Integer batch size.
+#' @param batch_delay Numeric delay between batches.
+#' @param numeric_list_properties Optional character vector of numeric-list property IDs.
+#' @param numeric_list_property_names Character vector of output prefixes.
+#' @param entity_props Character pipe-delimited `wbgetentities` props string.
+#' @param object_type Character. `"instance"` or `"subclass"`.
+#' @return A list of parsed entity records.
+#' @keywords internal
 
 .fetch_qids_in_batches <- function(qids, property, property_names, languages,
                                    batch_size = 20, batch_delay = 1,
@@ -421,8 +467,17 @@ add_wikidata_property <- function(df, property, name = property) {
   compact(all_parsed)
 }
 
-# ---- .sparql_get_qids --------------------------------------------------------
-# Internal helper: run the SPARQL query and return a character vector of QIDs.
+#' Execute SPARQL Query and Return QIDs
+#'
+#' @title Execute SPARQL Query and Return QIDs
+#' @description Internal helper that executes the generated SPARQL query and
+#'   extracts item QIDs from the result set.
+#' @param class_qid Character class QID.
+#' @param country Optional character country QID.
+#' @param limit Integer result limit.
+#' @param property_id Character. `"P31"` or `"P279"`.
+#' @return A character vector of QIDs.
+#' @keywords internal
 
 .sparql_get_qids <- function(class_qid, country, limit, property_id = "P31") {
   sparql_query <- .build_sparql_query(class_qid, country, property_id, limit)
@@ -450,6 +505,10 @@ add_wikidata_property <- function(df, property, name = property) {
 
 #' Get All Instances of a Wikidata Class
 #'
+#' @title Get All Instances of a Wikidata Class
+#' @description Retrieves all instances (P31) or subclasses (P279) of a given
+#'   class from Wikidata with labels, descriptions, optional properties, and
+#'   linked Wikipedia article titles.
 #' Retrieves all instances (P31) or subclasses (P279) of a given class from
 #' Wikidata with their labels, descriptions, optional extra properties,
 #' instance-of/subclass-of statements, and Wikipedia articles.
@@ -613,6 +672,9 @@ get_wikidata_instances <- function(class_qid,
 
 #' Resume a Partially-Completed get_wikidata_instances() Query
 #'
+#' @title Resume a Partially-Completed get_wikidata_instances() Query
+#' @description Continues a partially completed class retrieval by skipping
+#'   already fetched QIDs and retrieving only remaining entities.
 #' Use this when \code{get_wikidata_instances()} was interrupted part-way
 #' through and you have a partial result. Re-runs the SPARQL query to obtain
 #' the full QID list, skips already-retrieved QIDs, fetches the remainder in
@@ -753,6 +815,9 @@ resume_get_wikidata_instances <- function(partial_result,
 
 #' Simplify Single-Value List Columns in a Data Frame
 #'
+#' @title Simplify Single-Value List Columns in a Data Frame
+#' @description Converts list columns whose elements all have length 0 or 1 into
+#'   plain character vectors while leaving multi-valued list columns unchanged.
 #' Finds list columns where every element contains 0 or 1 values and replaces
 #' them with a plain character column: the single value, or \code{NA} for
 #' empty elements. List columns with any element containing 2 or more values

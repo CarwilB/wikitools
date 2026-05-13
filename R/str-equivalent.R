@@ -25,6 +25,8 @@
 #' str_equivalent("Case", "case") # TRUE
 #' str_equivalent("Mismatch", "mismatch!") # FALSE
 #'
+#' @seealso \code{\link{equivalent_which}}, \code{\link{equivalent_match}},
+#'   \code{\link{str_equivalent_list}}
 #' @importFrom stringr str_replace_all str_equal
 #' @importFrom stringi stri_trans_general
 #' @export
@@ -38,8 +40,8 @@ str_equivalent <- function(x, y) {
   x <- stringi::stri_trans_general(x, "Latin-ASCII") # eliminate accents
   y <- stringi::stri_trans_general(y, "Latin-ASCII")
   
-  x <- str_replace_all(x, "\u0022", "") # remove double quotes
-  y <- str_replace_all(y, "\u0022", "")
+  x <- stringr::str_replace_all(x, "\u0022", "") # remove double quotes
+  y <- stringr::str_replace_all(y, "\u0022", "")
   
   stringr::str_equal(x, y, ignore_case = TRUE)
 }
@@ -120,5 +122,4 @@ str_equivalent_list <- function(string, string_list) {
   # Check if any member of string_list is equivalent to string using str_equivalent
   any(sapply(string_list, function(x) str_equivalent(string, x)))
 }
-
 

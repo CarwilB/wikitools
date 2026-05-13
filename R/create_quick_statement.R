@@ -199,10 +199,10 @@ create_quick_statement <- function(qid,
 #'
 #' @export
 add_quick_statement_column <- function(dataframe, qid_col, property, value_col, ...){
-  dataframe %>%
-    rowwise() %>%
-    mutate(quick_statement = create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...)) %>%
-    ungroup()
+  dataframe |>
+    dplyr::rowwise() |>
+    dplyr::mutate(quick_statement = create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...)) |>
+    dplyr::ungroup()
 }
 
 #' Add a QuickStatements Column with Qualifiers to a Data Frame
@@ -238,20 +238,31 @@ add_quick_statement_column <- function(dataframe, qid_col, property, value_col, 
 #' @export
 add_quick_statement_column_q <- function(dataframe, qid_col, property, value_col,
                                           qualifiers = NULL, ...) {
-  dataframe %>%
-    rowwise() %>%
-    mutate(quick_statement = create_quick_statement(
+  dataframe |>
+    dplyr::rowwise() |>
+    dplyr::mutate(quick_statement = create_quick_statement(
       {{ qid_col }}, property, as.character({{ value_col }}),
       qualifiers = qualifiers,
       ...
-    )) %>%
-    ungroup()
+    )) |>
+    dplyr::ungroup()
 }
 
+#' Remove QuickStatements by Prefixing Minus Sign
+#'
+#' @title Remove QuickStatements by Prefixing Minus Sign
+#' @description Internal helper that creates deletion-form QuickStatements by
+#'   prefixing each generated command with `-`.
+#' @param dataframe A data frame (or tibble).
+#' @param qid_col Unquoted column name containing Wikidata item IDs.
+#' @param property Character. Property ID (e.g., `"P31"`).
+#' @param value_col Unquoted column name containing values.
+#' @param ... Additional arguments passed to `create_quick_statement()`.
+#' @return The input data frame with a `quick_statement` character column.
+#' @keywords internal
 remove_quick_statement_column <- function(dataframe, qid_col, property, value_col, ...){
-  dataframe %>%
-    rowwise() %>%
-    mutate(quick_statement = str_c("-", create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...))) %>%
-    ungroup()
+  dataframe |>
+    dplyr::rowwise() |>
+    dplyr::mutate(quick_statement = paste0("-", create_quick_statement({{ qid_col }}, property, {{ value_col }}, ...))) |>
+    dplyr::ungroup()
 }
-
