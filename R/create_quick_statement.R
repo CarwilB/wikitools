@@ -248,18 +248,27 @@ add_quick_statement_column_q <- function(dataframe, qid_col, property, value_col
     dplyr::ungroup()
 }
 
-#' Remove QuickStatements by Prefixing Minus Sign
+#' Add a QuickStatements Column for Removing Statements to a Data Frame
 #'
-#' @title Remove QuickStatements by Prefixing Minus Sign
-#' @description Internal helper that creates deletion-form QuickStatements by
-#'   prefixing each generated command with `-`.
+#' Like \code{add_quick_statement_column} but negates the statement by prepending a
+#' "-" to the command. This is useful for removing statements via QuickStatements.
+#' Note that qualifiers and references cannot be used with negated statements.
+#' The \code{property} argument must be a statement property (e.g., \code{"P123"}).
+#'
+#' @param ... Additional arguments passed to `create_quick_statement()`.
 #' @param dataframe A data frame (or tibble).
 #' @param qid_col Unquoted column name containing Wikidata item IDs.
-#' @param property Character. Property ID (e.g., `"P31"`).
-#' @param value_col Unquoted column name containing values.
-#' @param ... Additional arguments passed to `create_quick_statement()`.
-#' @return The input data frame with a `quick_statement` character column.
-#' @keywords internal
+#' @param property Character. The property ID (e.g., \code{"P123"}).
+#' @param value_col Unquoted column name containing statement values.
+#'
+#' @return The input data frame with an additional \code{quick_statement} column
+#'  containing negated statements.
+#'
+#' @examples
+#' departments %>%
+#'   remove_quick_statement_column(qid, "P14142", cod.dep)
+#'
+#' @export
 remove_quick_statement_column <- function(dataframe, qid_col, property, value_col, ...){
   dataframe |>
     dplyr::rowwise() |>

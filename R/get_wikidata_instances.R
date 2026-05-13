@@ -16,6 +16,7 @@
 #'
 #' @examples
 #' departments |> add_wikidata_property("P14142", name = "ine_code")
+#'
 #' @importFrom dplyr across bind_rows distinct mutate where
 #' @importFrom httr GET content status_code user_agent
 #' @importFrom jsonlite fromJSON
