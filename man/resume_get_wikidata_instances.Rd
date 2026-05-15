@@ -53,7 +53,7 @@ Default "labels|descriptions|claims|sitelinks".}
 \item{object_type}{Character. Either "instance" or "subclass". Default
 "instance". Must match the original call.}
 
-\item{verbose}{Logical. If \code{TRUE}, print SPARQL query and detailed parse diagnostics.}
+\item{verbose}{Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.}
 }
 \value{
 A tibble with the same columns as \code{get_wikidata_instances()},

@@ -33,7 +33,7 @@
 
 \item{object_type}{Character. `"instance"` or `"subclass"`.}
 
-\item{verbose}{Logical. If \code{TRUE}, emit detailed parsing diagnostics.}
+\item{verbose}{Logical. If `TRUE`, emit detailed parsing diagnostics.}
 }
 \value{
 A named list representing one parsed entity row.

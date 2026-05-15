@@ -69,7 +69,7 @@ to request from \code{wbgetentities} (e.g. "labels|sitelinks"). Default is
 where P31 (instance of) equals \code{class_qid}, or "subclass" to retrieve
 items where P279 (subclass of) equals \code{class_qid}.}
 
-\item{verbose}{Logical. If \code{TRUE}, print SPARQL query and detailed parse diagnostics.}
+\item{verbose}{Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.}
 }
 \value{
 A tibble with columns:
