@@ -14,7 +14,8 @@
   numeric_list_properties = NULL,
   numeric_list_property_names = NULL,
   entity_props = "labels|descriptions|claims|sitelinks",
-  object_type = "instance"
+  object_type = "instance",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@
 \item{entity_props}{Character pipe-delimited `wbgetentities` props string.}
 
 \item{object_type}{Character. `"instance"` or `"subclass"`.}
+
+\item{verbose}{Logical. If `TRUE`, emit detailed parsing diagnostics.}
 }
 \value{
 A list of parsed entity records.

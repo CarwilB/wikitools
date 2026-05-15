@@ -16,7 +16,8 @@ get_wikidata_instances(
   numeric_list_properties = NULL,
   numeric_list_property_names = NULL,
   entity_props = "labels|descriptions|claims|sitelinks",
-  object_type = "instance"
+  object_type = "instance",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ to request from \code{wbgetentities} (e.g. "labels|sitelinks"). Default is
 \item{object_type}{Character. Either "instance" (default) to retrieve items
 where P31 (instance of) equals \code{class_qid}, or "subclass" to retrieve
 items where P279 (subclass of) equals \code{class_qid}.}
+
+\item{verbose}{Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.}
 }
 \value{
 A tibble with columns:
@@ -100,5 +103,7 @@ get_wikidata_instances(
 
 # Retrieve subclasses instead of instances
 get_wikidata_instances("Q34770", object_type = "subclass")
+
+get_wikidata_instances("Q4193029", property = "P1448", property_names = "official_name", verbose = TRUE)
 
 }

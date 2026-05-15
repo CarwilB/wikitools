@@ -63,8 +63,12 @@ add_wikidata_property <- function(df, property, name = property) {
       # Dispatch on value type
       if (is.data.frame(dv) && "amount" %in% names(dv)) {
         sub("^\\+", "", dv$amount[[1]])
-      } else if (is.data.frame(dv)) {
-        as.character(dv$id)
+      } else if (is.data.frame(dv) && "text" %in% names(dv)) {
+        as.character(dv$text[[1]])
+      } else if (is.data.frame(dv) && "time" %in% names(dv)) {
+        as.character(dv$time[[1]])
+      } else if (is.data.frame(dv) && "id" %in% names(dv)) {
+        as.character(dv$id[[1]])
       } else if (is.character(dv)) {
         dv
       } else {
@@ -272,25 +276,49 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @param numeric_list_properties Optional character vector of numeric-list property IDs.
 #' @param numeric_list_property_names Character vector of output prefixes.
 #' @param object_type Character. `"instance"` or `"subclass"`.
+#' @param verbose Logical. If `TRUE`, emit detailed parsing diagnostics.
 #' @return A named list representing one parsed entity row.
 #' @keywords internal
 
 .parse_entity <- function(entity, qid, property, property_names, languages,
                           numeric_list_properties     = NULL,
                           numeric_list_property_names = NULL,
-                          object_type                 = "instance") {
+                          object_type                 = "instance",
+                          verbose                     = FALSE) {
+
+  stage_error_message <- function(stage, e, relevant_data) {
+    if (!verbose) return(invisible(NULL))
+    error_call <- paste(deparse(conditionCall(e)), collapse = " ")
+    message(
+      "  .parse_entity stage '", stage, "' failed for ", qid, ": ",
+      conditionMessage(e), "\n",
+      "    call: ", error_call, "\n",
+      "    data:\n",
+      paste(capture.output(str(relevant_data, max.level = 2, list.len = 5)), collapse = "\n")
+    )
+  }
 
   # Extract labels
-  labels_list <- map(languages, function(lang) {
-    if (lang %in% names(entity$labels)) entity$labels[[lang]]$value
-    else NA_character_
+  labels_list <- tryCatch({
+    map(languages, function(lang) {
+      if (lang %in% names(entity$labels)) entity$labels[[lang]]$value
+      else NA_character_
+    })
+  }, error = function(e) {
+    stage_error_message("labels", e, entity$labels)
+    rep(list(NA_character_), length(languages))
   })
   names(labels_list) <- paste0("label_", languages)
 
   # Extract descriptions
-  descriptions_list <- map(languages, function(lang) {
-    if (lang %in% names(entity$descriptions)) entity$descriptions[[lang]]$value
-    else NA_character_
+  descriptions_list <- tryCatch({
+    map(languages, function(lang) {
+      if (lang %in% names(entity$descriptions)) entity$descriptions[[lang]]$value
+      else NA_character_
+    })
+  }, error = function(e) {
+    stage_error_message("descriptions", e, entity$descriptions)
+    rep(list(NA_character_), length(languages))
   })
   names(descriptions_list) <- paste0("description_", languages)
 
@@ -299,23 +327,36 @@ add_wikidata_property <- function(df, property, name = property) {
     prop_values <- map(seq_along(property), function(i) {
       pid   <- property[i]
       pname <- property_names[i]
-      vals  <- if ("claims" %in% names(entity) && pid %in% names(entity$claims)) {
-        p_df <- entity$claims[[pid]]
-        if (nrow(p_df) > 0) {
-          map_chr(seq_len(nrow(p_df)), function(j) {
-            dv <- p_df$mainsnak[j, ]$datavalue[[1]]
-            if (is.data.frame(dv) && "amount" %in% names(dv)) {
-              sub("^\\+", "", dv$amount[[1]])   # quantity: strip leading "+"
-            } else if (is.data.frame(dv)) {
-              as.character(dv$id)               # entity/item value
-            } else if (is.character(dv)) {
-              dv                                # plain string / URL
-            } else {
-              as.character(dv)
-            }
-          })
+      vals <- tryCatch({
+        if ("claims" %in% names(entity) && pid %in% names(entity$claims)) {
+          p_df <- entity$claims[[pid]]
+          if (nrow(p_df) > 0) {
+            map_chr(seq_len(nrow(p_df)), function(j) {
+              dv <- p_df$mainsnak[j, ]$datavalue[[1]]
+              if (is.data.frame(dv) && "amount" %in% names(dv)) {
+                sub("^\\+", "", dv$amount[[1]])
+              } else if (is.data.frame(dv) && "text" %in% names(dv)) {
+                as.character(dv$text[[1]])
+              } else if (is.data.frame(dv) && "time" %in% names(dv)) {
+                as.character(dv$time[[1]])
+              } else if (is.data.frame(dv) && "id" %in% names(dv)) {
+                as.character(dv$id[[1]])
+              } else if (is.character(dv)) {
+                dv
+              } else {
+                as.character(dv)
+              }
+            })
+          } else character(0)
         } else character(0)
-      } else character(0)
+      }, error = function(e) {
+        stage_error_message(
+          paste0("property ", pid, " (", pname, ")"),
+          e,
+          if (!is.null(entity$claims) && pid %in% names(entity$claims)) entity$claims[[pid]] else entity$claims
+        )
+        character(0)
+      })
       setNames(list(list(vals)), pname)
     })
     unlist(prop_values, recursive = FALSE)
@@ -323,16 +364,34 @@ add_wikidata_property <- function(df, property, name = property) {
 
   # Extract numeric list properties (multi-value quantities with year + ref)
   numeric_list_cols <- if (!is.null(numeric_list_properties)) {
-    if (!"claims" %in% names(entity)) {
-      stop("numeric_list_properties requested but entity has no 'claims' (did you request props without 'claims'?)")
+    empty_numeric_list_result <- function(pname, max_vals = 10) {
+      out <- list()
+      out[[pname]]               <- NA_real_
+      out[[paste0(pname, "_n")]] <- 0L
+      for (k in seq_len(max_vals)) {
+        out[[paste0(pname, "_", k)]]          <- NA_real_
+        out[[paste0(pname, "_", k, "_year")]] <- NA_integer_
+        out[[paste0(pname, "_", k, "_ref")]]  <- NA_character_
+      }
+      out
     }
     result <- list()
     for (i in seq_along(numeric_list_properties)) {
-      extracted <- .extract_numeric_list_property(
-        entity,
-        pid   = numeric_list_properties[i],
-        pname = numeric_list_property_names[i]
-      )
+      pid <- numeric_list_properties[i]
+      pname <- numeric_list_property_names[i]
+      extracted <- tryCatch({
+        if (!"claims" %in% names(entity)) {
+          stop("numeric_list_properties requested but entity has no 'claims' (did you request props without 'claims'?)")
+        }
+        .extract_numeric_list_property(entity, pid = pid, pname = pname)
+      }, error = function(e) {
+        stage_error_message(
+          paste0("numeric_list_property ", pid),
+          e,
+          if (!is.null(entity$claims) && pid %in% names(entity$claims)) entity$claims[[pid]] else entity$claims
+        )
+        empty_numeric_list_result(pname)
+      })
       result <- c(result, extracted)
     }
     result
@@ -341,20 +400,30 @@ add_wikidata_property <- function(df, property, name = property) {
   # Extract P31 (instance of) or P279 (subclass of) statements
   property_id <- if (object_type == "instance") "P31" else "P279"
   column_name <- if (object_type == "instance") "instance_of" else "subclass_of"
-  hierarchy_vals <- .extract_instance_or_subclass(entity, property_id)
+  hierarchy_vals <- tryCatch({
+    .extract_instance_or_subclass(entity, property_id)
+  }, error = function(e) {
+    stage_error_message("instance_of/hierarchy", e, entity$claims)
+    character(0)
+  })
 
   # Extract Wikipedia sitelinks
-  wiki_articles <- if (!is.null(entity$sitelinks) && length(entity$sitelinks) > 0) {
-    site_names <- names(entity$sitelinks)
-    articles <- map_chr(site_names, function(site) {
-      if (grepl("wiki$", site) && !grepl("wikivoyage|wikiquote|wikibooks", site)) {
-        lang_code <- str_replace(site, "wiki$", "")
-        title <- entity$sitelinks[[site]]$title
-        if (!is.null(title)) paste0(lang_code, ": ", title) else NA_character_
-      } else NA_character_
-    })
-    articles[!is.na(articles)]
-  } else character(0)
+  wiki_articles <- tryCatch({
+    if (!is.null(entity$sitelinks) && length(entity$sitelinks) > 0) {
+      site_names <- names(entity$sitelinks)
+      articles <- map_chr(site_names, function(site) {
+        if (grepl("wiki$", site) && !grepl("wikivoyage|wikiquote|wikibooks", site)) {
+          lang_code <- str_replace(site, "wiki$", "")
+          title <- entity$sitelinks[[site]]$title
+          if (!is.null(title)) paste0(lang_code, ": ", title) else NA_character_
+        } else NA_character_
+      })
+      articles[!is.na(articles)]
+    } else character(0)
+  }, error = function(e) {
+    stage_error_message("sitelinks", e, entity$sitelinks)
+    character(0)
+  })
 
   # Build the output list dynamically
   out <- c(
@@ -385,6 +454,7 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @param numeric_list_property_names Character vector of output prefixes.
 #' @param entity_props Character pipe-delimited `wbgetentities` props string.
 #' @param object_type Character. `"instance"` or `"subclass"`.
+#' @param verbose Logical. If `TRUE`, emit detailed parsing diagnostics.
 #' @return A list of parsed entity records.
 #' @keywords internal
 
@@ -393,7 +463,8 @@ add_wikidata_property <- function(df, property, name = property) {
                                    numeric_list_properties     = NULL,
                                    numeric_list_property_names = NULL,
                                    entity_props               = "labels|descriptions|claims|sitelinks",
-                                   object_type                = "instance") {
+                                   object_type                = "instance",
+                                   verbose                    = FALSE) {
 
   batches    <- split(qids, ceiling(seq_along(qids) / batch_size))
   n_batches  <- length(batches)
@@ -418,16 +489,19 @@ add_wikidata_property <- function(df, property, name = property) {
         user_agent("WikidataR-instances-retrieval")
       )
 
-      item_data <- fromJSON(content(api_response, "text", encoding = "UTF-8"))
+      raw_text <- content(api_response, "text", encoding = "UTF-8")
+      item_data <- fromJSON(raw_text)
       entities  <- item_data$entities
 
-      if (any(batch %in% c("Q32","Q33","Q38","Q228"))) {
-        message("DEBUG status_code: ", httr::status_code(api_response))
-        txt <- httr::content(api_response, "text", encoding="UTF-8")
-        message("DEBUG first 200 chars: ", substr(txt, 1, 200))
-        message("DEBUG has entities names? ", !is.null(names(entities)))
-        message("DEBUG entities name sample: ", paste(head(names(entities), 20), collapse=","))
-        message("DEBUG Q32 in names(entities): ", "Q32" %in% names(entities))
+      if (verbose) {
+        message("    HTTP status code: ", httr::status_code(api_response))
+        message("    Raw response (first 500 chars): ", substr(raw_text, 1, 500))
+        qids_in_entities <- names(entities)
+        if (is.null(qids_in_entities) || length(qids_in_entities) == 0) {
+          message("    QIDs in entities: <none>")
+        } else {
+          message("    QIDs in entities: ", paste(qids_in_entities, collapse = ", "))
+        }
       }
 
       for (qid in batch) {
@@ -442,9 +516,16 @@ add_wikidata_property <- function(df, property, name = property) {
           all_parsed[[idx]] <- tryCatch(
             .parse_entity(entity, qid, property, property_names, languages,
                           numeric_list_properties, numeric_list_property_names,
-                          object_type),
+                          object_type, verbose),
             error = function(e) {
               message("  Error parsing ", qid, ": ", e$message)
+              if (verbose) {
+                message("    call: ", paste(deparse(conditionCall(e)), collapse = " "))
+                message(
+                  "    entity structure:\n",
+                  paste(capture.output(str(entity, max.level = 2, list.len = 10)), collapse = "\n")
+                )
+              }
               NULL
             }
           )
@@ -548,6 +629,7 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @param object_type Character. Either "instance" (default) to retrieve items
 #'   where P31 (instance of) equals \code{class_qid}, or "subclass" to retrieve
 #'   items where P279 (subclass of) equals \code{class_qid}.
+#' @param verbose Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.
 #'
 #' @return A tibble with columns:
 #'   - qid
@@ -570,6 +652,8 @@ add_wikidata_property <- function(df, property, name = property) {
 #' # Retrieve subclasses instead of instances
 #' get_wikidata_instances("Q34770", object_type = "subclass")
 #'
+#' get_wikidata_instances("Q4193029", property = "P1448", property_names = "official_name", verbose = TRUE)
+#'
 #' @export
 get_wikidata_instances <- function(class_qid,
                                    property                    = NULL,
@@ -582,7 +666,8 @@ get_wikidata_instances <- function(class_qid,
                                    numeric_list_properties     = NULL,
                                    numeric_list_property_names = NULL,
                                    entity_props                = "labels|descriptions|claims|sitelinks",
-                                   object_type                 = "instance") {
+                                   object_type                 = "instance",
+                                   verbose                     = FALSE) {
 
   # Validate object_type
   if (!object_type %in% c("instance", "subclass")) {
@@ -639,6 +724,10 @@ get_wikidata_instances <- function(class_qid,
   type_label <- if (object_type == "instance") "instances" else "subclasses"
 
   # Step 1: SPARQL — get all QIDs
+  if (verbose) {
+    sparql_query <- .build_sparql_query(class_qid, country, property_id, limit)
+    message("SPARQL query:\n", sparql_query)
+  }
   qids <- .sparql_get_qids(class_qid, country, limit, property_id)
 
   if (length(qids) == 0) {
@@ -654,7 +743,8 @@ get_wikidata_instances <- function(class_qid,
     qids, property, property_names, languages, batch_size, batch_delay,
     numeric_list_properties, numeric_list_property_names,
     entity_props = entity_props,
-    object_type = object_type
+    object_type = object_type,
+    verbose = verbose
   )
 
   # Convert to tibble and simplify single-value list columns
@@ -692,6 +782,7 @@ get_wikidata_instances <- function(class_qid,
 #'   Default "labels|descriptions|claims|sitelinks".
 #' @param object_type Character. Either "instance" or "subclass". Default
 #'   "instance". Must match the original call.
+#' @param verbose Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.
 #'
 #' @return A tibble with the same columns as \code{get_wikidata_instances()},
 #'   containing all items (previously retrieved + newly fetched).
@@ -718,7 +809,8 @@ resume_get_wikidata_instances <- function(partial_result,
                                           numeric_list_properties     = NULL,
                                           numeric_list_property_names = NULL,
                                           entity_props                = "labels|descriptions|claims|sitelinks",
-                                          object_type                 = "instance") {
+                                          object_type                 = "instance",
+                                          verbose                     = FALSE) {
 
   if (!"qid" %in% names(partial_result))
     stop("partial_result must contain a 'qid' column")
@@ -766,6 +858,10 @@ resume_get_wikidata_instances <- function(partial_result,
 
   # Step 1: re-run SPARQL to get the complete QID list
   message("Re-running SPARQL query for ", class_qid, "...")
+  if (verbose) {
+    sparql_query <- .build_sparql_query(class_qid, country, property_id, limit)
+    message("SPARQL query:\n", sparql_query)
+  }
   all_qids <- .sparql_get_qids(class_qid, country, limit, property_id)
 
   if (length(all_qids) == 0) {
@@ -792,7 +888,8 @@ resume_get_wikidata_instances <- function(partial_result,
     remaining, property, property_names, languages, batch_size, batch_delay,
     numeric_list_properties, numeric_list_property_names,
     entity_props = entity_props,
-    object_type = object_type
+    object_type = object_type,
+    verbose = verbose
   )
 
   # Simplify each half before binding so column types match

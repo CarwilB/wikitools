@@ -17,7 +17,8 @@ resume_get_wikidata_instances(
   numeric_list_properties = NULL,
   numeric_list_property_names = NULL,
   entity_props = "labels|descriptions|claims|sitelinks",
-  object_type = "instance"
+  object_type = "instance",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -51,6 +52,8 @@ Default "labels|descriptions|claims|sitelinks".}
 
 \item{object_type}{Character. Either "instance" or "subclass". Default
 "instance". Must match the original call.}
+
+\item{verbose}{Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.}
 }
 \value{
 A tibble with the same columns as \code{get_wikidata_instances()},

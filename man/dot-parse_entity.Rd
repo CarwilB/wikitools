@@ -12,7 +12,8 @@
   languages,
   numeric_list_properties = NULL,
   numeric_list_property_names = NULL,
-  object_type = "instance"
+  object_type = "instance",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@
 \item{numeric_list_property_names}{Character vector of output prefixes.}
 
 \item{object_type}{Character. `"instance"` or `"subclass"`.}
+
+\item{verbose}{Logical. If `TRUE`, emit detailed parsing diagnostics.}
 }
 \value{
 A named list representing one parsed entity row.
