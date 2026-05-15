@@ -152,7 +152,7 @@ extract_clean_fragments <- function(wikitext, keep_link_text = FALSE) {
 #' @param column_names Optional character vector of display column names.
 #' @return A single character string containing wikitable markup.
 #' @export
-get_wikitable <- function(df, caption = NULL, class = "wikitable sortable",
+as_wikitable <- function(df, caption = NULL, class = "wikitable sortable",
                           column_names = NULL) {
   out <- c()
   out <- c(out, paste0('{| class="', class, '"'))
@@ -186,7 +186,7 @@ get_wikitable <- function(df, caption = NULL, class = "wikitable sortable",
 #' @param lang Character. Wikipedia language code (default `"en"`).
 #' @return A tibble with columns `pageid`, `ns`, and `title`.
 #' @export
-get_category_members <- function(category, type = "page", lang = "en") {
+get_wp_category_members <- function(category, type = "page", lang = "en") {
   if (!grepl("^Category:", category)) {
     category <- paste0("Category:", category)
   }
@@ -248,7 +248,7 @@ get_category_members <- function(category, type = "page", lang = "en") {
 #' @param lang Character. Wikipedia language code.
 #' @return A tibble with category subcategory members.
 #' @export
-get_subcategories <- function(category, lang = "en") {
+get_wp_subcategories <- function(category, lang = "en") {
   get_category_members(category, type = "subcat", lang = lang)
 }
 
@@ -261,7 +261,7 @@ get_subcategories <- function(category, lang = "en") {
 #' @param lang Character. Wikipedia language code.
 #' @return A tibble with page members.
 #' @export
-get_category_pages <- function(category, lang = "en") {
+get_wp_category_pages <- function(category, lang = "en") {
   get_category_members(category, type = "page", lang = lang)
 }
 
