@@ -2,10 +2,21 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{split_on_top_level_pipes}
 \alias{split_on_top_level_pipes}
-\title{Split a string on "|" characters that are not inside {{ }}}
+\title{Split Text on Top-Level Pipe Characters}
 \usage{
 split_on_top_level_pipes(text)
 }
-\description{
-Split a string on "|" characters that are not inside {{ }}
+\arguments{
+\item{text}{Character string to split.}
 }
+\value{
+A character vector of split segments.
+}
+\description{
+Splits a string on `|` characters that appear at top nesting
+  level (outside `{{ }}` and `[[ ]]` blocks).
+}
+\details{
+Split Text on Top-Level Pipe Characters
+}
+\keyword{internal}

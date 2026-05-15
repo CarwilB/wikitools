@@ -2,11 +2,20 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{extract_infobox}
 \alias{extract_infobox}
-\title{Extract the main infobox from wikitext as a named list}
+\title{Extract the First Infobox Template}
 \usage{
 extract_infobox(wikitext)
 }
+\arguments{
+\item{wikitext}{Character. Raw article wikitext.}
+}
+\value{
+A named list of infobox fields, or `NULL` when no infobox is found.
+}
 \description{
-Handles nested templates via recursive brace matching.
-Returns NULL if no infobox found.
+Parses the first infobox template from wikitext into a named list
+  of key-value fields using brace-depth matching.
+}
+\details{
+Extract the First Infobox Template
 }

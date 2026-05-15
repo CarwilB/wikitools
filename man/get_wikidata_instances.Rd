@@ -77,13 +77,15 @@ A tibble with columns:
   - wikipedia_articles
 }
 \description{
-Retrieves all instances (P31) or subclasses (P279) of a given class from
-Wikidata with their labels, descriptions, optional extra properties,
-instance-of/subclass-of statements, and Wikipedia articles.
-}
-\details{
+Retrieves all instances (P31) or subclasses (P279) of a given
+  class from Wikidata with labels, descriptions, optional properties, and
+  linked Wikipedia article titles.
+
 Items are fetched from the Wikidata API in batches of \code{batch_size}
 (default 50, the API maximum) to avoid rate-limiting errors.
+}
+\details{
+Get All Instances of a Wikidata Class
 }
 \examples{
 get_wikidata_instances("Q250050", languages = c("en", "es"))

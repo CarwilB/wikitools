@@ -2,10 +2,22 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_category_pages}
 \alias{get_category_pages}
-\title{Get article pages in a category (non-recursive)}
+\title{Get Pages from a Category}
 \usage{
 get_category_pages(category, lang = "en")
 }
+\arguments{
+\item{category}{Character. Category name.}
+
+\item{lang}{Character. Wikipedia language code.}
+}
+\value{
+A tibble with page members.
+}
 \description{
-Get article pages in a category (non-recursive)
+Convenience wrapper around `get_category_members()` for pages
+  only (non-recursive).
+}
+\details{
+Get Pages from a Category
 }

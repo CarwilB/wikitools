@@ -2,10 +2,20 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{clean_infobox_value}
 \alias{clean_infobox_value}
-\title{Clean wikitext markup from an infobox value}
+\title{Clean a Single Infobox Field Value}
 \usage{
 clean_infobox_value(val)
 }
+\arguments{
+\item{val}{Character. Raw infobox field value.}
+}
+\value{
+A cleaned character string, or `NA_character_` when empty/unavailable.
+}
 \description{
-Strips wikilinks, templates, HTML tags, and refs, leaving plain text.
+Removes common wikitext and HTML markup from an infobox value,
+  returning a readable plain-text string.
+}
+\details{
+Clean a Single Infobox Field Value
 }

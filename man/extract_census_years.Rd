@@ -2,11 +2,20 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{extract_census_years}
 \alias{extract_census_years}
-\title{Extract census years referenced in wikitext}
+\title{Extract Census Years from Wikitext}
 \usage{
 extract_census_years(wikitext)
 }
+\arguments{
+\item{wikitext}{Character. Raw wikitext string.}
+}
+\value{
+A sorted character vector of unique four-digit years.
+}
 \description{
-Looks for patterns like "census of YYYY", "YYYY census", "CPV YYYY",
-and "Censo YYYY" (common in Bolivian municipality articles).
+Extracts four-digit years from common census patterns in
+  wikitext (e.g., `YYYY census`, `census of YYYY`, `CPV YYYY`).
+}
+\details{
+Extract Census Years from Wikitext
 }

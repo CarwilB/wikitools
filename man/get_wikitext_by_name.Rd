@@ -2,10 +2,22 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_wikitext_by_name}
 \alias{get_wikitext_by_name}
-\title{Fetch raw wikitext for a named article}
+\title{Fetch Raw Wikitext by Article Name}
 \usage{
 get_wikitext_by_name(article_name, lang = "en")
 }
+\arguments{
+\item{article_name}{Character. Wikipedia article title.}
+
+\item{lang}{Character. Wikipedia language code (default `"en"`).}
+}
+\value{
+A character string containing article wikitext, or `NULL` if unavailable.
+}
 \description{
-Fetch raw wikitext for a named article
+Fetches the raw wikitext of a current Wikipedia article via the
+  MediaWiki API.
+}
+\details{
+Fetch Raw Wikitext by Article Name
 }

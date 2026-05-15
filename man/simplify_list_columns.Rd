@@ -14,10 +14,11 @@ The input data frame with qualifying list columns converted to
   character vectors.
 }
 \description{
-Finds list columns where every element contains 0 or 1 values and replaces
-them with a plain character column: the single value, or \code{NA} for
-empty elements. List columns with any element containing 2 or more values
-are left unchanged.
+Converts list columns whose elements all have length 0 or 1 into
+  plain character vectors while leaving multi-valued list columns unchanged.
+}
+\details{
+Simplify Single-Value List Columns in a Data Frame
 }
 \examples{
 simplify_list_columns(departments_wd)

@@ -2,10 +2,20 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_wikitext_from_url}
 \alias{get_wikitext_from_url}
-\title{Fetch wikitext from a full Wikipedia URL (standard or old-revision)}
+\title{Fetch Wikitext from a Wikipedia URL}
 \usage{
 get_wikitext_from_url(url)
 }
+\arguments{
+\item{url}{Character. Full Wikipedia URL.}
+}
+\value{
+A character string containing wikitext, or `NULL` when not retrievable.
+}
 \description{
-Fetch wikitext from a full Wikipedia URL (standard or old-revision)
+Parses a Wikipedia URL (including `?oldid=` revision links) and
+  dispatches to either `get_wikitext_by_name()` or `get_wikitext_by_revid()`.
+}
+\details{
+Fetch Wikitext from a Wikipedia URL
 }

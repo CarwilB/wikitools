@@ -2,10 +2,24 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_wikitext_by_revid}
 \alias{get_wikitext_by_revid}
-\title{Fetch raw wikitext for a specific revision}
+\title{Fetch Raw Wikitext by Revision ID}
 \usage{
 get_wikitext_by_revid(article_name, revision_id, lang = "en")
 }
+\arguments{
+\item{article_name}{Character. Article title (kept for API compatibility).}
+
+\item{revision_id}{Character or numeric. Specific Wikipedia revision ID.}
+
+\item{lang}{Character. Wikipedia language code (default `"en"`).}
+}
+\value{
+A character string containing revision wikitext, or `NULL` if unavailable.
+}
 \description{
-Fetch raw wikitext for a specific revision
+Fetches raw wikitext for a specific historical revision of a
+  Wikipedia page.
+}
+\details{
+Fetch Raw Wikitext by Revision ID
 }

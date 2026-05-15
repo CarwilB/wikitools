@@ -2,10 +2,22 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_subcategories}
 \alias{get_subcategories}
-\title{Get subcategories of a category}
+\title{Get Subcategories from a Category}
 \usage{
 get_subcategories(category, lang = "en")
 }
+\arguments{
+\item{category}{Character. Category name.}
+
+\item{lang}{Character. Wikipedia language code.}
+}
+\value{
+A tibble with category subcategory members.
+}
 \description{
-Get subcategories of a category
+Convenience wrapper around `get_category_members()` for
+  subcategories only.
+}
+\details{
+Get Subcategories from a Category
 }

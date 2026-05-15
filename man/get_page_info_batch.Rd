@@ -2,18 +2,23 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_page_info_batch}
 \alias{get_page_info_batch}
-\title{Fetch basic page info + Wikidata QID for a vector of titles}
+\title{Fetch Page Metadata in Batches}
 \usage{
 get_page_info_batch(titles, lang = "en")
 }
 \arguments{
-\item{titles}{Character vector of page titles}
+\item{titles}{Character vector of page titles.}
 
-\item{lang}{Language code}
+\item{lang}{Character. Wikipedia language code.}
 }
 \value{
-tibble with: title, pageid, length, wikidata_qid
+A tibble with columns `title`, `pageid`, `page_length`, and
+  `wikidata_qid`.
 }
 \description{
-Fetch basic page info + Wikidata QID for a vector of titles
+Fetches basic metadata (title, page ID, length, and Wikidata QID)
+  for Wikipedia titles in API batches of up to 50.
+}
+\details{
+Fetch Page Metadata in Batches
 }

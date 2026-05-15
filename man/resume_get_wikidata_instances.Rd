@@ -57,10 +57,13 @@ A tibble with the same columns as \code{get_wikidata_instances()},
   containing all items (previously retrieved + newly fetched).
 }
 \description{
-Use this when \code{get_wikidata_instances()} was interrupted part-way
-through and you have a partial result. Re-runs the SPARQL query to obtain
-the full QID list, skips already-retrieved QIDs, fetches the remainder in
-batches, then returns the combined, de-duplicated tibble.
+Continues a partially completed class retrieval by skipping
+  already fetched QIDs and retrieving only remaining entities.
+  Re-runs SPARQL to get the full QID list, skips already retrieved entries,
+  fetches the remainder in batches, and returns a de-duplicated result.
+}
+\details{
+Resume a Partially-Completed get_wikidata_instances() Query
 }
 \examples{
 municipalities_wd <- resume_get_wikidata_instances(

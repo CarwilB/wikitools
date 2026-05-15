@@ -36,3 +36,7 @@ str_equivalent("Case", "case") # TRUE
 str_equivalent("Mismatch", "mismatch!") # FALSE
 
 }
+\seealso{
+\code{\link{equivalent_which}}, \code{\link{equivalent_match}},
+  \code{\link{str_equivalent_list}}
+}

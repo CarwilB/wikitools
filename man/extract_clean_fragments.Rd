@@ -2,10 +2,23 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{extract_clean_fragments}
 \alias{extract_clean_fragments}
-\title{Strip wikitext markup and split into sentence-like fragments (≥5 words)}
+\title{Extract Clean Text Fragments from Wikitext}
 \usage{
 extract_clean_fragments(wikitext, keep_link_text = FALSE)
 }
+\arguments{
+\item{wikitext}{Character. Raw wikitext string.}
+
+\item{keep_link_text}{Logical. If `TRUE`, keeps display text from wikilinks;
+if `FALSE`, removes wikilinks entirely.}
+}
+\value{
+A character vector of unique cleaned fragments.
+}
 \description{
-Strip wikitext markup and split into sentence-like fragments (≥5 words)
+Strips common wikitext markup and splits the result into
+  sentence-like fragments with at least five words.
+}
+\details{
+Extract Clean Text Fragments from Wikitext
 }

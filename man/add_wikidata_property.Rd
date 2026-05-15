@@ -17,11 +17,15 @@ add_wikidata_property(df, property, name = property)
 The input data frame with a new character column appended.
 }
 \description{
-Fetches a single-valued property from Wikidata and appends it as a new
-column to a data frame that contains a `qid` column. Handles entity-type,
-string, and time values. Issues a message when an item has multiple
-statements for the requested property.
+Fetches a single-valued property from Wikidata and appends it as
+  a new column to a data frame that contains a `qid` column.
+  Handles entity-type, string, and time values and reports when multiple
+  statements are present for the requested property.
+}
+\details{
+Add a Wikidata Property to a Data Frame
 }
 \examples{
 departments |> add_wikidata_property("P14142", name = "ine_code")
+
 }

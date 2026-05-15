@@ -2,20 +2,24 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{cache_wikitext}
 \alias{cache_wikitext}
-\title{Cache wikitext to a local file; load from cache if available}
+\title{Cache Wikitext Locally}
 \usage{
 cache_wikitext(title, cache_dir, lang = "en")
 }
 \arguments{
-\item{title}{Page title}
+\item{title}{Character. Wikipedia page title.}
 
-\item{cache_dir}{Directory path for cached files}
+\item{cache_dir}{Character. Directory where cached files are stored.}
 
-\item{lang}{Language code}
+\item{lang}{Character. Wikipedia language code.}
 }
 \value{
-Wikitext string (NULL if page doesn't exist)
+A character string of wikitext, or `NULL` when the page is unavailable.
 }
 \description{
-Cache wikitext to a local file; load from cache if available
+Saves article wikitext to a local file and returns cached content
+  on subsequent calls when available.
+}
+\details{
+Cache Wikitext Locally
 }

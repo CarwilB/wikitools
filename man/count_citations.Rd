@@ -2,10 +2,20 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{count_citations}
 \alias{count_citations}
-\title{Count citation templates in wikitext}
+\title{Count Citation Templates in Wikitext}
 \usage{
 count_citations(wikitext)
 }
+\arguments{
+\item{wikitext}{Character. Raw wikitext string.}
+}
+\value{
+Integer count of citation templates.
+}
 \description{
-Count citation templates in wikitext
+Counts occurrences of `{{cite ...}}` and `{{Citation ...}}`
+  templates in wikitext.
+}
+\details{
+Count Citation Templates in Wikitext
 }

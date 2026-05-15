@@ -2,10 +2,20 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{count_refs}
 \alias{count_refs}
-\title{Count total <ref> tags in wikitext (includes non-templated refs)}
+\title{Count Reference Tags in Wikitext}
 \usage{
 count_refs(wikitext)
 }
+\arguments{
+\item{wikitext}{Character. Raw wikitext string.}
+}
+\value{
+Integer count of reference tags.
+}
 \description{
-Count total <ref> tags in wikitext (includes non-templated refs)
+Counts `<ref>` tags in wikitext, including self-closing
+  reference tags.
+}
+\details{
+Count Reference Tags in Wikitext
 }
