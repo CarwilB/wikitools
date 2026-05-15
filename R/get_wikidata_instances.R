@@ -63,8 +63,12 @@ add_wikidata_property <- function(df, property, name = property) {
       # Dispatch on value type
       if (is.data.frame(dv) && "amount" %in% names(dv)) {
         sub("^\\+", "", dv$amount[[1]])
-      } else if (is.data.frame(dv)) {
-        as.character(dv$id)
+      } else if (is.data.frame(dv) && "text" %in% names(dv)) {
+        as.character(dv$text[[1]])
+      } else if (is.data.frame(dv) && "time" %in% names(dv)) {
+        as.character(dv$time[[1]])
+      } else if (is.data.frame(dv) && "id" %in% names(dv)) {
+        as.character(dv$id[[1]])
       } else if (is.character(dv)) {
         dv
       } else {
@@ -331,8 +335,12 @@ add_wikidata_property <- function(df, property, name = property) {
               dv <- p_df$mainsnak[j, ]$datavalue[[1]]
               if (is.data.frame(dv) && "amount" %in% names(dv)) {
                 sub("^\\+", "", dv$amount[[1]])
-              } else if (is.data.frame(dv)) {
-                as.character(dv$id)
+              } else if (is.data.frame(dv) && "text" %in% names(dv)) {
+                as.character(dv$text[[1]])
+              } else if (is.data.frame(dv) && "time" %in% names(dv)) {
+                as.character(dv$time[[1]])
+              } else if (is.data.frame(dv) && "id" %in% names(dv)) {
+                as.character(dv$id[[1]])
               } else if (is.character(dv)) {
                 dv
               } else {
