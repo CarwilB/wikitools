@@ -2,22 +2,28 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_wp_subcategories}
 \alias{get_wp_subcategories}
-\title{Get Subcategories from a Category}
+\title{Get Subcategories of a Wikipedia Category}
 \usage{
 get_wp_subcategories(category, lang = "en")
 }
 \arguments{
-\item{category}{Character. Category name.}
+\item{category}{Character. Category name, with or without `"Category:"` prefix.}
 
-\item{lang}{Character. Wikipedia language code.}
+\item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A tibble with category subcategory members.
+A tibble with columns `pageid`, `ns`, and `title`.
 }
 \description{
-Convenience wrapper around `get_category_members()` for
-  subcategories only.
+Convenience wrapper around [get_wp_category_members()] that returns
+only subcategories (`type = "subcat"`).
 }
-\details{
-Get Subcategories from a Category
+\examples{
+\dontrun{
+get_wp_subcategories("South American countries")
+}
+
+}
+\seealso{
+[get_wp_category_members()], [get_wp_category_pages()]
 }

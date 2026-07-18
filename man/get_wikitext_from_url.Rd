@@ -7,15 +7,30 @@
 get_wikitext_from_url(url)
 }
 \arguments{
-\item{url}{Character. Full Wikipedia URL.}
+\item{url}{Character. Full Wikipedia URL. Both current-article and
+`?oldid=` revision URLs are supported.}
 }
 \value{
-A character string containing wikitext, or `NULL` when not retrievable.
+A character string of wikitext, or `NULL` if not retrievable.
 }
 \description{
-Parses a Wikipedia URL (including `?oldid=` revision links) and
-  dispatches to either `get_wikitext_by_name()` or `get_wikitext_by_revid()`.
+Fetches wikitext from a Wikipedia article or historical revision URL.
+Handles both standard article URLs (`/wiki/Title`) and revision links
+(`?title=Title&oldid=XXXXXXX`), dispatching to [get_wikitext_by_name()]
+or [get_wikitext_by_revid()] as appropriate. The language is inferred
+from the subdomain (e.g., `es.wikipedia.org` as `"es"`).
 }
-\details{
-Fetch Wikitext from a Wikipedia URL
+\examples{
+\dontrun{
+wt <- get_wikitext_from_url("https://en.wikipedia.org/wiki/La_Paz")
+
+# Historical revision
+wt <- get_wikitext_from_url(
+  "https://en.wikipedia.org/w/index.php?title=La_Paz&oldid=1171236191"
+)
+}
+
+}
+\seealso{
+[get_wikitext_by_name()], [get_wikitext_by_revid()]
 }

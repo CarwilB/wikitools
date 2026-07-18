@@ -7,19 +7,30 @@
 get_wikitext_by_revid(article_name, revision_id, lang = "en")
 }
 \arguments{
-\item{article_name}{Character. Article title (kept for API compatibility).}
+\item{article_name}{Character. Ignored. Accepted for interface consistency
+but not sent to the API -- the revision ID alone identifies the content.}
 
-\item{revision_id}{Character or numeric. Specific Wikipedia revision ID.}
+\item{revision_id}{Character or numeric. Wikipedia revision ID, available
+from a page's "View history" tab or from the `oldid` query parameter in
+a Wikipedia URL.}
 
 \item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A character string containing revision wikitext, or `NULL` if unavailable.
+A character string of wikitext, or `NULL` if the revision is not
+  found or the request fails.
 }
 \description{
-Fetches raw wikitext for a specific historical revision of a
-  Wikipedia page.
+Fetches raw wikitext for a specific historical revision of a Wikipedia page.
+The revision ID uniquely identifies the content; the article title is not
+required by the API and is ignored.
 }
-\details{
-Fetch Raw Wikitext by Revision ID
+\examples{
+\dontrun{
+wt <- get_wikitext_by_revid(NA, revision_id = 1171236191)
+}
+
+}
+\seealso{
+[get_wikitext_by_name()], [get_wikitext_from_url()]
 }

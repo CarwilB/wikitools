@@ -28,6 +28,19 @@ a \code{quick_statement} column to a data frame by calling
 \code{create_quick_statement()} row-wise via \code{dplyr::mutate()}.
 }
 \examples{
+departments <- tibble::tribble(
+~qid,             ~label_en, ~cod.dep,
+"Q233169",     "Beni Department",     "08",
+"Q233917", "Cochabamba Department",     "03",
+"Q233933",   "Tarija Department",     "06",
+"Q235106", "Santa Cruz Department",     "07",
+"Q235110", "Chuquisaca Department",     "01",
+"Q235362",    "Pando Department",     "09",
+"Q238079",   "Potosí Department",     "05",
+"Q232784",    "La Paz Department",     "02",
+"Q844510",             "Litoral",       NA,
+"Q1061368",    "Oruro Department",     "04"
+)
 departments \%>\%
   add_quick_statement_column(qid, "P14142", cod.dep,
                              reference_qid = "Q138354774")

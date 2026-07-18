@@ -10,12 +10,19 @@ count_refs(wikitext)
 \item{wikitext}{Character. Raw wikitext string.}
 }
 \value{
-Integer count of reference tags.
+Integer. Number of `<ref>` tags found. Returns `0L` if `wikitext`
+  is `NULL`.
 }
 \description{
-Counts `<ref>` tags in wikitext, including self-closing
-  reference tags.
+Counts `<ref>` opening tags in wikitext, including self-closing tags
+(`<ref name="x" />`). Counts distinct inline references, not closing
+`</ref>` tags. For citation template counts, see [count_citations()].
 }
-\details{
-Count Reference Tags in Wikitext
+\examples{
+wt <- "<ref>Smith 2000</ref> text <ref name='jones'/> more"
+count_refs(wt)  # 2
+
+}
+\seealso{
+[count_citations()]
 }

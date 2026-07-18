@@ -2,41 +2,35 @@
 % Please edit documentation in R/str-equivalent.R
 \name{str_equivalent}
 \alias{str_equivalent}
-\title{String Comparison That Ignores Certain Factors}
+\title{Normalize and Compare Two Strings}
 \usage{
 str_equivalent(x, y)
 }
 \arguments{
-\item{x}{A character vector or string to compare.}
+\item{x}{A character vector.}
 
-\item{y}{A character vector or string to compare.}
+\item{y}{A character vector. Must be the same length as `x`, or length 1
+(recycled).}
 }
 \value{
-A logical vector indicating whether the strings are equivalent.
+A logical vector the same length as the longer of `x` and `y`.
+  `TRUE` where the normalized strings are equal. Returns `NA` where either
+  input is `NA`.
 }
 \description{
-This function compares two strings while ignoring case, accents, leading/trailing whitespace,
-non-breaking spaces, and double quotes. It performs a normalized comparison to determine equivalence.
-}
-\details{
-The function performs the following transformations before comparison:
-\itemize{
-  \item Trims leading and trailing whitespace using \code{\link[base]{trimws}}.
-  \item Replaces non-breaking spaces (`\u00a0`) with regular spaces (` `).
-  \item Removes accents using \code{\link[stringi]{stri_trans_general}} with the "Latin-ASCII" transformation.
-  \item Removes double quotes (`"`).
-  \item Performs a case-insensitive comparison using \code{\link[stringr]{str_equal}}.
-}
+Compares two character vectors for equivalence after applying a standard set
+of normalizations: trimming leading/trailing whitespace, replacing
+non-breaking spaces (`\\u00a0`) with regular spaces, removing accents via
+Latin-ASCII transliteration, removing double quotes, and ignoring case.
 }
 \examples{
-str_equivalent("  Café", "cafe") # TRUE
-str_equivalent("Hello\u00a0World", "hello world") # TRUE
-str_equivalent("Quote\"", "quote") # TRUE
-str_equivalent("Case", "case") # TRUE
-str_equivalent("Mismatch", "mismatch!") # FALSE
+str_equivalent("  Café", "cafe")                   # TRUE — accents + whitespace
+str_equivalent("Hello\u00a0World", "hello world")  # TRUE — non-breaking space
+str_equivalent('Quote"', "quote")                  # TRUE — double quote removed
+str_equivalent("SUCRE", "sucre")                   # TRUE — case
+str_equivalent("Mismatch", "mismatch!")             # FALSE
 
 }
 \seealso{
-\code{\link{equivalent_which}}, \code{\link{equivalent_match}},
-  \code{\link{str_equivalent_list}}
+[equivalent_which()], [equivalent_match()], [str_equivalent_list()]
 }

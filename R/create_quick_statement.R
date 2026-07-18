@@ -1,3 +1,4 @@
+globalVariables <- c("qid")
 #' Create QuickStatements V1 Syntax Commands
 #'
 #' Generate QuickStatements commands for various data types including strings,
@@ -141,8 +142,11 @@ create_quick_statement <- function(qid,
   # Add reference block if reference_url or reference_qid is provided
   add_reference <- !is.null(reference_url) || !is.null(reference_qid)
 
+  is_label_desc_alias <- type %in% c("label", "description", "alias") ||
+    property %in% c("L", "D", "A")
+
   if (add_reference) {
-    if (type %in% c("label", "description", "alias")) {
+    if (is_label_desc_alias) {
       warning("References cannot be added to labels, descriptions, or aliases")
     } else {
       # Add "stated in" reference (P248) if reference_qid provided
@@ -193,6 +197,19 @@ create_quick_statement <- function(qid,
 #' @return The input data frame with an additional \code{quick_statement} character column.
 #'
 #' @examples
+#' departments <- tibble::tribble(
+#' ~qid,             ~label_en, ~cod.dep,
+#' "Q233169",     "Beni Department",     "08",
+#' "Q233917", "Cochabamba Department",     "03",
+#' "Q233933",   "Tarija Department",     "06",
+#' "Q235106", "Santa Cruz Department",     "07",
+#' "Q235110", "Chuquisaca Department",     "01",
+#' "Q235362",    "Pando Department",     "09",
+#' "Q238079",   "Potosí Department",     "05",
+#' "Q232784",    "La Paz Department",     "02",
+#' "Q844510",             "Litoral",       NA,
+#' "Q1061368",    "Oruro Department",     "04"
+#' )
 #' departments %>%
 #'   add_quick_statement_column(qid, "P14142", cod.dep,
 #'                              reference_qid = "Q138354774")
@@ -227,12 +244,16 @@ add_quick_statement_column <- function(dataframe, qid_col, property, value_col, 
 #' @return The input data frame with an additional \code{quick_statement} column.
 #'
 #' @examples
-#' cuadro39_speakers %>%
+#' df <- data.frame(
+#'   qid = c("Q750", "Q868"),
+#'   population = c("10000000", "20000000"),
+#'   stringsAsFactors = FALSE
+#' )
+#' df %>%
 #'   add_quick_statement_column_q(
-#'     qid, "P1098", c2024_total,
-#'     qualifiers = list(P276 = "Q750", P585 = "+2024-01-01T00:00:00Z/9"),
-#'     type = "quantity",
-#'     reference_qid = "Q12345"
+#'     qid, "P1082", population,
+#'     qualifiers = list(P585 = "+2024-01-01T00:00:00Z/9"),
+#'     type = "quantity"
 #'   )
 #'
 #' @export
@@ -265,6 +286,19 @@ add_quick_statement_column_q <- function(dataframe, qid_col, property, value_col
 #'  containing negated statements.
 #'
 #' @examples
+#' departments <- tibble::tribble(
+#' ~qid,             ~label_en, ~cod.dep,
+#' "Q233169",     "Beni Department",     "08",
+#' "Q233917", "Cochabamba Department",     "03",
+#' "Q233933",   "Tarija Department",     "06",
+#' "Q235106", "Santa Cruz Department",     "07",
+#' "Q235110", "Chuquisaca Department",     "01",
+#' "Q235362",    "Pando Department",     "09",
+#' "Q238079",   "Potosí Department",     "05",
+#' "Q232784",    "La Paz Department",     "02",
+#' "Q844510",             "Litoral",       NA,
+#' "Q1061368",    "Oruro Department",     "04"
+#' )
 #' departments %>%
 #'   remove_quick_statement_column(qid, "P14142", cod.dep)
 #'

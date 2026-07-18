@@ -1,125 +1,110 @@
-#' String Comparison That Ignores Certain Factors
+#' Normalize and Compare Two Strings
 #'
-#' This function compares two strings while ignoring case, accents, leading/trailing whitespace,
-#' non-breaking spaces, and double quotes. It performs a normalized comparison to determine equivalence.
+#' Compares two character vectors for equivalence after applying a standard set
+#' of normalizations: trimming leading/trailing whitespace, replacing
+#' non-breaking spaces (`\\u00a0`) with regular spaces, removing accents via
+#' Latin-ASCII transliteration, removing double quotes, and ignoring case.
 #'
-#' @param x A character vector or string to compare.
-#' @param y A character vector or string to compare.
-#'
-#' @return A logical vector indicating whether the strings are equivalent.
-#'
-#' @details
-#' The function performs the following transformations before comparison:
-#' \itemize{
-#'   \item Trims leading and trailing whitespace using \code{\link[base]{trimws}}.
-#'   \item Replaces non-breaking spaces (`\u00a0`) with regular spaces (` `).
-#'   \item Removes accents using \code{\link[stringi]{stri_trans_general}} with the "Latin-ASCII" transformation.
-#'   \item Removes double quotes (`"`).
-#'   \item Performs a case-insensitive comparison using \code{\link[stringr]{str_equal}}.
-#' }
+#' @param x A character vector.
+#' @param y A character vector. Must be the same length as `x`, or length 1
+#'   (recycled).
+#' @return A logical vector the same length as the longer of `x` and `y`.
+#'   `TRUE` where the normalized strings are equal. Returns `NA` where either
+#'   input is `NA`.
 #'
 #' @examples
-#' str_equivalent("  Café", "cafe") # TRUE
-#' str_equivalent("Hello\u00a0World", "hello world") # TRUE
-#' str_equivalent("Quote\"", "quote") # TRUE
-#' str_equivalent("Case", "case") # TRUE
-#' str_equivalent("Mismatch", "mismatch!") # FALSE
+#' str_equivalent("  Café", "cafe")                   # TRUE — accents + whitespace
+#' str_equivalent("Hello\u00a0World", "hello world")  # TRUE — non-breaking space
+#' str_equivalent('Quote"', "quote")                  # TRUE — double quote removed
+#' str_equivalent("SUCRE", "sucre")                   # TRUE — case
+#' str_equivalent("Mismatch", "mismatch!")             # FALSE
 #'
-#' @seealso \code{\link{equivalent_which}}, \code{\link{equivalent_match}},
-#'   \code{\link{str_equivalent_list}}
+#' @seealso [equivalent_which()], [equivalent_match()], [str_equivalent_list()]
 #' @importFrom stringr str_replace_all str_equal
 #' @importFrom stringi stri_trans_general
 #' @export
 str_equivalent <- function(x, y) {
-  x <- trimws(x) # trim whitespace
+  x <- trimws(x)
   y <- trimws(y)
-  
-  x <- stringr::str_replace_all(x, "\u00a0", " ") # replace non-breaking space
+
+  x <- stringr::str_replace_all(x, "\u00a0", " ")
   y <- stringr::str_replace_all(y, "\u00a0", " ")
-  
-  x <- stringi::stri_trans_general(x, "Latin-ASCII") # eliminate accents
+
+  x <- stringi::stri_trans_general(x, "Latin-ASCII")
   y <- stringi::stri_trans_general(y, "Latin-ASCII")
-  
-  x <- stringr::str_replace_all(x, "\u0022", "") # remove double quotes
+
+  x <- stringr::str_replace_all(x, "\u0022", "")
   y <- stringr::str_replace_all(y, "\u0022", "")
-  
+
   stringr::str_equal(x, y, ignore_case = TRUE)
 }
 
-#' Find Indices of Equivalent Strings
+#' Find Positions of Equivalent Strings in a Vector
 #'
-#' This function finds the indices of strings in a list that are equivalent to the target string, 
-#' considering case insensitivity, accent removal, whitespace trimming, and non-breaking space replacement.
+#' Returns the indices of elements in `string_list` that are equivalent to
+#' `string` under [str_equivalent()] normalization (case, accents, whitespace,
+#' non-breaking spaces, double quotes).
 #'
-#' @param string A character string to compare.
-#' @param list A character vector against which equivalence is checked.
-#'
-#' @return An integer vector of indices where the string is equivalent to elements in the list.
-#'
-#' @details
-#' The function uses \code{\link{str_equivalent}} to determine string equivalence. 
-#' It returns the indices of all matches in the list.
+#' @param string A character string to search for.
+#' @param string_list A character vector to search in.
+#' @return An integer vector of matching positions, or `integer(0)` if none
+#'   match.
 #'
 #' @examples
-#' equivalent_which("café", c("cafe", "tea", "coffee")) # Returns 1
-#' equivalent_which("hello", c("Hello", "world"))       # Returns 1
-#' 
-#' @seealso \code{\link{str_equivalent}}
+#' equivalent_which("café", c("cafe", "tea", "coffee"))  # 1
+#' equivalent_which("hello", c("world", "Hello"))        # 2
+#' equivalent_which("nope", c("a", "b", "c"))            # integer(0)
+#'
+#' @seealso [str_equivalent()], [equivalent_match()], [str_equivalent_list()]
 #' @export
-equivalent_which <- function(string, list){
-  which(str_equivalent(string, list))
+equivalent_which <- function(string, string_list) {
+  which(str_equivalent(string, string_list))
 }
 
-#' Find Equivalent String in a List
+#' Return Equivalent Strings from a Vector
 #'
-#' This function finds the first string in a list that is equivalent to the target string, 
-#' considering case insensitivity, accent removal, whitespace trimming, and non-breaking space replacement.
+#' Returns all elements of `string_list` that are equivalent to `string` under
+#' [str_equivalent()] normalization (case, accents, whitespace, non-breaking
+#' spaces, double quotes). Returns `NA` when no match is found.
 #'
-#' @param string A character string to compare.
-#' @param list A character vector against which equivalence is checked.
-#'
-#' @return The first matching string from the list, or \code{NA} if no equivalent string is found.
-#'
-#' @details
-#' The function uses \code{\link{str_equivalent}} to determine string equivalence. 
-#' If no match is found, it returns \code{NA}.
+#' @param string A character string to search for.
+#' @param string_list A character vector to search in.
+#' @return The matching elements of `string_list` as a character vector, or
+#'   `NA` if no equivalent is found. If multiple elements match, all are
+#'   returned.
 #'
 #' @examples
-#' equivalent_match("café", c("cafe", "tea", "coffee")) # Returns "cafe"
-#' equivalent_match("hello", c("Hello", "world"))       # Returns "Hello"
-#' equivalent_match("bye", c("Hello", "world"))         # Returns NA
+#' equivalent_match("café", c("cafe", "tea", "coffee"))  # "cafe"
+#' equivalent_match("hello", c("Hello", "world"))        # "Hello"
+#' equivalent_match("bye", c("Hello", "world"))          # NA
 #'
-#' @seealso \code{\link{str_equivalent}}, \code{\link{equivalent_which}}
+#' @seealso [str_equivalent()], [equivalent_which()], [str_equivalent_list()]
 #' @export
-equivalent_match <- function(string, list){
-  if (length(equivalent_which(string,list)) == 0) 
+equivalent_match <- function(string, string_list) {
+  if (length(equivalent_which(string, string_list)) == 0)
     return(NA)
-  list[which(str_equivalent(string, list))]
+  string_list[which(str_equivalent(string, string_list))]
 }
 
-#' Check for Equivalent Strings in a List
+#' Check Whether Any String in a Vector Is Equivalent
 #'
-#' This function checks if any string in a list is equivalent to a target string, 
-#' considering case insensitivity, accent removal, whitespace trimming, and non-breaking space replacement.
+#' Returns `TRUE` if any element of `string_list` is equivalent to `string`
+#' under [str_equivalent()] normalization (case, accents, whitespace,
+#' non-breaking spaces, double quotes).
 #'
-#' @param string A character string to compare.
-#' @param string_list A character vector of potential matches.
-#'
-#' @return A logical value: \code{TRUE} if any string in the list is equivalent to the target string, 
-#' or \code{FALSE} otherwise.
-#'
-#' @details
-#' The function uses \code{\link{str_equivalent}} to determine string equivalence and applies it 
-#' to each element of the list.
+#' @param string A character string to search for.
+#' @param string_list A character vector of candidates.
+#' @return A single logical value: `TRUE` if any element matches, `FALSE`
+#'   otherwise. Returns `NA` if no element matches and `string_list` contains
+#'   `NA` values.
 #'
 #' @examples
-#' str_equivalent_list("café", c("cafe", "tea", "coffee")) # Returns TRUE
-#' str_equivalent_list("hello", c("world", "hi"))          # Returns FALSE
+#' str_equivalent_list("café", c("cafe", "tea", "coffee"))  # TRUE
+#' str_equivalent_list("hello", c("world", "hi"))           # FALSE
+#' str_equivalent_list("x", character(0))                   # FALSE
 #'
-#' @seealso \code{\link{str_equivalent}}
+#' @seealso [str_equivalent()], [equivalent_which()], [equivalent_match()]
 #' @export
 str_equivalent_list <- function(string, string_list) {
-  # Check if any member of string_list is equivalent to string using str_equivalent
   any(sapply(string_list, function(x) str_equivalent(string, x)))
 }
-

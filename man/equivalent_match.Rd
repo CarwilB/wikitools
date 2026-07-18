@@ -2,32 +2,31 @@
 % Please edit documentation in R/str-equivalent.R
 \name{equivalent_match}
 \alias{equivalent_match}
-\title{Find Equivalent String in a List}
+\title{Return Equivalent Strings from a Vector}
 \usage{
-equivalent_match(string, list)
+equivalent_match(string, string_list)
 }
 \arguments{
-\item{string}{A character string to compare.}
+\item{string}{A character string to search for.}
 
-\item{list}{A character vector against which equivalence is checked.}
+\item{string_list}{A character vector to search in.}
 }
 \value{
-The first matching string from the list, or \code{NA} if no equivalent string is found.
+The matching elements of `string_list` as a character vector, or
+  `NA` if no equivalent is found. If multiple elements match, all are
+  returned.
 }
 \description{
-This function finds the first string in a list that is equivalent to the target string, 
-considering case insensitivity, accent removal, whitespace trimming, and non-breaking space replacement.
-}
-\details{
-The function uses \code{\link{str_equivalent}} to determine string equivalence. 
-If no match is found, it returns \code{NA}.
+Returns all elements of `string_list` that are equivalent to `string` under
+[str_equivalent()] normalization (case, accents, whitespace, non-breaking
+spaces, double quotes). Returns `NA` when no match is found.
 }
 \examples{
-equivalent_match("café", c("cafe", "tea", "coffee")) # Returns "cafe"
-equivalent_match("hello", c("Hello", "world"))       # Returns "Hello"
-equivalent_match("bye", c("Hello", "world"))         # Returns NA
+equivalent_match("café", c("cafe", "tea", "coffee"))  # "cafe"
+equivalent_match("hello", c("Hello", "world"))        # "Hello"
+equivalent_match("bye", c("Hello", "world"))          # NA
 
 }
 \seealso{
-\code{\link{str_equivalent}}, \code{\link{equivalent_which}}
+[str_equivalent()], [equivalent_which()], [str_equivalent_list()]
 }

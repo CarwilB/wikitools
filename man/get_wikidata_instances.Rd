@@ -51,9 +51,9 @@ in \code{numeric_list_property_names}, the following columns are added:
 \describe{
   \item{pname}{Most recent value (numeric; sorted by P585 year desc).}
   \item{pname_n}{Total number of claims (integer).}
-  \item{pname_1 … pname_10}{Individual values (numeric).}
-  \item{pname_1_year … pname_10_year}{Year from P585 qualifier (integer).}
-  \item{pname_1_ref … pname_10_ref}{Reference URL (P854) or
+  \item{pname_1 ... pname_10}{Individual values (numeric).}
+  \item{pname_1_year ... pname_10_year}{Year from P585 qualifier (integer).}
+  \item{pname_1_ref ... pname_10_ref}{Reference URL (P854) or
     \code{"wd:Qxxx"} (P248), or \code{NA} (character).}
 }}
 
@@ -104,6 +104,7 @@ get_wikidata_instances(
 # Retrieve subclasses instead of instances
 get_wikidata_instances("Q34770", object_type = "subclass")
 
-get_wikidata_instances("Q4193029", property = "P1448", property_names = "official_name", verbose = TRUE)
+get_wikidata_instances("Q4193029", property = "P1448",
+  property_names = "official_name", verbose = TRUE)
 
 }

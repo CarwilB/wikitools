@@ -9,16 +9,28 @@ extract_clean_fragments(wikitext, keep_link_text = FALSE)
 \arguments{
 \item{wikitext}{Character. Raw wikitext string.}
 
-\item{keep_link_text}{Logical. If `TRUE`, keeps display text from wikilinks;
-if `FALSE`, removes wikilinks entirely.}
+\item{keep_link_text}{Logical. If `TRUE`, retains the display text of
+`[[Target|Display]]` wikilinks. If `FALSE` (default), wikilinks are
+removed entirely.}
 }
 \value{
-A character vector of unique cleaned fragments.
+A character vector of unique cleaned text fragments, each containing
+  at least five words. Fragments are split on `.`, `!`, `?`, and newlines.
 }
 \description{
-Strips common wikitext markup and splits the result into
-  sentence-like fragments with at least five words.
+Strips wikitext markup and splits the result into sentence-like fragments.
+Removed markup includes: `<ref>` tags, templates (`\{\{ \}\}`), file/image
+links, section headers, and bold/italic formatting. Wikilinks are either
+kept (display text only) or removed entirely depending on `keep_link_text`.
+Fragments shorter than five words are discarded.
 }
-\details{
-Extract Clean Text Fragments from Wikitext
+\examples{
+wt <- "La Paz is the [[seat of government]] of [[Bolivia]].
+  It was founded in [[1548]].<ref>Smith 2000</ref>"
+extract_clean_fragments(wt)
+extract_clean_fragments(wt, keep_link_text = TRUE)
+
+}
+\seealso{
+[get_wikitext_by_name()], [cache_wikitext()]
 }

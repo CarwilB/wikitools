@@ -10,12 +10,21 @@ count_citations(wikitext)
 \item{wikitext}{Character. Raw wikitext string.}
 }
 \value{
-Integer count of citation templates.
+Integer. Number of citation templates found. Returns `0L` if
+  `wikitext` is `NULL`.
 }
 \description{
-Counts occurrences of `{{cite ...}}` and `{{Citation ...}}`
-  templates in wikitext.
+Counts occurrences of `\{\{cite ...\}\}` and `\{\{Citation ...\}\}` templates.
+Note that bare `<ref>` tags without a citation template (e.g., named
+references or bare URLs) are not counted here; see [count_refs()] for those.
 }
-\details{
-Count Citation Templates in Wikitext
+\examples{
+wt <- "Text.\\\\{\\\\{cite book|author=Smith|year=2000\\\\}\\\\}
+  More text.\\\\{\\\\{Citation|author=Jones\\\\}\\\\}<ref name='x'/>"
+count_citations(wt)  # 2
+count_refs(wt)       # 2
+
+}
+\seealso{
+[count_refs()]
 }

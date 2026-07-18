@@ -7,15 +7,28 @@
 clean_infobox_value(val)
 }
 \arguments{
-\item{val}{Character. Raw infobox field value.}
+\item{val}{Character. Raw infobox field value, typically an element of the
+list returned by [extract_infobox()].}
 }
 \value{
-A cleaned character string, or `NA_character_` when empty/unavailable.
+A cleaned character string, or `NA_character_` if the input is
+  `NULL`, `NA`, or resolves to an empty string after cleaning.
 }
 \description{
-Removes common wikitext and HTML markup from an infobox value,
-  returning a readable plain-text string.
+Strips wikitext and HTML markup from a raw infobox field value, returning
+readable plain text. Handles: `<ref>` tags, arbitrary HTML tags, wikilinks
+(keeping display text), `\{\{flag\}\}` / `\{\{flagicon\}\}` / `\{\{flagcountry\}\}`
+templates (keeping the country name), `\{\{convert\}\}` templates (keeping
+value and unit), `\{\{nowrap\}\}`, remaining `\{\{ \}\}` templates, and bare
+external links.
 }
-\details{
-Clean a Single Infobox Field Value
+\examples{
+clean_infobox_value("[[Buenos Aires]]")        # "Buenos Aires"
+clean_infobox_value("{{flag|Bolivia}}")        # "Bolivia"
+clean_infobox_value("3,000<ref>Census</ref>")  # "3,000"
+clean_infobox_value(NA)                        # NA_character_
+
+}
+\seealso{
+[extract_infobox()]
 }

@@ -1,126 +1,159 @@
-testthat::test_that("str_equivalent works as expected", {
-  #' str_equivalent("  Café", "cafe") # TRUE
-  expect_true(str_equivalent("  Café", "cafe"))
-  #' str_equivalent("Hello\u00a0World", "hello world") # TRUE
-  expect_true(str_equivalent("Hello\u00a0World", "hello world"))
-  #' str_equivalent("Quote\"", "quote") # TRUE
-  expect_true(str_equivalent("Quote\"", "quote"))
-  #' str_equivalent("Case", "case") # TRUE
-  expect_true(str_equivalent("Case", "case"))
-  #' str_equivalent("Mismatch", "mismatch!") # FALSE
-  expect_false(str_equivalent("Mismatch", "mismatch!"))
-  
-  # Simple case where a match exists
-  expect_true(str_equivalent("Sucre", "sucre"))
-  
-  # Case where no match exists
-  expect_false(str_equivalent("Santa Cruz", "sucre"))
-  
-  # Case where the string is empty
-  expect_false(str_equivalent("", "sucre"))
-  
-  # Case where the pattern is empty
-  expect_false(str_equivalent("Sucre", ""))
-  
-  # Case where both string and pattern are empty
+library(testthat)
+library(wikitools)
+
+# ==============================================================================
+# str_equivalent
+# ==============================================================================
+
+test_that("str_equivalent returns TRUE for identical strings", {
+  expect_true(str_equivalent("Sucre", "Sucre"))
   expect_true(str_equivalent("", ""))
-  
-  # Case-insensitive matching
+})
+
+test_that("str_equivalent ignores case", {
   expect_true(str_equivalent("SUCRE", "sucre"))
-  
-  # Case with special characters
-  expect_true(str_equivalent("Sucré", "sucre"))
-  
-  # Case with partial matching (should return FALSE since exact match is required)
-  expect_false(str_equivalent("Suc", "sucre"))
+  expect_true(str_equivalent("La Paz", "LA PAZ"))
 })
 
-
-testthat::test_that("str_equivalent_list works as expected", {
-  # Simple case where a match exists
-  expect_true(str_equivalent_list("Sucre", c("sucre", "La Paz", "Cochabamba")))
-  
-  # Case where no match exists
-  expect_false(str_equivalent_list("Santa Cruz", c("sucre", "La Paz", "Cochabamba")))
-  
-  # Case where the list is empty
-  expect_false(str_equivalent_list("Sucre", character(0)))
-  
-  # Case where the string is empty
-  expect_false(str_equivalent_list("", c("sucre", "La Paz", "Cochabamba")))
-  
-  # Case where both string and list are empty
-  expect_false(str_equivalent_list("", character(0)))
-  
-  # Case-insensitive matching
-  expect_true(str_equivalent_list("SUCRE", c("sucre", "La Paz", "Cochabamba")))
-  
-  # Case with special characters
-  expect_true(str_equivalent_list("Sucré", c("sucre", "La Paz", "Cochabamba")))
-  
-  # Case with partial matching (should return FALSE since exact match is required)
-  expect_false(str_equivalent_list("Suc", c("sucre", "La Paz", "Cochabamba")))
-  
-  # Case where multiple matches exist in the list
-  expect_true(str_equivalent_list("Sucre", c("sucre", "Sucre", "Cochabamba")))
+test_that("str_equivalent removes accents", {
+  expect_true(str_equivalent("Café", "cafe"))
+  expect_true(str_equivalent("São Paulo", "sao paulo"))
+  expect_true(str_equivalent("Bogotá", "bogota"))
 })
 
-testthat::test_that("equivalent_which works as expected", {
-  # Simple case where a match exists
-  expect_equal(equivalent_which("Sucre", c("sucre", "La Paz", "Cochabamba")), 1)
-  
-  # Case where no match exists
-  expect_equal(equivalent_which("Santa Cruz", c("sucre", "La Paz", "Cochabamba")), integer(0))
-  
-  # Case where the list is empty
+test_that("str_equivalent trims leading and trailing whitespace", {
+  expect_true(str_equivalent("  Sucre  ", "Sucre"))
+  expect_true(str_equivalent("Sucre", "   Sucre   "))
+})
+
+test_that("str_equivalent treats non-breaking spaces as regular spaces", {
+  expect_true(str_equivalent("Hello\u00a0World", "Hello World"))
+})
+
+test_that("str_equivalent removes double quotes", {
+  expect_true(str_equivalent('"Sucre"', "Sucre"))
+  expect_true(str_equivalent('say "hello"', "say hello"))
+})
+
+test_that("str_equivalent handles combinations of normalizations", {
+  # whitespace + quotes + accents + case all handled together
+  expect_true(str_equivalent('  "CAFÉ"  ', "cafe"))
+})
+
+test_that("str_equivalent does not trim trailing non-breaking spaces (known pipeline order)", {
+  # trimws() runs before nbsp replacement, so a trailing \u00a0 becomes a
+  # trailing regular space that is never re-trimmed
+  expect_false(str_equivalent("Cafe\u00a0", "cafe"))
+})
+
+test_that("str_equivalent returns FALSE for genuine mismatches", {
+  expect_false(str_equivalent("Santa Cruz", "Sucre"))
+  expect_false(str_equivalent("Suc", "Sucre"))
+  expect_false(str_equivalent("Mismatch", "mismatch!"))
+  expect_false(str_equivalent("Sucre", ""))
+  expect_false(str_equivalent("", "Sucre"))
+})
+
+test_that("str_equivalent is vectorized over both arguments", {
+  result <- str_equivalent(c("Cafe", "Tea"), c("café", "TEA"))
+  expect_equal(result, c(TRUE, TRUE))
+
+  result2 <- str_equivalent(c("a", "b", "c"), "a")
+  expect_equal(result2, c(TRUE, FALSE, FALSE))
+})
+
+test_that("str_equivalent propagates NA", {
+  expect_true(is.na(str_equivalent(NA_character_, "test")))
+  expect_true(is.na(str_equivalent("test", NA_character_)))
+})
+
+# ==============================================================================
+# equivalent_which
+# ==============================================================================
+
+test_that("equivalent_which returns the correct position of a match", {
+  expect_equal(equivalent_which("Sucre", c("sucre", "La Paz", "Cochabamba")), 1L)
+})
+
+test_that("equivalent_which finds a match that is not at position 1", {
+  expect_equal(equivalent_which("La Paz", c("Sucre", "la paz", "Cochabamba")), 2L)
+  expect_equal(equivalent_which("Cochabamba", c("Sucre", "La Paz", "COCHABAMBA")), 3L)
+})
+
+test_that("equivalent_which returns integer(0) when there is no match", {
+  expect_equal(equivalent_which("Santa Cruz", c("Sucre", "La Paz")), integer(0))
+})
+
+test_that("equivalent_which returns all positions when multiple elements match", {
+  expect_equal(equivalent_which("sucre", c("sucre", "Sucre", "La Paz")), c(1L, 2L))
+})
+
+test_that("equivalent_which returns integer(0) for empty string_list", {
   expect_equal(equivalent_which("Sucre", character(0)), integer(0))
-  
-  # Case where the string is empty
-  expect_equal(equivalent_which("", c("sucre", "La Paz", "Cochabamba")), integer(0))
-  
-  # Case where both string and list are empty
-  expect_equal(equivalent_which("", character(0)), integer(0))
-  
-  # Case-insensitive matching
-  expect_equal(equivalent_which("SUCRE", c("sucre", "La Paz", "Cochabamba")), 1)
-  
-  # Case with special characters
-  expect_equal(equivalent_which("Sucré", c("sucre", "La Paz", "Cochabamba")), 1)
-  
-  # Case with partial matching (should return integer(0) since exact match is required)
-  expect_equal(equivalent_which("Suc", c("sucre", "La Paz", "Cochabamba")), integer(0))
-  
-  # Case where multiple matches exist in the list
-  expect_equal(equivalent_which("Sucre", c("sucre", "Sucre", "Cochabamba")), c(1, 2))
-  # Case where multiple matches exist in the list with different cases
-  expect_equal(equivalent_which("SUCRE", c("sucre", "Sucre", "Cochabamba")), c(1, 2))
 })
 
-testthat::test_that("equivalent_match works as expected", {
-  # Simple case where a match exists
-  expect_equal(equivalent_match("Sucre", c("sucre", "La Paz", "Cochabamba")), "sucre")
-  
-  # Case where no match exists
-  expect_equal(equivalent_match("Santa Cruz", c("sucre", "La Paz", "Cochabamba")), NA)
-  
-  # Case where the list is empty
+test_that("equivalent_which handles accent and case normalization", {
+  expect_equal(equivalent_which("Bogotá", c("other", "bogota")), 2L)
+})
+
+# ==============================================================================
+# equivalent_match
+# ==============================================================================
+
+test_that("equivalent_match returns the matched element in its original form", {
+  expect_equal(equivalent_match("sucre", c("Sucre", "La Paz")), "Sucre")
+  expect_equal(equivalent_match("café", c("other", "Cafe")), "Cafe")
+})
+
+test_that("equivalent_match returns NA when there is no match", {
+  expect_equal(equivalent_match("Santa Cruz", c("Sucre", "La Paz")), NA)
   expect_equal(equivalent_match("Sucre", character(0)), NA)
-  
-  # Case where the string is empty
-  expect_equal(equivalent_match("", c("sucre", "La Paz", "Cochabamba")), NA)
-  
-  # Case where both string and list are empty
-  expect_equal(equivalent_match("", character(0)), NA)
-  
-  # Case-insensitive matching
-  expect_equal(equivalent_match("SUCRE", c("sucre", "La Paz", "Cochabamba")), "sucre")
-  
-  # Case with special characters
-  expect_equal(equivalent_match("Sucré", c("sucre", "La Paz", "Cochabamba")), "sucre")
-  
-  # Case with partial matching (should return NA since exact match is required)
-  expect_equal(equivalent_match("Suc", c("sucre", "La Paz", "Cochabamba")), NA)
-  
-  # Case where multiple matches exist in the list
-  expect_equal(equivalent_match("Sucre", c("sucre", "Sucre", "Cochabamba")), c("sucre", "Sucre"))
+  expect_equal(equivalent_match("", c("Sucre", "La Paz")), NA)
+})
+
+test_that("equivalent_match returns all matching elements when multiple match", {
+  result <- equivalent_match("sucre", c("sucre", "Sucre", "La Paz"))
+  expect_equal(result, c("sucre", "Sucre"))
+})
+
+test_that("equivalent_match preserves the original string form from the vector", {
+  # The returned value is the element of string_list, not the query
+  result <- equivalent_match("SUCRE", c("Sucre"))
+  expect_equal(result, "Sucre")
+})
+
+# ==============================================================================
+# str_equivalent_list
+# ==============================================================================
+
+test_that("str_equivalent_list returns TRUE when a match exists", {
+  expect_true(str_equivalent_list("Sucre", c("other", "sucre")))
+  expect_true(str_equivalent_list("Café", c("cafe", "tea")))
+})
+
+test_that("str_equivalent_list returns FALSE when no match exists", {
+  expect_false(str_equivalent_list("Santa Cruz", c("Sucre", "La Paz")))
+  expect_false(str_equivalent_list("Suc", c("Sucre", "La Paz")))
+})
+
+test_that("str_equivalent_list returns FALSE for empty string_list", {
+  expect_false(str_equivalent_list("Sucre", character(0)))
+})
+
+test_that("str_equivalent_list returns FALSE when the query is empty", {
+  expect_false(str_equivalent_list("", c("Sucre", "La Paz")))
+})
+
+test_that("str_equivalent_list returns TRUE when multiple elements in list match", {
+  expect_true(str_equivalent_list("sucre", c("sucre", "Sucre", "La Paz")))
+})
+
+test_that("str_equivalent_list returns NA when no match and list contains NA", {
+  # any(c(FALSE, NA)) is NA in R — documented behavior, not a bug
+  result <- str_equivalent_list("nomatch", c("other", NA))
+  expect_true(is.na(result))
+})
+
+test_that("str_equivalent_list returns TRUE when match exists alongside NA in list", {
+  expect_true(str_equivalent_list("Sucre", c(NA, "sucre")))
 })

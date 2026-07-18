@@ -12,22 +12,26 @@ Authors@R:
 Description: Tools for retrieving, parsing, and matching Wikipedia and Wikidata
     content, including helpers for wikitext analysis and QuickStatements
     generation workflows.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
     dplyr,
     httr,
     jsonlite,
+    magrittr,
+    purrr,
+    stats,
     stringi,
     stringr,
     tibble,
+    utils,
     WikipediR
 Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown
-RoxygenNote: 7.3.2
+RoxygenNote: 8.0.0
 URL: https://github.com/CarwilB/wikitools
 BugReports: https://github.com/CarwilB/wikitools/issues
 Config/roxygen2/version: 8.0.0

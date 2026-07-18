@@ -2,22 +2,28 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{get_wp_category_pages}
 \alias{get_wp_category_pages}
-\title{Get Pages from a Category}
+\title{Get Pages in a Wikipedia Category}
 \usage{
 get_wp_category_pages(category, lang = "en")
 }
 \arguments{
-\item{category}{Character. Category name.}
+\item{category}{Character. Category name, with or without `"Category:"` prefix.}
 
-\item{lang}{Character. Wikipedia language code.}
+\item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A tibble with page members.
+A tibble with columns `pageid`, `ns`, and `title`.
 }
 \description{
-Convenience wrapper around `get_category_members()` for pages
-  only (non-recursive).
+Convenience wrapper around [get_wp_category_members()] that returns
+only article pages (`type = "page"`), excluding subcategories.
 }
-\details{
-Get Pages from a Category
+\examples{
+\dontrun{
+get_wp_category_pages("Capitals of South America")
+}
+
+}
+\seealso{
+[get_wp_category_members()], [get_wp_subcategories()]
 }

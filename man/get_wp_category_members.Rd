@@ -7,19 +7,36 @@
 get_wp_category_members(category, type = "page", lang = "en")
 }
 \arguments{
-\item{category}{Character. Category name, with or without `"Category:"` prefix.}
+\item{category}{Character. Category name, with or without the `"Category:"`
+prefix (it is added automatically if absent).}
 
-\item{type}{Character. One of `"page"`, `"subcat"`, or `"page|subcat"`.}
+\item{type}{Character. Which members to return: `"page"` (articles only),
+`"subcat"` (subcategories only), or `"page|subcat"` (both).
+Default is `"page"`.}
 
 \item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A tibble with columns `pageid`, `ns`, and `title`.
+A tibble with columns:
+  \describe{
+    \item{pageid}{Integer. MediaWiki page ID.}
+    \item{ns}{Integer. MediaWiki namespace (0 = article, 14 = category).}
+    \item{title}{Character. Page title including namespace prefix.}
+  }
+  Returns a zero-row tibble if the category is empty or not found.
 }
 \description{
-Returns pages and/or subcategories from a Wikipedia category,
-  handling MediaWiki pagination.
+Returns pages and/or subcategories belonging to a Wikipedia category.
+Handles MediaWiki API pagination automatically, so categories with more
+than 500 members are fully retrieved.
 }
-\details{
-Get Members of a Wikipedia Category
+\examples{
+\dontrun{
+get_wp_category_members("Capitals of South America")
+get_wp_category_members("Capitals of South America", type = "subcat")
+}
+
+}
+\seealso{
+[get_wp_subcategories()], [get_wp_category_pages()], [get_page_info_batch()]
 }

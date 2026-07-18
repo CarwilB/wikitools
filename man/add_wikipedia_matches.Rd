@@ -15,24 +15,44 @@ add_wikipedia_matches(
 \arguments{
 \item{df}{A data frame or tibble containing the source names.}
 
-\item{name_col}{Character. Name of the column containing search strings.}
+\item{name_col}{Character. Name of the column containing search strings.
+Default `"name"`.}
 
 \item{lang}{Character. Wikipedia language code (default `"en"`).}
 
-\item{delay}{Numeric. Seconds to wait between requests (default `0.5`).}
+\item{delay}{Numeric. Seconds to pause between requests (default `0.5`).
+Set to `0` in tests or batch jobs where rate-limiting is handled elsewhere.}
 
-\item{limit}{Integer. Maximum number of search results requested per query.}
+\item{limit}{Integer. Maximum number of search results requested per query
+(default `5`). Only the top result is used.}
 }
 \value{
-The input data frame with appended columns:
-  `wikipedia_found`, `wikipedia_match`, `wikipedia_title`,
-  `wikipedia_url`, and `wikipedia_snippet`.
+The input data frame with five appended columns:
+  \describe{
+    \item{wikipedia_found}{Logical. `TRUE` if any search result was returned.}
+    \item{wikipedia_match}{Logical. `TRUE` if the top result title matches
+      the query exactly (case- and whitespace-insensitive).}
+    \item{wikipedia_title}{Character. Title of the top search result, or `NA`.}
+    \item{wikipedia_url}{Character. Full Wikipedia URL of the top result, or `NA`.}
+    \item{wikipedia_snippet}{Character. HTML snippet from the search result, or `NA`.}
+  }
 }
 \description{
-Searches Wikipedia for each value in a specified name column and
-  appends match metadata columns. Uses `WikipediR` when available and falls
-  back to direct MediaWiki API calls via `httr`/`jsonlite`.
+Searches Wikipedia for each value in a specified name column and appends
+five match-metadata columns to the input data frame. Uses the MediaWiki
+search API via `httr` and `jsonlite`.
 }
 \details{
-Add Wikipedia Search Matches to a Data Frame
+A result is flagged as `wikipedia_match = TRUE` only when the top search
+title matches the query exactly after stripping whitespace and lowercasing
+both strings. This distinguishes an exact title match (e.g., searching
+`"Tracy K. Smith"` and receiving `"Tracy K. Smith"`) from a related result
+(e.g., receiving `"Tracy K. Smith (poet)"`).
+}
+\examples{
+\dontrun{
+poets <- tibble::tibble(name = c("Tracy K. Smith", "Tishani Doshi"))
+add_wikipedia_matches(poets)
+}
+
 }

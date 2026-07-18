@@ -7,17 +7,26 @@
 get_wikitext_by_name(article_name, lang = "en")
 }
 \arguments{
-\item{article_name}{Character. Wikipedia article title.}
+\item{article_name}{Character. Wikipedia article title, as it appears in the
+page URL (spaces are handled; capitalization matters).}
 
 \item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A character string containing article wikitext, or `NULL` if unavailable.
+A character string of wikitext, or `NULL` if the article is not
+  found or the request fails.
 }
 \description{
-Fetches the raw wikitext of a current Wikipedia article via the
-  MediaWiki API.
+Fetches the raw wikitext of the current revision of a Wikipedia article
+via the MediaWiki API.
 }
-\details{
-Fetch Raw Wikitext by Article Name
+\examples{
+\dontrun{
+wt <- get_wikitext_by_name("Bogot\u00E1")
+substr(wt, 1, 200)
+}
+
+}
+\seealso{
+[get_wikitext_by_revid()], [get_wikitext_from_url()], [cache_wikitext()]
 }

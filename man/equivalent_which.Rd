@@ -2,31 +2,30 @@
 % Please edit documentation in R/str-equivalent.R
 \name{equivalent_which}
 \alias{equivalent_which}
-\title{Find Indices of Equivalent Strings}
+\title{Find Positions of Equivalent Strings in a Vector}
 \usage{
-equivalent_which(string, list)
+equivalent_which(string, string_list)
 }
 \arguments{
-\item{string}{A character string to compare.}
+\item{string}{A character string to search for.}
 
-\item{list}{A character vector against which equivalence is checked.}
+\item{string_list}{A character vector to search in.}
 }
 \value{
-An integer vector of indices where the string is equivalent to elements in the list.
+An integer vector of matching positions, or `integer(0)` if none
+  match.
 }
 \description{
-This function finds the indices of strings in a list that are equivalent to the target string, 
-considering case insensitivity, accent removal, whitespace trimming, and non-breaking space replacement.
-}
-\details{
-The function uses \code{\link{str_equivalent}} to determine string equivalence. 
-It returns the indices of all matches in the list.
+Returns the indices of elements in `string_list` that are equivalent to
+`string` under [str_equivalent()] normalization (case, accents, whitespace,
+non-breaking spaces, double quotes).
 }
 \examples{
-equivalent_which("café", c("cafe", "tea", "coffee")) # Returns 1
-equivalent_which("hello", c("Hello", "world"))       # Returns 1
+equivalent_which("café", c("cafe", "tea", "coffee"))  # 1
+equivalent_which("hello", c("world", "Hello"))        # 2
+equivalent_which("nope", c("a", "b", "c"))            # integer(0)
 
 }
 \seealso{
-\code{\link{str_equivalent}}
+[str_equivalent()], [equivalent_match()], [str_equivalent_list()]
 }

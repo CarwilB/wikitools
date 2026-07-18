@@ -2,32 +2,31 @@
 % Please edit documentation in R/str-equivalent.R
 \name{str_equivalent_list}
 \alias{str_equivalent_list}
-\title{Check for Equivalent Strings in a List}
+\title{Check Whether Any String in a Vector Is Equivalent}
 \usage{
 str_equivalent_list(string, string_list)
 }
 \arguments{
-\item{string}{A character string to compare.}
+\item{string}{A character string to search for.}
 
-\item{string_list}{A character vector of potential matches.}
+\item{string_list}{A character vector of candidates.}
 }
 \value{
-A logical value: \code{TRUE} if any string in the list is equivalent to the target string, 
-or \code{FALSE} otherwise.
+A single logical value: `TRUE` if any element matches, `FALSE`
+  otherwise. Returns `NA` if no element matches and `string_list` contains
+  `NA` values.
 }
 \description{
-This function checks if any string in a list is equivalent to a target string, 
-considering case insensitivity, accent removal, whitespace trimming, and non-breaking space replacement.
-}
-\details{
-The function uses \code{\link{str_equivalent}} to determine string equivalence and applies it 
-to each element of the list.
+Returns `TRUE` if any element of `string_list` is equivalent to `string`
+under [str_equivalent()] normalization (case, accents, whitespace,
+non-breaking spaces, double quotes).
 }
 \examples{
-str_equivalent_list("café", c("cafe", "tea", "coffee")) # Returns TRUE
-str_equivalent_list("hello", c("world", "hi"))          # Returns FALSE
+str_equivalent_list("café", c("cafe", "tea", "coffee"))  # TRUE
+str_equivalent_list("hello", c("world", "hi"))           # FALSE
+str_equivalent_list("x", character(0))                   # FALSE
 
 }
 \seealso{
-\code{\link{str_equivalent}}
+[str_equivalent()], [equivalent_which()], [equivalent_match()]
 }

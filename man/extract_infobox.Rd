@@ -2,20 +2,33 @@
 % Please edit documentation in R/wikipedia-tools.R
 \name{extract_infobox}
 \alias{extract_infobox}
-\title{Extract the First Infobox Template}
+\title{Extract the First Infobox from Wikitext}
 \usage{
 extract_infobox(wikitext)
 }
 \arguments{
-\item{wikitext}{Character. Raw article wikitext.}
+\item{wikitext}{Character. Raw wikitext string, as returned by
+[get_wikitext_by_name()] or [cache_wikitext()].}
 }
 \value{
-A named list of infobox fields, or `NULL` when no infobox is found.
+A named list where each element is a raw wikitext field value, or
+  `NULL` if no infobox is found or `wikitext` is `NULL`.
 }
 \description{
-Parses the first infobox template from wikitext into a named list
-  of key-value fields using brace-depth matching.
+Parses the first `\{\{Infobox ...\}\}` template from raw wikitext into a named
+list of field-value pairs. Uses brace-depth matching to correctly handle
+nested templates within field values. Only the first infobox is extracted
+if the article contains multiple. Field values are returned as-is (raw
+wikitext); use [clean_infobox_value()] to strip markup.
 }
-\details{
-Extract the First Infobox Template
+\examples{
+\dontrun{
+wt <- get_wikitext_by_name("La Paz")
+box <- extract_infobox(wt)
+clean_infobox_value(box[["population_total"]])
+}
+
+}
+\seealso{
+[clean_infobox_value()], [get_wikitext_by_name()]
 }

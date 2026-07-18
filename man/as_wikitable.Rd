@@ -14,19 +14,28 @@ as_wikitable(
 \arguments{
 \item{df}{A data frame.}
 
-\item{caption}{Optional character table caption.}
+\item{caption}{Character. Optional table caption displayed above the table.}
 
-\item{class}{Character. CSS classes for the table.}
+\item{class}{Character. CSS class string applied to the table tag.
+Default `"wikitable sortable"` produces a bordered, user-sortable table.}
 
-\item{column_names}{Optional character vector of display column names.}
+\item{column_names}{Character vector. Optional display names for columns.
+Must have the same length as `ncol(df)` if supplied. Defaults to the
+data frame's column names.}
 }
 \value{
-A single character string containing wikitable markup.
+A single character string of wikitable markup.
 }
 \description{
-Formats a data frame as a MediaWiki wikitable string ready to
-  paste into a Wikipedia page.
+Converts a data frame to a MediaWiki wikitable string, ready to paste into
+a Wikipedia article. Columns become headers; each row becomes a table row.
+`NA` values are rendered as empty cells.
 }
-\details{
-Format a Data Frame as a MediaWiki Wikitable
+\examples{
+df <- data.frame(City = c("La Paz", "Santa Cruz"), Pop = c(835361, 1453549))
+cat(as_wikitable(df, caption = "Bolivian cities"))
+
+}
+\seealso{
+[get_wp_category_members()]
 }

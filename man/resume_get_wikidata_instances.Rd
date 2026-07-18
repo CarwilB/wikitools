@@ -69,6 +69,8 @@ Continues a partially completed class retrieval by skipping
 Resume a Partially-Completed get_wikidata_instances() Query
 }
 \examples{
+\dontrun{
+# Assuming municipalities_wd is a partial result from a prior call
 municipalities_wd <- resume_get_wikidata_instances(
   municipalities_wd, "Q1062710",
   property                    = c("P131", "P17", "P14142"),
@@ -76,5 +78,6 @@ municipalities_wd <- resume_get_wikidata_instances(
   numeric_list_properties     = "P1082",
   numeric_list_property_names = "population"
 )
+}
 
 }

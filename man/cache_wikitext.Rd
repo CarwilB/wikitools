@@ -9,17 +9,33 @@ cache_wikitext(title, cache_dir, lang = "en")
 \arguments{
 \item{title}{Character. Wikipedia page title.}
 
-\item{cache_dir}{Character. Directory where cached files are stored.}
+\item{cache_dir}{Character. Path to the directory where cached `.txt` files
+are stored. The directory must already exist.}
 
-\item{lang}{Character. Wikipedia language code.}
+\item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A character string of wikitext, or `NULL` when the page is unavailable.
+A character string of wikitext, or `NULL` if the page is not found.
+  When a cached file exists, it is read and returned without an API call.
 }
 \description{
-Saves article wikitext to a local file and returns cached content
-  on subsequent calls when available.
+Fetches and stores article wikitext as a plain-text file, returning the
+cached copy on subsequent calls without an API request. Useful when
+processing many articles or re-running analyses repeatedly.
 }
 \details{
-Cache Wikitext Locally
+File names are derived from the article title with the characters
+`/ : * ? " < > |` replaced by underscores.
+}
+\examples{
+\dontrun{
+dir.create("wikitext_cache", showWarnings = FALSE)
+wt <- cache_wikitext("Sucre", cache_dir = "wikitext_cache", lang = "es")
+# Second call reads from disk, no API request made
+wt <- cache_wikitext("Sucre", cache_dir = "wikitext_cache", lang = "es")
+}
+
+}
+\seealso{
+[get_wikitext_by_name()], [extract_clean_fragments()], [extract_infobox()]
 }

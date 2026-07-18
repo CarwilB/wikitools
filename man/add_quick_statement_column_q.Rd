@@ -41,12 +41,16 @@ properties are given as \code{"P123"} and are automatically converted to the
 QuickStatements \code{qalXXX} token format required by the API.
 }
 \examples{
-cuadro39_speakers \%>\%
+df <- data.frame(
+  qid = c("Q750", "Q868"),
+  population = c("10000000", "20000000"),
+  stringsAsFactors = FALSE
+)
+df \%>\%
   add_quick_statement_column_q(
-    qid, "P1098", c2024_total,
-    qualifiers = list(P276 = "Q750", P585 = "+2024-01-01T00:00:00Z/9"),
-    type = "quantity",
-    reference_qid = "Q12345"
+    qid, "P1082", population,
+    qualifiers = list(P585 = "+2024-01-01T00:00:00Z/9"),
+    type = "quantity"
   )
 
 }

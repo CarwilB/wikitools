@@ -7,18 +7,32 @@
 get_page_info_batch(titles, lang = "en")
 }
 \arguments{
-\item{titles}{Character vector of page titles.}
+\item{titles}{Character vector. Wikipedia page titles.}
 
-\item{lang}{Character. Wikipedia language code.}
+\item{lang}{Character. Wikipedia language code (default `"en"`).}
 }
 \value{
-A tibble with columns `title`, `pageid`, `page_length`, and
-  `wikidata_qid`.
+A tibble with one row per page and columns:
+  \describe{
+    \item{title}{Character. Normalized page title as returned by the API.}
+    \item{pageid}{Integer. MediaWiki page ID, or `NA` for missing pages.}
+    \item{page_length}{Integer. Page size in bytes, or `NA` for missing pages.}
+    \item{wikidata_qid}{Character. Linked Wikidata item QID (e.g., `"Q2887"`),
+      or `NA` if none is set.}
+  }
 }
 \description{
-Fetches basic metadata (title, page ID, length, and Wikidata QID)
-  for Wikipedia titles in API batches of up to 50.
+Fetches basic metadata for a vector of Wikipedia page titles, batching
+requests at 50 titles per API call. Useful for linking Wikipedia articles
+to their Wikidata items or checking page sizes in bulk.
 }
-\details{
-Fetch Page Metadata in Batches
+\examples{
+\dontrun{
+titles <- c("La Paz", "Santa Cruz de la Sierra", "Cochabamba")
+get_page_info_batch(titles, lang = "es")
+}
+
+}
+\seealso{
+[get_wp_category_members()]
 }

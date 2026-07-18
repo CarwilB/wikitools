@@ -1,3 +1,9 @@
+# Suppress R CMD check warnings for data frame column names used in dplyr operations
+#' @keywords internal
+"_PACKAGE"
+
+utils::globalVariables(c("qid"))
+
 # ---- add_wikidata_property --------------------------------------------------
 
 #' Add a Wikidata Property to a Data Frame
@@ -15,7 +21,22 @@
 #' @return The input data frame with a new character column appended.
 #'
 #' @examples
+#' departments <- tibble::tribble(
+#' ~qid,             ~label_en, ~cod.dep,
+#' "Q233169",     "Beni Department",     "08",
+#' "Q233917", "Cochabamba Department",     "03",
+#' "Q233933",   "Tarija Department",     "06",
+#' "Q235106", "Santa Cruz Department",     "07",
+#' "Q235110", "Chuquisaca Department",     "01",
+#' "Q235362",    "Pando Department",     "09",
+#' "Q238079",   "Potosí Department",     "05",
+#' "Q232784",    "La Paz Department",     "02",
+#' "Q844510",             "Litoral",       NA,
+#' "Q1061368",    "Oruro Department",     "04"
+#' )
+#' \dontrun{
 #' departments |> add_wikidata_property("P14142", name = "ine_code")
+#' }
 #'
 #' @importFrom dplyr across bind_rows distinct mutate where
 #' @importFrom httr GET content status_code user_agent
@@ -615,9 +636,9 @@ add_wikidata_property <- function(df, property, name = property) {
 #'   \describe{
 #'     \item{pname}{Most recent value (numeric; sorted by P585 year desc).}
 #'     \item{pname_n}{Total number of claims (integer).}
-#'     \item{pname_1 … pname_10}{Individual values (numeric).}
-#'     \item{pname_1_year … pname_10_year}{Year from P585 qualifier (integer).}
-#'     \item{pname_1_ref … pname_10_ref}{Reference URL (P854) or
+#'     \item{pname_1 ... pname_10}{Individual values (numeric).}
+#'     \item{pname_1_year ... pname_10_year}{Year from P585 qualifier (integer).}
+#'     \item{pname_1_ref ... pname_10_ref}{Reference URL (P854) or
 #'       \code{"wd:Qxxx"} (P248), or \code{NA} (character).}
 #'   }
 #' @param numeric_list_property_names Character vector. Column name prefixes
@@ -652,7 +673,8 @@ add_wikidata_property <- function(df, property, name = property) {
 #' # Retrieve subclasses instead of instances
 #' get_wikidata_instances("Q34770", object_type = "subclass")
 #'
-#' get_wikidata_instances("Q4193029", property = "P1448", property_names = "official_name", verbose = TRUE)
+#' get_wikidata_instances("Q4193029", property = "P1448",
+#'   property_names = "official_name", verbose = TRUE)
 #'
 #' @export
 get_wikidata_instances <- function(class_qid,
@@ -723,7 +745,7 @@ get_wikidata_instances <- function(class_qid,
   property_id <- if (object_type == "instance") "P31" else "P279"
   type_label <- if (object_type == "instance") "instances" else "subclasses"
 
-  # Step 1: SPARQL — get all QIDs
+  # Step 1: SPARQL -- get all QIDs
   if (verbose) {
     sparql_query <- .build_sparql_query(class_qid, country, property_id, limit)
     message("SPARQL query:\n", sparql_query)
@@ -788,6 +810,8 @@ get_wikidata_instances <- function(class_qid,
 #'   containing all items (previously retrieved + newly fetched).
 #'
 #' @examples
+#' \dontrun{
+#' # Assuming municipalities_wd is a partial result from a prior call
 #' municipalities_wd <- resume_get_wikidata_instances(
 #'   municipalities_wd, "Q1062710",
 #'   property                    = c("P131", "P17", "P14142"),
@@ -795,6 +819,7 @@ get_wikidata_instances <- function(class_qid,
 #'   numeric_list_properties     = "P1082",
 #'   numeric_list_property_names = "population"
 #' )
+#' }
 #'
 #' @export
 resume_get_wikidata_instances <- function(partial_result,
@@ -877,7 +902,7 @@ resume_get_wikidata_instances <- function(partial_result,
           length(all_qids),     " total.")
 
   if (length(remaining) == 0) {
-    message("Nothing left to fetch — returning partial_result as-is.")
+    message("Nothing left to fetch -- returning partial_result as-is.")
     return(partial_result |> simplify_list_columns())
   }
 
@@ -916,7 +941,24 @@ resume_get_wikidata_instances <- function(partial_result,
 #'   character vectors.
 #'
 #' @examples
+#' \dontrun{
+#' departments <- tibble::tribble(
+#' ~qid,             ~label_en, ~cod.dep,
+#' "Q233169",     "Beni Department",     "08",
+#' "Q233917", "Cochabamba Department",     "03",
+#' "Q233933",   "Tarija Department",     "06",
+#' "Q235106", "Santa Cruz Department",     "07",
+#' "Q235110", "Chuquisaca Department",     "01",
+#' "Q235362",    "Pando Department",     "09",
+#' "Q238079",   "Potosí Department",     "05",
+#' "Q232784",    "La Paz Department",     "02",
+#' "Q844510",             "Litoral",       NA,
+#' "Q1061368",    "Oruro Department",     "04"
+#' )
+#' departments_wd <- departments |>
+#'   add_wikidata_property("P2131", name = "area_km2")
 #' simplify_list_columns(departments_wd)
+#' }
 #'
 #' @export
 simplify_list_columns <- function(df) {
