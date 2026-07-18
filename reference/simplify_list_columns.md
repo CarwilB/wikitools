@@ -1,0 +1,48 @@
+# Simplify Single-Value List Columns in a Data Frame
+
+Converts list columns whose elements all have length 0 or 1 into plain
+character vectors while leaving multi-valued list columns unchanged.
+
+## Usage
+
+``` r
+simplify_list_columns(df)
+```
+
+## Arguments
+
+- df:
+
+  A data frame or tibble.
+
+## Value
+
+The input data frame with qualifying list columns converted to character
+vectors.
+
+## Details
+
+Simplify Single-Value List Columns in a Data Frame
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+departments <- tibble::tribble(
+~qid,             ~label_en, ~cod.dep,
+"Q233169",     "Beni Department",     "08",
+"Q233917", "Cochabamba Department",     "03",
+"Q233933",   "Tarija Department",     "06",
+"Q235106", "Santa Cruz Department",     "07",
+"Q235110", "Chuquisaca Department",     "01",
+"Q235362",    "Pando Department",     "09",
+"Q238079",   "Potosí Department",     "05",
+"Q232784",    "La Paz Department",     "02",
+"Q844510",             "Litoral",       NA,
+"Q1061368",    "Oruro Department",     "04"
+)
+departments_wd <- departments |>
+  add_wikidata_property("P2131", name = "area_km2")
+simplify_list_columns(departments_wd)
+} # }
+```
