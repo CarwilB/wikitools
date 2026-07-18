@@ -56,7 +56,7 @@ The wikitools package provides tools for retrieving, parsing, and matching Wikip
 
 ### Function Inventory
 
-See `docs/FUNCTION-INVENTORY.md` for comprehensive breakdown.
+See `dev-notes/FUNCTION-INVENTORY.md` for comprehensive breakdown.
 
 **Summary:**
 - 35 total functions

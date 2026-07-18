@@ -5,5 +5,7 @@
 ^LICENSE\.md$
 ^_pkgdown\.yml$
 ^AGENTS\.md$
+^dev-notes$
 ^docs$
 ^pkgdown$
+^\.github$
