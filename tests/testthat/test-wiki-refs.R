@@ -17,6 +17,12 @@ with_mock_dir(".", {
   wt_biko  <- get_wikitext_by_name("Steve Biko")
 })
 
+# Parse each fixture once. The resulting objects are reused by all tests below
+# instead of repeatedly reparsing the same large wikitext documents.
+refs_twain <- extract_refs_from_wikitext(wt_twain)
+refs_ada   <- extract_refs_from_wikitext(wt_ada)
+refs_biko  <- extract_refs_from_wikitext(wt_biko)
+
 # Expected column order from extract_refs_from_wikitext()
 .expected_cols <- c(
   "itemType", "title", "first_author", "creators",
@@ -37,17 +43,17 @@ with_mock_dir(".", {
 # ===========================================================================
 
 test_that("extract_refs_from_wikitext returns a tibble", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_s3_class(refs, "tbl_df")
 })
 
 test_that("extract_refs_from_wikitext has the expected columns in the expected order", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_equal(names(refs), .expected_cols)
 })
 
 test_that("extract_refs_from_wikitext creators column is a list of tibbles", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_type(refs$creators, "list")
   first <- refs$creators[[1]]
   expect_s3_class(first, "tbl_df")
@@ -55,29 +61,29 @@ test_that("extract_refs_from_wikitext creators column is a list of tibbles", {
 })
 
 test_that("extract_refs_from_wikitext first_author is a character vector", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_type(refs$first_author, "character")
 })
 
 test_that("extract_refs_from_wikitext itemType has no NAs", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_false(any(is.na(refs$itemType)))
 })
 
 test_that("extract_refs_from_wikitext itemType values are all recognised types", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_true(all(refs$itemType %in% .valid_item_types))
 })
 
 test_that("extract_refs_from_wikitext non-NA year values are 4-character strings", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   years_with_values <- refs$year[!is.na(refs$year)]
   expect_true(all(nchar(years_with_values) == 4L))
   expect_true(all(grepl("^\\d{4}$", years_with_values)))
 })
 
 test_that("extract_refs_from_wikitext .raw_template matches citation template syntax", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   cite_rows <- refs[refs$.template_name != "bare_ref", ]
   expect_true(all(grepl("^\\{\\{", cite_rows$.raw_template)))
   expect_true(all(grepl("\\}\\}$", cite_rows$.raw_template)))
@@ -85,10 +91,12 @@ test_that("extract_refs_from_wikitext .raw_template matches citation template sy
 
 test_that("extract_refs_from_wikitext warns and returns empty tibble when no citations", {
   plain_wikitext <- "This article has no citation templates at all."
+
   expect_warning(
     result <- extract_refs_from_wikitext(plain_wikitext),
     "No citation templates found"
   )
+
   expect_s3_class(result, "tbl_df")
   expect_equal(nrow(result), 0L)
 })
@@ -98,13 +106,14 @@ test_that("extract_refs_from_wikitext warns and returns empty tibble when no cit
 # ===========================================================================
 
 test_that("extract_refs_from_wikitext returns 215 refs for Mark Twain", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   expect_equal(nrow(refs), 215L)
 })
 
 test_that("extract_refs_from_wikitext Mark Twain has diverse itemTypes", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   types <- unique(refs$itemType)
+
   expect_true("webpage"          %in% types)
   expect_true("book"             %in% types)
   expect_true("journalArticle"   %in% types)
@@ -112,29 +121,29 @@ test_that("extract_refs_from_wikitext Mark Twain has diverse itemTypes", {
 })
 
 test_that("extract_refs_from_wikitext Mark Twain has webpage as most common type", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   counts <- table(refs$itemType)
   expect_equal(names(which.max(counts)), "webpage")
 })
 
 test_that("extract_refs_from_wikitext Mark Twain has 34 ISBN refs", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   expect_equal(sum(!is.na(refs$ISBN)), 34L)
 })
 
 test_that("extract_refs_from_wikitext Mark Twain has 15 DOI refs", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   expect_equal(sum(!is.na(refs$DOI)), 15L)
 })
 
 test_that("extract_refs_from_wikitext Mark Twain has document-type bare refs", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   expect_true("document" %in% refs$itemType)
   expect_true(any(refs$.template_name == "bare_ref"))
 })
 
 test_that("extract_refs_from_wikitext Mark Twain first_authors include 'Twain, Mark'", {
-  refs <- extract_refs_from_wikitext(wt_twain)
+  refs <- refs_twain
   expect_true("Twain, Mark" %in% refs$first_author)
 })
 
@@ -143,36 +152,38 @@ test_that("extract_refs_from_wikitext Mark Twain first_authors include 'Twain, M
 # ===========================================================================
 
 test_that("extract_refs_from_wikitext returns 168 refs for Ada Lovelace", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_equal(nrow(refs), 168L)
 })
 
 test_that("extract_refs_from_wikitext Ada Lovelace has 23 ISBN refs", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_equal(sum(!is.na(refs$ISBN)), 23L)
 })
 
 test_that("extract_refs_from_wikitext Ada Lovelace has 12 DOI refs", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_equal(sum(!is.na(refs$DOI)), 12L)
 })
 
 test_that("extract_refs_from_wikitext Ada Lovelace includes book and journal refs", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_true("book"           %in% refs$itemType)
   expect_true("journalArticle" %in% refs$itemType)
 })
 
 test_that("extract_refs_from_wikitext Ada Lovelace has videoRecording type", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
   expect_true("videoRecording" %in% refs$itemType)
 })
 
 test_that("extract_refs_from_wikitext Ada Lovelace all creators tibbles have correct columns", {
-  refs <- extract_refs_from_wikitext(wt_ada)
+  refs <- refs_ada
+
   col_check <- vapply(refs$creators, function(cr) {
     setequal(names(cr), c("creatorType", "lastName", "firstName"))
   }, logical(1))
+
   expect_true(all(col_check))
 })
 
@@ -181,27 +192,27 @@ test_that("extract_refs_from_wikitext Ada Lovelace all creators tibbles have cor
 # ===========================================================================
 
 test_that("extract_refs_from_wikitext returns 49 refs for Steve Biko", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   expect_equal(nrow(refs), 49L)
 })
 
 test_that("extract_refs_from_wikitext Steve Biko has 18 ISBN refs", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   expect_equal(sum(!is.na(refs$ISBN)), 18L)
 })
 
 test_that("extract_refs_from_wikitext Steve Biko has encyclopediaArticle type", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   expect_true("encyclopediaArticle" %in% refs$itemType)
 })
 
 test_that("extract_refs_from_wikitext Steve Biko has only 2 NA years", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   expect_equal(sum(is.na(refs$year)), 2L)
 })
 
 test_that("extract_refs_from_wikitext Steve Biko first_author is populated for most refs", {
-  refs <- extract_refs_from_wikitext(wt_biko)
+  refs <- refs_biko
   pct_with_author <- mean(!is.na(refs$first_author))
   expect_gt(pct_with_author, 0.8)
 })
@@ -219,8 +230,8 @@ test_that("find_template_end extracts exactly the outer template for a simple ca
 })
 
 test_that("find_template_end extracts the full outer template when nested templates present", {
-  text  <- "{{cite book|publisher={{publisher name}}}}"
-  end   <- find_template_end(text, 1L)
+  text <- "{{cite book|publisher={{publisher name}}}}"
+  end  <- find_template_end(text, 1L)
   extracted <- substr(text, 1L, end)
   expect_equal(extracted, text)
 })
@@ -251,6 +262,7 @@ test_that("parse_template_params extracts .template as lowercased name", {
 test_that("parse_template_params extracts named parameters", {
   tmpl   <- "{{cite book|title=A History|author=Smith|year=2001}}"
   params <- parse_template_params(tmpl)
+
   expect_equal(params$title, "A History")
   expect_equal(params$author, "Smith")
   expect_equal(params$year, "2001")
@@ -260,6 +272,7 @@ test_that("parse_template_params handles pipes inside nested templates", {
   # The | inside {{lang|en|text}} should not split the outer template
   tmpl   <- "{{cite book|title={{lang|en|The Title}}|year=1999}}"
   params <- parse_template_params(tmpl)
+
   expect_equal(params$.template, "cite book")
   expect_true(!is.null(params$year))
   expect_equal(params$year, "1999")
@@ -274,6 +287,7 @@ test_that("parse_template_params stores positional args as .unnamed_N", {
 test_that("parse_template_params lowercases parameter keys", {
   tmpl   <- "{{cite book|Title=Foo|Year=2000}}"
   params <- parse_template_params(tmpl)
+
   expect_true("title" %in% names(params))
   expect_true("year"  %in% names(params))
   expect_false("Title" %in% names(params))
@@ -340,7 +354,10 @@ test_that("template_to_itemtype maps cite news to newspaperArticle", {
 })
 
 test_that("template_to_itemtype maps cite encyclopedia to encyclopediaArticle", {
-  expect_equal(template_to_itemtype("cite encyclopedia"), "encyclopediaArticle")
+  expect_equal(
+    template_to_itemtype("cite encyclopedia"),
+    "encyclopediaArticle"
+  )
 })
 
 test_that("template_to_itemtype maps cite thesis to thesis", {
@@ -376,7 +393,10 @@ test_that("template_to_itemtype is case-insensitive", {
 })
 
 test_that("template_to_itemtype returns document for unrecognised template", {
-  expect_equal(template_to_itemtype("cite something_unknown_xyz"), "document")
+  expect_equal(
+    template_to_itemtype("cite something_unknown_xyz"),
+    "document"
+  )
 })
 
 # ===========================================================================
@@ -391,6 +411,7 @@ test_that("extract_bare_refs returns character(0) when no <ref> tags present", {
 test_that("extract_bare_refs extracts simple bare text refs", {
   wt <- "Text.<ref>Some plain note without a template.</ref> More."
   result <- extract_bare_refs(wt)
+
   expect_length(result, 1L)
   expect_true(grepl("plain note", result))
 })
@@ -404,6 +425,7 @@ test_that("extract_bare_refs excludes refs that contain a cite template", {
 test_that("extract_bare_refs handles mixed cite and bare refs correctly", {
   wt <- "<ref>{{cite book|title=Foo}}</ref> text <ref>Just a note.</ref>"
   result <- extract_bare_refs(wt)
+
   expect_length(result, 1L)
   expect_true(grepl("Just a note", result))
 })
@@ -420,6 +442,7 @@ test_that("extract_bare_refs returns character vector", {
 test_that("extract_authors returns tibble with expected columns", {
   params <- list(.template = "cite book", last = "Smith", first = "John")
   result <- extract_authors(params)
+
   expect_s3_class(result, "tbl_df")
   expect_named(result, c("creatorType", "lastName", "firstName"))
 })
@@ -427,6 +450,7 @@ test_that("extract_authors returns tibble with expected columns", {
 test_that("extract_authors extracts a single last/first pair as author", {
   params <- list(.template = "cite book", last = "Orwell", first = "George")
   result <- extract_authors(params)
+
   expect_equal(nrow(result), 1L)
   expect_equal(result$creatorType[1], "author")
   expect_equal(result$lastName[1],   "Orwell")
@@ -440,6 +464,7 @@ test_that("extract_authors extracts multiple numbered author pairs", {
     last2 = "Jones", first2 = "Mary"
   )
   result <- extract_authors(params)
+
   expect_equal(nrow(result), 2L)
   expect_equal(result$lastName, c("Smith", "Jones"))
 })
@@ -447,6 +472,7 @@ test_that("extract_authors extracts multiple numbered author pairs", {
 test_that("extract_authors splits 'Last, First' author= string on comma", {
   params <- list(.template = "cite book", author = "Twain, Mark")
   result <- extract_authors(params)
+
   expect_equal(nrow(result), 1L)
   expect_equal(result$lastName[1],  "Twain")
   expect_equal(result$firstName[1], "Mark")
@@ -455,6 +481,7 @@ test_that("extract_authors splits 'Last, First' author= string on comma", {
 test_that("extract_authors stores single-name author= without comma split", {
   params <- list(.template = "cite book", author = "UNESCO")
   result <- extract_authors(params)
+
   expect_equal(nrow(result), 1L)
   expect_equal(result$lastName[1], "UNESCO")
   expect_equal(result$firstName[1], "")
@@ -463,6 +490,7 @@ test_that("extract_authors stores single-name author= without comma split", {
 test_that("extract_authors returns default empty author row when no author info", {
   params <- list(.template = "cite book", title = "No Author Book")
   result <- extract_authors(params)
+
   expect_equal(nrow(result), 1L)
   expect_equal(result$creatorType[1], "author")
   expect_equal(result$lastName[1],    "")

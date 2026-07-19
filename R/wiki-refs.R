@@ -27,34 +27,51 @@ find_template_end <- function(text, start) {
   n     <- nchar(text)
   depth <- 0L
   i     <- start
-  while (i <= n) {
-    ch2 <- substr(text, i, i + 1)
-    if      (ch2 == "{{") { depth <- depth + 1L; i <- i + 2L }
-    else if (ch2 == "}}") {
+  chars <- strsplit(substr(text, start, n), "", fixed = TRUE)[[1]]  # scan once
+  j <- 1L
+  len <- length(chars)
+  while (j <= len) {
+    if (chars[j] == "{" && j < len && chars[j + 1] == "{") { depth <- depth + 1L; j <- j + 2L }
+    else if (chars[j] == "}" && j < len && chars[j + 1] == "}") {
       depth <- depth - 1L
-      if (depth == 0L) return(i + 1L)
-      i <- i + 2L
-    } else {
-      i <- i + 1L
-    }
+      if (depth == 0L) return(start + j)
+      j <- j + 2L
+    } else j <- j + 1L
   }
   NA_integer_
 }
 
 # Extract all top-level templates matching `pattern` from `text`.
+# Scan `text` once and extract all top-level templates whose opening
+# tag matches `pattern`. Avoids re-scanning from every candidate start.
 extract_templates <- function(text,
                               pattern = "\\{\\{\\s*[Cc]ite\\s") {
-  hits <- gregexpr(pattern, text, perl = TRUE, ignore.case = TRUE)[[1]]
-  if (hits[1] == -1) return(character(0))
+  n <- nchar(text)
+  templates <- character(0)
+  i <- 1L
 
-  templates <- character(length(hits))
-  for (idx in seq_along(hits)) {
-    end_pos <- find_template_end(text, hits[idx])
-    if (!is.na(end_pos)) {
-      templates[idx] <- substr(text, hits[idx], end_pos)
+  while (i <= n) {
+    ch2 <- substr(text, i, i + 1L)
+    if (ch2 == "{{") {
+      # Only pay the regex cost once we're at a "{{" — not per character.
+      remainder <- substr(text, i, min(i + 60L, n))  # small lookahead window
+      is_match  <- grepl(pattern, remainder, perl = TRUE, ignore.case = TRUE) &&
+        regexpr(pattern, remainder, perl = TRUE, ignore.case = TRUE) == 1L
+
+      end_pos <- find_template_end(text, i)
+      if (is.na(end_pos)) { i <- i + 2L; next }
+
+      if (is_match) {
+        templates <- c(templates, substr(text, i, end_pos))
+        i <- end_pos + 1L  # skip past the matched template (avoids double-counting its interior)
+      } else {
+        i <- i + 2L  # advance past {{ and continue scanning inside the non-matching template
+      }
+    } else {
+      i <- i + 1L
     }
   }
-  templates[nzchar(templates)]
+  templates
 }
 
 # Parse a wikitext template string into a named list.
@@ -63,34 +80,31 @@ parse_template_params <- function(template_str) {
   inner <- sub("^\\{\\{\\s*", "", template_str)
   inner <- sub("\\s*\\}\\}$", "", inner)
 
-  chars         <- strsplit(inner, "")[[1]]
-  n             <- length(chars)
-  brace_depth   <- 0L
-  bracket_depth <- 0L
-  parts         <- character(0)
-  current       <- ""
+  # Split on every '|' first (cheap, vectorized), then re-merge pieces
+  # that were incorrectly split inside {{...}} or [[...]].
+  raw_parts <- strsplit(inner, "|", fixed = TRUE)[[1]]
 
-  for (i in seq_len(n)) {
-    ch      <- chars[i]
-    ch_prev <- if (i > 1) chars[i - 1] else ""
-    ch_next <- if (i < n) chars[i + 1] else ""
+  parts   <- character(0)
+  buffer  <- character(0)
+  depth_b <- 0L  # brace depth
+  depth_k <- 0L  # bracket depth
 
-    if      (ch == "{" && ch_next == "{") { brace_depth   <- brace_depth   + 1L; current <- paste0(current, ch)
-    } else if (ch == "{" && ch_prev == "{") {                                      current <- paste0(current, ch)
-    } else if (ch == "}" && ch_next == "}") { brace_depth   <- brace_depth   - 1L; current <- paste0(current, ch)
-    } else if (ch == "}" && ch_prev == "}") {                                      current <- paste0(current, ch)
-    } else if (ch == "[" && ch_next == "[") { bracket_depth <- bracket_depth + 1L; current <- paste0(current, ch)
-    } else if (ch == "[" && ch_prev == "[") {                                      current <- paste0(current, ch)
-    } else if (ch == "]" && ch_next == "]") { bracket_depth <- bracket_depth - 1L; current <- paste0(current, ch)
-    } else if (ch == "]" && ch_prev == "]") {                                      current <- paste0(current, ch)
-    } else if (ch == "|" && brace_depth == 0L && bracket_depth == 0L) {
-      parts   <- c(parts, current)
-      current <- ""
-    } else {
-      current <- paste0(current, ch)
+  flush <- function() paste(buffer, collapse = "|")
+
+  for (p in raw_parts) {
+    depth_b <- depth_b + lengths(regmatches(p, gregexpr("\\{\\{", p))) -
+      lengths(regmatches(p, gregexpr("\\}\\}", p)))
+    depth_k <- depth_k + lengths(regmatches(p, gregexpr("\\[\\[", p))) -
+      lengths(regmatches(p, gregexpr("\\]\\]", p)))
+    buffer <- c(buffer, p)
+    if (depth_b <= 0L && depth_k <= 0L) {
+      parts  <- c(parts, flush())
+      buffer <- character(0)
+      depth_b <- 0L
+      depth_k <- 0L
     }
   }
-  parts <- c(parts, current)
+  if (length(buffer) > 0) parts <- c(parts, flush())
 
   result      <- list(.template = tolower(trimws(parts[1])))
   unnamed_idx <- 1L
@@ -99,8 +113,8 @@ parse_template_params <- function(template_str) {
     if (p == "") next
     eq_pos <- regexpr("=", p, fixed = TRUE)
     if (eq_pos > 0) {
-      key           <- trimws(substr(p, 1, eq_pos - 1))
-      val           <- trimws(substr(p, eq_pos + 1, nchar(p)))
+      key <- trimws(substr(p, 1, eq_pos - 1))
+      val <- trimws(substr(p, eq_pos + 1, nchar(p)))
       result[[tolower(key)]] <- val
     } else {
       result[[paste0(".unnamed_", unnamed_idx)]] <- p
@@ -138,6 +152,10 @@ extract_bare_refs <- function(wikitext) {
 # Strip wikitext markup from a string: wikilinks, italic marks, templates.
 clean_wiki <- function(x) {
   if (is.null(x) || !nzchar(trimws(x))) return(NA_character_)
+
+  # Fast path: nothing to clean if there's no wiki markup at all.
+  if (!grepl("\\{\\{|\\[\\[|''", x)) return(trimws(x))
+
   x <- stringr::str_replace_all(x, "\\{\\{!\\}\\}", "|")
   x <- stringr::str_replace_all(x, "\\{\\{=\\}\\}", "=")
   x <- stringr::str_replace_all(
@@ -185,9 +203,13 @@ template_to_itemtype <- function(tpl_name, params = NULL) {
 
 # Extract author/editor/translator metadata from parsed template parameters.
 extract_authors <- function(params) {
-  authors <- tibble::tibble(
-    creatorType = character(), lastName = character(), firstName = character()
-  )
+  rows <- list()  # accumulate here; bind_rows once at the end
+
+  add_row <- function(creator_type, last, first) {
+    rows[[length(rows) + 1]] <<- tibble::tibble(
+      creatorType = creator_type, lastName = last, firstName = first
+    )
+  }
 
   for (role_prefix in c("", "editor", "translator")) {
     creator_type <- if (role_prefix == "") "author" else role_prefix
@@ -201,45 +223,34 @@ extract_authors <- function(params) {
       first_val <- params[[fkey]] %||% ""
 
       if (!is.null(last_val) && nzchar(last_val)) {
-        authors <- dplyr::bind_rows(authors, tibble::tibble(
-          creatorType = creator_type,
-          lastName    = clean_wiki(last_val)  %||% "",
-          firstName   = clean_wiki(first_val) %||% ""
-        ))
+        add_row(creator_type,
+                clean_wiki(last_val)  %||% "",
+                clean_wiki(first_val) %||% "")
       }
     }
 
-    # Handle combined author= parameter when no last/first pair found
     author_key <- if (role_prefix == "") "author" else role_prefix
     no_last <- is.null(params[["last"]]) && is.null(params[["last1"]])
     if (no_last && !is.null(params[[author_key]]) &&
-        (nrow(authors) == 0 || creator_type != "author")) {
+        (length(rows) == 0 || creator_type != "author")) {
       val <- clean_wiki(params[[author_key]]) %||% params[[author_key]]
       if (!is.na(val) && stringr::str_detect(val, ",")) {
         parts <- stringr::str_split(val, ",\\s*", n = 2)[[1]]
-        authors <- dplyr::bind_rows(authors, tibble::tibble(
-          creatorType = creator_type,
-          lastName    = parts[1],
-          firstName   = parts[2] %||% ""
-        ))
+        add_row(creator_type, parts[1], parts[2] %||% "")
       } else {
-        authors <- dplyr::bind_rows(authors, tibble::tibble(
-          creatorType = creator_type, lastName = val, firstName = ""
-        ))
+        add_row(creator_type, val, "")
       }
     }
   }
 
   if (!is.null(params[["others"]]) && nzchar(params[["others"]])) {
-    authors <- dplyr::bind_rows(authors, tibble::tibble(
-      creatorType = "contributor", lastName = params[["others"]], firstName = ""
-    ))
+    add_row("contributor", params[["others"]], "")
   }
 
-  if (nrow(authors) == 0) {
-    authors <- tibble::tibble(creatorType = "author", lastName = "", firstName = "")
+  if (length(rows) == 0) {
+    return(tibble::tibble(creatorType = "author", lastName = "", firstName = ""))
   }
-  authors
+  dplyr::bind_rows(rows)
 }
 
 # Convert a parsed template parameter list to a one-row reference tibble.
