@@ -66,67 +66,92 @@ See `dev-notes/FUNCTION-INVENTORY.md` for comprehensive breakdown.
 
 ### Source Files
 
-1. **R/wikipedia-tools.R** (17 functions)
-   - Wikipedia text fetching and caching
-   - Wikitext parsing (infoboxes, citations, census years)
-   - Category management
-   - Page metadata retrieval
+1. **R/wikipedia-tools.R** — Wikitext parsing utilities (no internet)
+   - extract_clean_fragments, as_wikitable, extract_infobox, clean_infobox_value
+   - count_citations, count_refs, extract_census_years, wikitext_to_plain
 
-2. **R/get_wikidata_instances.R** (13 functions)
-   - Wikidata instance/class retrieval
-   - SPARQL queries
-   - Batch API handling
-   - Entity parsing
+2. **R/get-wikipedia-text.R** — Wikipedia API fetch functions
+   - get_wikitext_by_name, get_wikitext_by_revid, get_wikitext_from_url
+   - get_wp_category_members, get_wp_subcategories, get_wp_category_pages
+   - get_page_info_batch, cache_wikitext, get_plain_text
 
-3. **R/create_quick_statement.R** (4 functions)
-   - QuickStatements V1 command generation
-   - Support for various data types and references
+3. **R/get_wikidata_instances.R** — Wikidata instance/class retrieval
+   - get_wikidata_instances, resume_get_wikidata_instances
+   - SPARQL queries, batch API handling, entity parsing (13 functions)
 
-4. **R/str-equivalent.R** (4 functions)
-   - String matching with accent/case/whitespace handling
-   - Index and match utilities
+4. **R/wikidata-presence.R** — Wikipedia language presence analysis
+   - wikidata_instance_wikipedia_presence
+   - resume_wikidata_instance_wikipedia_presence
 
-5. **R/add-wikipedia-matches.R** (1 function)
-   - Wikipedia search with fallback API strategies
+5. **R/wikiblame.R** — Revision history and text tracing
+   - get_revision_history_map, find_sentence_insertion
+   - track_wikipedia_sentences (+ internal helpers)
+
+6. **R/wiki-refs.R** — Citation reference extraction
+   - extract_refs_from_wikitext (+ internal parsing helpers)
+
+7. **R/create_quick_statement.R** — QuickStatements V1 command generation (4 functions)
+
+8. **R/str-equivalent.R** — String matching utilities (4 functions)
+
+9. **R/add-wikipedia-matches.R** — Wikipedia search with fallback strategies (1 function)
+
+## Status Update (July 18, 2026)
+
+✅ **MAJOR MILESTONE:** test-get-wikipedia-text.R created with 86 tests using httptest mocks
+- All 8 API functions now covered: get_wikitext_by_name, get_wikitext_by_revid,
+  get_wikitext_from_url, get_wp_category_members, get_wp_subcategories,
+  get_wp_category_pages, get_page_info_batch, cache_wikitext, get_plain_text
+- Fixtures captured from real Wikipedia API for Mark Twain, Ada Lovelace, Steve Biko,
+  6 elements batch, and Category:Noble gases (pages + subcategories)
+- Fixtures stored in tests/testthat/en.wikipedia.org/w/api.php-*.json
+- Tests use httptest::with_mock_dir(".") pattern (httptest 4.x)
+- Total package test suite: 343 tests, 0 failures
+
+---
 
 ## Development Priorities
 
-### Phase 1: Critical Testing Gaps
-1. **test-wikipedia-tools.R** - Expand from 3 to ~50+ lines
-   - Mock Wikipedia API responses
-   - Test wikitext extraction, parsing, fragment cleaning
-   - Test category member retrieval
-   - Test page info batch retrieval
+### Phase 1: Critical Testing Gaps ✅ COMPLETE
+1. **test-wikipedia-tools.R** ✅ DONE
+   - Expanded from 3 to 516 lines
+   - 104 tests covering all text-processing functions
+   - Zero-internet functions: extract_clean_fragments, as_wikitable, extract_infobox, clean_infobox_value, count_citations, count_refs, extract_census_years
 
-2. **test-add-wikipedia-matches.R** (NEW)
-   - Create comprehensive test suite
-   - Mock Wikipedia search API
-   - Test fallback to direct API calls
-   - Test error handling for bad queries
+2. **test-add-wikipedia-matches.R** ✅ DONE
+   - 185 lines with 13+ test cases
+   - Tests search, API fallbacks, error handling
 
-3. **test-create-quick-statement.R** (NEW)
-   - Test all statement types (string, monolingual, label, description, item, etc.)
-   - Test reference handling
-   - Test qualifier syntax
-   - Test edge cases (special characters, nulls, LAST keyword)
+3. **test-create-quick-statement.R** ✅ DONE
+   - 451 lines with 30+ test cases
+   - All statement types (string, monolingual, label, description, item, etc.)
 
-### Phase 2: Documentation Enhancement
-- [ ] Audit each function's @param and @return tags
-  - Priority: add-wikipedia-matches.R (only 17 Roxygen lines)
-- [ ] Add realistic @examples to all functions
-  - Ensure examples don't require external API calls
-  - Use mock data or commented examples
-- [ ] Standardize documentation style across all files
-- [ ] Add @seealso cross-references between related functions
+### Phase 2: Code Organization ✅ COMPLETE
+- [x] Extract API functions to get-wikipedia-text.R
+  - get_wikitext_by_name()
+  - get_wikitext_by_revid()
+  - get_wikitext_from_url()
+  - get_wp_category_members()
+  - get_wp_subcategories()
+  - get_wp_category_pages()
+  - get_page_info_batch()
+  - cache_wikitext()
+- [x] wikipedia-tools.R now contains only text-processing functions
+  - All functions are pure utilities with no internet access
+  - All 104 tests in test-wikipedia-tools.R passing
 
-### Phase 3: Polish & Release
+### Phase 3: API Testing ✅ COMPLETE
+- [x] Create test-get-wikipedia-text.R with httptest mocks (86 tests)
+  - Real fixtures captured from Wikipedia API (9 fixture files)
+  - Covers all 9 functions in get-wikipedia-text.R
+  - Tests content, types, pagination output, caching, error handling
+
+### Phase 4: Polish & Release
+- [ ] Run `devtools::check()` and fix all warnings/notes
 - [ ] Create README.md with installation and usage examples
 - [ ] Create vignette: "Getting Started with wikitools"
-- [ ] Create vignette: "Wikidata Workflows"
-- [ ] Run `devtools::check()` and fix all warnings/notes
-- [ ] Add codecov badge to README
 - [ ] Version bump to 0.2.0
-- [ ] Consider CRAN submission
+- [ ] GitHub Actions CI/CD setup (optional)
 
 ## Dependencies
 
@@ -134,10 +159,13 @@ See `dev-notes/FUNCTION-INVENTORY.md` for comprehensive breakdown.
 - dplyr
 - httr
 - jsonlite
+- magrittr
+- purrr
+- rmarkdown
+- rvest
 - stringi
 - stringr
 - tibble
-- WikipediR
 
 **Suggested:**
 - testthat (≥3.0.0)

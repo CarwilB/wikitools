@@ -1,0 +1,97 @@
+{
+    "batchcomplete": "",
+    "query": {
+        "pages": {
+            "3755": {
+                "pageid": 3755,
+                "ns": 0,
+                "title": "Boron",
+                "pageprops": {
+                    "wikibase_item": "Q618"
+                },
+                "contentmodel": "wikitext",
+                "pagelanguage": "en",
+                "pagelanguagehtmlcode": "en",
+                "pagelanguagedir": "ltr",
+                "touched": "2026-07-17T05:36:25Z",
+                "lastrevid": 1363723295,
+                "length": 128559
+            },
+            "5299": {
+                "pageid": 5299,
+                "ns": 0,
+                "title": "Carbon",
+                "pageprops": {
+                    "wikibase_item": "Q623"
+                },
+                "contentmodel": "wikitext",
+                "pagelanguage": "en",
+                "pagelanguagehtmlcode": "en",
+                "pagelanguagedir": "ltr",
+                "touched": "2026-07-17T05:36:25Z",
+                "lastrevid": 1356422152,
+                "length": 115680
+            },
+            "13256": {
+                "pageid": 13256,
+                "ns": 0,
+                "title": "Helium",
+                "pageprops": {
+                    "wikibase_item": "Q560"
+                },
+                "contentmodel": "wikitext",
+                "pagelanguage": "en",
+                "pagelanguagehtmlcode": "en",
+                "pagelanguagedir": "ltr",
+                "touched": "2026-07-17T12:02:17Z",
+                "lastrevid": 1360510440,
+                "length": 151461
+            },
+            "13255": {
+                "pageid": 13255,
+                "ns": 0,
+                "title": "Hydrogen",
+                "pageprops": {
+                    "wikibase_item": "Q556"
+                },
+                "contentmodel": "wikitext",
+                "pagelanguage": "en",
+                "pagelanguagehtmlcode": "en",
+                "pagelanguagedir": "ltr",
+                "touched": "2026-07-18T16:35:18Z",
+                "lastrevid": 1364802874,
+                "length": 140964
+            },
+            "17561": {
+                "pageid": 17561,
+                "ns": 0,
+                "title": "Lithium",
+                "pageprops": {
+                    "wikibase_item": "Q568"
+                },
+                "contentmodel": "wikitext",
+                "pagelanguage": "en",
+                "pagelanguagehtmlcode": "en",
+                "pagelanguagedir": "ltr",
+                "touched": "2026-07-17T06:18:43Z",
+                "lastrevid": 1363889157,
+                "length": 156862
+            },
+            "21175": {
+                "pageid": 21175,
+                "ns": 0,
+                "title": "Nitrogen",
+                "pageprops": {
+                    "wikibase_item": "Q627"
+                },
+                "contentmodel": "wikitext",
+                "pagelanguage": "en",
+                "pagelanguagehtmlcode": "en",
+                "pagelanguagedir": "ltr",
+                "touched": "2026-07-17T06:18:43Z",
+                "lastrevid": 1356444533,
+                "length": 106936
+            }
+        }
+    }
+}
