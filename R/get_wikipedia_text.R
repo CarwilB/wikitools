@@ -1,4 +1,4 @@
-# get-wikipedia-text.R
+# get_wikipedia_text.R
 # Wikipedia text retrieval and category functions via MediaWiki API
 # Functions: get_wikitext_by_name, get_wikitext_by_revid, get_wikitext_from_url,
 #            get_wp_category_members, get_wp_subcategories, get_wp_category_pages,

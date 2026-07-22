@@ -1,4 +1,4 @@
-# wikipedia-tools.R
+# wikipedia_tools.R
 # Wikitext parsing and analysis utilities (no internet required).
 # These functions process raw wikitext to extract infoboxes, clean markup,
 # count citations/references, and analyze content structure.

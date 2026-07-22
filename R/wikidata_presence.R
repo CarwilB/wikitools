@@ -1,4 +1,4 @@
-# wikidata-presence.R
+# wikidata_presence.R
 # Wikipedia language presence analysis for Wikidata instances.
 # Functions: wikidata_instance_wikipedia_presence,
 #            resume_wikidata_instance_wikipedia_presence
@@ -66,6 +66,7 @@ wikidata_instance_wikipedia_presence <- function(class_qid,
                                                  batch_delay = 1,
                                                  include_labels = TRUE,
                                                  drop_other_langs = TRUE,
+                                                 object_type = "instance",
                                                  debug = FALSE) {
   stopifnot(is.character(class_qid), length(class_qid) == 1)
   if (!is.null(languages)) stopifnot(is.character(languages), length(languages) >= 1)
@@ -76,7 +77,8 @@ wikidata_instance_wikipedia_presence <- function(class_qid,
     languages   = c("en", "es"),
     limit       = limit,
     batch_size  = batch_size,
-    batch_delay = batch_delay
+    batch_delay = batch_delay,
+    object_type = object_type
   )
 
   dbg <- list()
@@ -170,7 +172,8 @@ resume_wikidata_instance_wikipedia_presence <- function(partial_result,
                                                         batch_size = 50,
                                                         batch_delay = 1,
                                                         include_labels = TRUE,
-                                                        drop_other_langs = TRUE) {
+                                                        drop_other_langs = TRUE,
+                                                        object_type = "instance") {
   if (is.null(partial_result$instances) ||
       !"qid" %in% names(partial_result$instances)) {
     stop("partial_result must be a list with $instances containing a 'qid' column")
@@ -183,7 +186,8 @@ resume_wikidata_instance_wikipedia_presence <- function(partial_result,
     languages      = c("en", "es"),
     limit          = limit,
     batch_size     = batch_size,
-    batch_delay    = batch_delay
+    batch_delay    = batch_delay,
+    object_type    = object_type
   )
 
   if (!"wikipedia_articles" %in% names(inst_full)) {

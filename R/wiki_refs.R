@@ -1,4 +1,4 @@
-# wiki-refs.R
+# wiki_refs.R
 # Extract bibliographic references from Wikipedia article wikitext.
 # Parses {{Cite book}}, {{Cite journal}}, {{Cite web}}, and related templates
 # into a tidy reference tibble.
