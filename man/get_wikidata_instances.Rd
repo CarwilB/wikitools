@@ -65,9 +65,15 @@ property IDs if \code{NULL}.}
 to request from \code{wbgetentities} (e.g. "labels|sitelinks"). Default is
 "labels|descriptions|claims|sitelinks".}
 
-\item{object_type}{Character. Either "instance" (default) to retrieve items
-where P31 (instance of) equals \code{class_qid}, or "subclass" to retrieve
-items where P279 (subclass of) equals \code{class_qid}.}
+\item{object_type}{Character. Controls which Wikidata property is used for
+the SPARQL query:
+\describe{
+  \item{"instance"}{P31 (instance of) — the default.}
+  \item{"subclass"}{P279 (subclass of).}
+  \item{"position_held"}{P39 (position held) — retrieves items (typically
+    persons) that have held the specified office or position. Adds a
+    `position_held` list-column to the result.}
+}}
 
 \item{verbose}{Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.}
 }

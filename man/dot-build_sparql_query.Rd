@@ -16,7 +16,8 @@
 
 \item{country}{Optional character country QID.}
 
-\item{property_id}{Character. `"P31"` or `"P279"`.}
+\item{property_id}{Character. A Wikidata property ID (e.g. `"P31"`,
+`"P279"`, `"P39"`).}
 
 \item{limit}{Integer result limit.}
 }
