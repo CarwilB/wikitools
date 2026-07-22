@@ -1,0 +1,753 @@
+{
+    "batchcomplete": "",
+    "query": {
+        "pages": {
+            "5208820": {
+                "pageid": 5208820,
+                "ns": 0,
+                "title": "Paul Rivet",
+                "revisions": [
+                    {
+                        "revid": 1355809380,
+                        "parentid": 1351402872,
+                        "user": "JJMC89 bot III",
+                        "timestamp": "2026-05-24T01:26:14Z"
+                    },
+                    {
+                        "revid": 1351402872,
+                        "parentid": 1341027477,
+                        "user": "Edwardx",
+                        "timestamp": "2026-04-27T18:42:23Z"
+                    },
+                    {
+                        "revid": 1341027477,
+                        "parentid": 1333800454,
+                        "user": "Zackmann08",
+                        "timestamp": "2026-03-01T01:37:54Z"
+                    },
+                    {
+                        "revid": 1333800454,
+                        "parentid": 1296925695,
+                        "user": "Omnipaedista",
+                        "timestamp": "2026-01-19T20:45:35Z"
+                    },
+                    {
+                        "revid": 1296925695,
+                        "parentid": 1296925683,
+                        "user": "Citation bot",
+                        "timestamp": "2025-06-23T04:38:57Z"
+                    },
+                    {
+                        "revid": 1296925683,
+                        "parentid": 1291992839,
+                        "user": "Headbomb",
+                        "timestamp": "2025-06-23T04:38:48Z"
+                    },
+                    {
+                        "revid": 1291992839,
+                        "parentid": 1291249473,
+                        "user": "GünniX",
+                        "timestamp": "2025-05-24T16:08:58Z"
+                    },
+                    {
+                        "revid": 1291249473,
+                        "parentid": 1289807908,
+                        "user": "Herbert lewis",
+                        "timestamp": "2025-05-20T01:08:07Z"
+                    },
+                    {
+                        "revid": 1289807908,
+                        "parentid": 1264075397,
+                        "user": "JJMC89 bot III",
+                        "timestamp": "2025-05-11T00:16:51Z"
+                    },
+                    {
+                        "revid": 1264075397,
+                        "parentid": 1230298160,
+                        "user": "BigBullfrog",
+                        "timestamp": "2024-12-20T08:15:04Z"
+                    },
+                    {
+                        "revid": 1230298160,
+                        "parentid": 1226006411,
+                        "user": "Poya-P",
+                        "timestamp": "2024-06-21T22:12:53Z"
+                    },
+                    {
+                        "revid": 1226006411,
+                        "parentid": 1181626001,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2024-05-28T01:18:19Z"
+                    },
+                    {
+                        "revid": 1181626001,
+                        "parentid": 1181625967,
+                        "user": "Rahammz",
+                        "timestamp": "2023-10-24T06:41:32Z"
+                    },
+                    {
+                        "revid": 1181625967,
+                        "parentid": 1179026885,
+                        "user": "Rahammz",
+                        "timestamp": "2023-10-24T06:41:10Z"
+                    },
+                    {
+                        "revid": 1179026885,
+                        "parentid": 1179026620,
+                        "user": "Astra Travasso",
+                        "timestamp": "2023-10-07T11:15:54Z"
+                    },
+                    {
+                        "revid": 1179026620,
+                        "parentid": 1178651256,
+                        "user": "Astra Travasso",
+                        "timestamp": "2023-10-07T11:12:18Z"
+                    },
+                    {
+                        "revid": 1178651256,
+                        "parentid": 1150547357,
+                        "user": "Rahammz",
+                        "timestamp": "2023-10-05T01:00:29Z"
+                    },
+                    {
+                        "revid": 1150547357,
+                        "parentid": 1140767738,
+                        "user": "2001:7D0:82D3:D080:B8E2:B859:FF:D966",
+                        "anon": "",
+                        "timestamp": "2023-04-18T19:34:49Z"
+                    },
+                    {
+                        "revid": 1140767738,
+                        "parentid": 1140767572,
+                        "user": "Rahammz",
+                        "timestamp": "2023-02-21T17:58:11Z"
+                    },
+                    {
+                        "revid": 1140767572,
+                        "parentid": 1140767540,
+                        "user": "Rahammz",
+                        "timestamp": "2023-02-21T17:57:02Z"
+                    },
+                    {
+                        "revid": 1140767540,
+                        "parentid": 1140767300,
+                        "user": "Rahammz",
+                        "timestamp": "2023-02-21T17:56:44Z"
+                    },
+                    {
+                        "revid": 1140767300,
+                        "parentid": 1097378859,
+                        "user": "Rahammz",
+                        "timestamp": "2023-02-21T17:55:03Z"
+                    },
+                    {
+                        "revid": 1097378859,
+                        "parentid": 1097278938,
+                        "user": "Rodw",
+                        "timestamp": "2022-07-10T12:10:56Z"
+                    },
+                    {
+                        "revid": 1097278938,
+                        "parentid": 1097278875,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2022-07-09T19:34:47Z"
+                    },
+                    {
+                        "revid": 1097278875,
+                        "parentid": 1097278814,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2022-07-09T19:34:14Z"
+                    },
+                    {
+                        "revid": 1097278814,
+                        "parentid": 1096109588,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2022-07-09T19:33:51Z"
+                    },
+                    {
+                        "revid": 1096109588,
+                        "parentid": 1061458855,
+                        "user": "Atremari",
+                        "timestamp": "2022-07-02T10:43:21Z"
+                    },
+                    {
+                        "revid": 1061458855,
+                        "parentid": 1035340979,
+                        "user": "Micromesistius",
+                        "timestamp": "2021-12-21T21:01:05Z"
+                    },
+                    {
+                        "revid": 1035340979,
+                        "parentid": 1031181992,
+                        "user": "Citation bot",
+                        "timestamp": "2021-07-25T03:06:17Z"
+                    },
+                    {
+                        "revid": 1031181992,
+                        "parentid": 998900053,
+                        "user": "BD2412",
+                        "timestamp": "2021-06-30T06:31:37Z"
+                    },
+                    {
+                        "revid": 998900053,
+                        "parentid": 966607353,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2021-01-07T15:21:46Z"
+                    },
+                    {
+                        "revid": 966607353,
+                        "parentid": 966607307,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-07-08T02:26:50Z"
+                    },
+                    {
+                        "revid": 966607307,
+                        "parentid": 966607279,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-07-08T02:26:19Z"
+                    },
+                    {
+                        "revid": 966607279,
+                        "parentid": 963997256,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-07-08T02:26:01Z"
+                    },
+                    {
+                        "revid": 963997256,
+                        "parentid": 960275087,
+                        "user": "83d40m",
+                        "timestamp": "2020-06-23T00:33:47Z"
+                    },
+                    {
+                        "revid": 960275087,
+                        "parentid": 952647198,
+                        "user": "Rlobban",
+                        "timestamp": "2020-06-02T02:09:11Z"
+                    },
+                    {
+                        "revid": 952647198,
+                        "parentid": 938319118,
+                        "user": "69.43.210.147",
+                        "anon": "",
+                        "timestamp": "2020-04-23T10:10:55Z"
+                    },
+                    {
+                        "revid": 938319118,
+                        "parentid": 935964770,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-30T13:20:10Z"
+                    },
+                    {
+                        "revid": 935964770,
+                        "parentid": 935960928,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-15T21:28:23Z"
+                    },
+                    {
+                        "revid": 935960928,
+                        "parentid": 935960894,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-15T20:59:23Z"
+                    },
+                    {
+                        "revid": 935960894,
+                        "parentid": 935960766,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-15T20:59:09Z"
+                    },
+                    {
+                        "revid": 935960766,
+                        "parentid": 935960614,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-15T20:58:09Z"
+                    },
+                    {
+                        "revid": 935960614,
+                        "parentid": 935959773,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-15T20:56:57Z"
+                    },
+                    {
+                        "revid": 935959773,
+                        "parentid": 935895357,
+                        "user": "Sagotreespirit",
+                        "timestamp": "2020-01-15T20:49:59Z"
+                    },
+                    {
+                        "revid": 935895357,
+                        "parentid": 935894840,
+                        "user": "Lyttle-Wight",
+                        "timestamp": "2020-01-15T12:18:04Z"
+                    },
+                    {
+                        "revid": 935894840,
+                        "parentid": 878096859,
+                        "user": "Lyttle-Wight",
+                        "timestamp": "2020-01-15T12:12:16Z"
+                    },
+                    {
+                        "revid": 878096859,
+                        "parentid": 875936759,
+                        "user": "Ixocactus",
+                        "timestamp": "2019-01-13T00:25:01Z"
+                    },
+                    {
+                        "revid": 875936759,
+                        "parentid": 847314386,
+                        "user": "Cydebot",
+                        "timestamp": "2018-12-30T01:19:24Z"
+                    },
+                    {
+                        "revid": 847314386,
+                        "parentid": 847010179,
+                        "user": "Kelutral",
+                        "timestamp": "2018-06-24T12:43:53Z"
+                    },
+                    {
+                        "revid": 847010179,
+                        "parentid": 788827075,
+                        "user": "Kelutral",
+                        "timestamp": "2018-06-22T08:37:20Z"
+                    },
+                    {
+                        "revid": 788827075,
+                        "parentid": 787792311,
+                        "user": "BrownHairedGirl",
+                        "timestamp": "2017-07-03T18:30:33Z"
+                    },
+                    {
+                        "revid": 787792311,
+                        "parentid": 784696329,
+                        "user": "Magic links bot",
+                        "timestamp": "2017-06-27T15:34:03Z"
+                    },
+                    {
+                        "revid": 784696329,
+                        "parentid": 775808591,
+                        "user": "Jkrn111",
+                        "timestamp": "2017-06-09T16:31:23Z"
+                    },
+                    {
+                        "revid": 775808591,
+                        "parentid": 770474254,
+                        "user": "Rich Farmbrough",
+                        "timestamp": "2017-04-17T06:48:43Z"
+                    },
+                    {
+                        "revid": 770474254,
+                        "parentid": 759184393,
+                        "user": "Swpb",
+                        "timestamp": "2017-03-15T17:25:10Z"
+                    },
+                    {
+                        "revid": 759184393,
+                        "parentid": 746873457,
+                        "user": "Letdemsay",
+                        "timestamp": "2017-01-09T18:29:53Z"
+                    },
+                    {
+                        "revid": 746873457,
+                        "parentid": 740261079,
+                        "user": "190.155.8.51",
+                        "anon": "",
+                        "timestamp": "2016-10-30T02:45:19Z"
+                    },
+                    {
+                        "revid": 740261079,
+                        "parentid": 738406034,
+                        "user": "LiamKasbar",
+                        "timestamp": "2016-09-20T01:04:07Z"
+                    },
+                    {
+                        "revid": 738406034,
+                        "parentid": 707724376,
+                        "user": "Ser Amantio di Nicolao",
+                        "timestamp": "2016-09-08T19:30:39Z"
+                    },
+                    {
+                        "revid": 707724376,
+                        "parentid": 703420713,
+                        "user": "KasparBot",
+                        "timestamp": "2016-03-01T12:22:58Z"
+                    },
+                    {
+                        "revid": 703420713,
+                        "parentid": 688478060,
+                        "user": "Pyb",
+                        "timestamp": "2016-02-05T12:17:23Z"
+                    },
+                    {
+                        "revid": 688478060,
+                        "parentid": 683775347,
+                        "user": "Materialscientist",
+                        "timestamp": "2015-11-01T05:14:02Z"
+                    },
+                    {
+                        "revid": 683775347,
+                        "parentid": 680283468,
+                        "user": "Rioconcepcion282006",
+                        "timestamp": "2015-10-02T12:17:08Z"
+                    },
+                    {
+                        "revid": 680283468,
+                        "parentid": 660193658,
+                        "user": "Lekoren",
+                        "timestamp": "2015-09-09T21:45:36Z"
+                    },
+                    {
+                        "revid": 660193658,
+                        "parentid": 634128367,
+                        "user": "KasparBot",
+                        "timestamp": "2015-05-01T05:44:40Z"
+                    },
+                    {
+                        "revid": 634128367,
+                        "parentid": 634128106,
+                        "user": "Lekoren",
+                        "timestamp": "2014-11-16T21:19:01Z"
+                    },
+                    {
+                        "revid": 634128106,
+                        "parentid": 625729625,
+                        "user": "Lekoren",
+                        "timestamp": "2014-11-16T21:17:00Z"
+                    },
+                    {
+                        "revid": 625729625,
+                        "parentid": 622608615,
+                        "user": "Yobot",
+                        "timestamp": "2014-09-15T22:24:22Z"
+                    },
+                    {
+                        "revid": 622608615,
+                        "parentid": 622608448,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:55:55Z"
+                    },
+                    {
+                        "revid": 622608448,
+                        "parentid": 622608331,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:54:32Z"
+                    },
+                    {
+                        "revid": 622608331,
+                        "parentid": 622608230,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:53:36Z"
+                    },
+                    {
+                        "revid": 622608230,
+                        "parentid": 622607773,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:52:46Z"
+                    },
+                    {
+                        "revid": 622607773,
+                        "parentid": 622607501,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:48:36Z"
+                    },
+                    {
+                        "revid": 622607501,
+                        "parentid": 622607064,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:46:13Z"
+                    },
+                    {
+                        "revid": 622607064,
+                        "parentid": 622606612,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:42:13Z"
+                    },
+                    {
+                        "revid": 622606612,
+                        "parentid": 612080912,
+                        "user": "Parkwells",
+                        "timestamp": "2014-08-24T14:37:59Z"
+                    },
+                    {
+                        "revid": 612080912,
+                        "parentid": 576497071,
+                        "user": "194.168.147.250",
+                        "anon": "",
+                        "timestamp": "2014-06-08T14:02:01Z"
+                    },
+                    {
+                        "revid": 576497071,
+                        "parentid": 540665947,
+                        "user": "Waacstats",
+                        "timestamp": "2013-10-09T20:54:31Z"
+                    },
+                    {
+                        "revid": 540665947,
+                        "parentid": 524252186,
+                        "user": "Addbot",
+                        "timestamp": "2013-02-26T16:18:49Z"
+                    },
+                    {
+                        "revid": 524252186,
+                        "parentid": 513242855,
+                        "user": "VIAFbot",
+                        "timestamp": "2012-11-21T21:30:11Z"
+                    },
+                    {
+                        "revid": 513242855,
+                        "parentid": 490406852,
+                        "user": "74.213.71.91",
+                        "anon": "",
+                        "timestamp": "2012-09-17T20:14:52Z"
+                    },
+                    {
+                        "revid": 490406852,
+                        "parentid": 489285121,
+                        "user": "72.227.185.185",
+                        "anon": "",
+                        "timestamp": "2012-05-03T03:21:04Z"
+                    },
+                    {
+                        "revid": 489285121,
+                        "parentid": 486934855,
+                        "user": "Monegasque",
+                        "timestamp": "2012-04-26T09:18:02Z"
+                    },
+                    {
+                        "revid": 486934855,
+                        "parentid": 472358198,
+                        "user": "Fadesga",
+                        "timestamp": "2012-04-12T02:43:53Z"
+                    },
+                    {
+                        "revid": 472358198,
+                        "parentid": 467802988,
+                        "user": "221.119.119.225",
+                        "anon": "",
+                        "timestamp": "2012-01-21T01:25:45Z"
+                    },
+                    {
+                        "revid": 467802988,
+                        "parentid": 438672839,
+                        "user": "ZéroBot",
+                        "timestamp": "2011-12-26T20:20:26Z"
+                    },
+                    {
+                        "revid": 438672839,
+                        "parentid": 420996635,
+                        "user": "Yobot",
+                        "timestamp": "2011-07-10T01:41:00Z"
+                    },
+                    {
+                        "revid": 420996635,
+                        "parentid": 418843490,
+                        "user": "EmausBot",
+                        "timestamp": "2011-03-27T16:08:51Z"
+                    },
+                    {
+                        "revid": 418843490,
+                        "parentid": 416158279,
+                        "user": "Herbert lewis",
+                        "timestamp": "2011-03-14T21:14:07Z"
+                    },
+                    {
+                        "revid": 416158279,
+                        "parentid": 404146896,
+                        "user": "98.240.251.128",
+                        "anon": "",
+                        "timestamp": "2011-02-27T05:32:45Z"
+                    },
+                    {
+                        "revid": 404146896,
+                        "parentid": 387440695,
+                        "user": "111.240.175.161",
+                        "anon": "",
+                        "timestamp": "2010-12-25T07:47:16Z"
+                    },
+                    {
+                        "revid": 387440695,
+                        "parentid": 329352809,
+                        "user": "RjwilmsiBot",
+                        "timestamp": "2010-09-28T01:33:10Z"
+                    },
+                    {
+                        "revid": 329352809,
+                        "parentid": 329352681,
+                        "user": "Monegasque",
+                        "timestamp": "2009-12-03T00:47:20Z"
+                    },
+                    {
+                        "revid": 329352681,
+                        "parentid": 315991206,
+                        "user": "Monegasque",
+                        "timestamp": "2009-12-03T00:46:27Z"
+                    },
+                    {
+                        "revid": 315991206,
+                        "parentid": 310378934,
+                        "user": "Dmitri Lytov",
+                        "timestamp": "2009-09-24T20:49:40Z"
+                    },
+                    {
+                        "revid": 310378934,
+                        "parentid": 310102012,
+                        "user": "SmackBot",
+                        "timestamp": "2009-08-27T15:37:07Z"
+                    },
+                    {
+                        "revid": 310102012,
+                        "parentid": 310101946,
+                        "user": "Hmains",
+                        "timestamp": "2009-08-26T04:43:36Z"
+                    },
+                    {
+                        "revid": 310101946,
+                        "parentid": 302739748,
+                        "user": "Hmains",
+                        "timestamp": "2009-08-26T04:42:55Z"
+                    },
+                    {
+                        "revid": 302739748,
+                        "parentid": 296825063,
+                        "user": "Rjwilmsi",
+                        "timestamp": "2009-07-18T08:07:45Z"
+                    },
+                    {
+                        "revid": 296825063,
+                        "parentid": 295166850,
+                        "user": "Andres65~enwiki",
+                        "timestamp": "2009-06-16T20:35:20Z"
+                    },
+                    {
+                        "revid": 295166850,
+                        "parentid": 295166634,
+                        "user": "78.99.97.13",
+                        "anon": "",
+                        "timestamp": "2009-06-08T13:22:36Z"
+                    },
+                    {
+                        "revid": 295166634,
+                        "parentid": 246042806,
+                        "user": "78.99.97.13",
+                        "anon": "",
+                        "timestamp": "2009-06-08T13:20:56Z"
+                    },
+                    {
+                        "revid": 246042806,
+                        "parentid": 216209746,
+                        "user": "Joseph20202021",
+                        "timestamp": "2008-10-18T05:33:09Z"
+                    },
+                    {
+                        "revid": 216209746,
+                        "parentid": 206232711,
+                        "user": "Rjwilmsi",
+                        "timestamp": "2008-05-31T16:29:09Z"
+                    },
+                    {
+                        "revid": 206232711,
+                        "parentid": 187769193,
+                        "user": "Plindenbaum",
+                        "timestamp": "2008-04-17T12:56:36Z"
+                    },
+                    {
+                        "revid": 187769193,
+                        "parentid": 166758022,
+                        "user": "JAnDbot",
+                        "timestamp": "2008-01-29T20:49:09Z"
+                    },
+                    {
+                        "revid": 166758022,
+                        "parentid": 157429334,
+                        "user": "90.49.252.70",
+                        "anon": "",
+                        "timestamp": "2007-10-24T15:12:33Z"
+                    },
+                    {
+                        "revid": 157429334,
+                        "parentid": 152156474,
+                        "user": "Mausy5043",
+                        "timestamp": "2007-09-12T18:19:07Z"
+                    },
+                    {
+                        "revid": 152156474,
+                        "parentid": 152125804,
+                        "user": "SmackBot",
+                        "timestamp": "2007-08-19T01:51:10Z"
+                    },
+                    {
+                        "revid": 152125804,
+                        "parentid": 115690703,
+                        "user": "LordAnubisBOT",
+                        "timestamp": "2007-08-18T22:41:52Z"
+                    },
+                    {
+                        "revid": 115690703,
+                        "parentid": 88886797,
+                        "user": "Zero Gravity",
+                        "timestamp": "2007-03-17T01:14:10Z"
+                    },
+                    {
+                        "revid": 88886797,
+                        "parentid": 87744288,
+                        "user": "FlaBot",
+                        "timestamp": "2006-11-19T22:24:20Z"
+                    },
+                    {
+                        "revid": 87744288,
+                        "parentid": 79007110,
+                        "user": "Tazmaniacs",
+                        "timestamp": "2006-11-14T12:09:16Z"
+                    },
+                    {
+                        "revid": 79007110,
+                        "parentid": 78981747,
+                        "user": "SDC",
+                        "timestamp": "2006-10-02T07:25:33Z"
+                    },
+                    {
+                        "revid": 78981747,
+                        "parentid": 77559546,
+                        "user": "Twalls",
+                        "timestamp": "2006-10-02T01:56:22Z"
+                    },
+                    {
+                        "revid": 77559546,
+                        "parentid": 74584881,
+                        "user": ".anacondabot",
+                        "timestamp": "2006-09-24T17:09:38Z"
+                    },
+                    {
+                        "revid": 74584881,
+                        "parentid": 62890546,
+                        "user": "CmdrObot",
+                        "timestamp": "2006-09-08T20:14:04Z"
+                    },
+                    {
+                        "revid": 62890546,
+                        "parentid": 61908892,
+                        "user": "RussBot",
+                        "timestamp": "2006-07-09T15:13:19Z"
+                    },
+                    {
+                        "revid": 61908892,
+                        "parentid": 54114450,
+                        "user": "JustAGal",
+                        "timestamp": "2006-07-03T21:02:28Z"
+                    },
+                    {
+                        "revid": 54114450,
+                        "parentid": 54062200,
+                        "user": "132.192.14.232",
+                        "anon": "",
+                        "timestamp": "2006-05-20T00:02:16Z"
+                    },
+                    {
+                        "revid": 54062200,
+                        "parentid": 0,
+                        "user": "Lapaz",
+                        "timestamp": "2006-05-19T17:42:39Z"
+                    }
+                ]
+            }
+        }
+    }
+}

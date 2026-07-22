@@ -1,0 +1,59 @@
+{
+    "batchcomplete": "",
+    "continue": {
+        "sroffset": 5,
+        "continue": "-||"
+    },
+    "query": {
+        "searchinfo": {
+            "totalhits": 1950
+        },
+        "search": [
+            {
+                "ns": 0,
+                "title": "Paul Rivet",
+                "pageid": 5208820,
+                "size": 8885,
+                "wordcount": 908,
+                "snippet": "<span class=\"searchmatch\">Paul<\/span> <span class=\"searchmatch\">Rivet<\/span> (French: [pɔl ʁivɛ]; 7 May 1876 – 21 March 1958) was a French ethnologist known for founding the Musée de l&#039;Homme in 1937. In his professional",
+                "timestamp": "2026-05-24T01:26:14Z"
+            },
+            {
+                "ns": 0,
+                "title": "Musée de l'Homme",
+                "pageid": 5208681,
+                "size": 12100,
+                "wordcount": 1150,
+                "snippet": "an anthropology museum in Paris, France. It was established in 1937 by <span class=\"searchmatch\">Paul<\/span> <span class=\"searchmatch\">Rivet<\/span> for the 1937 Exposition Internationale des Arts et Techniques dans la",
+                "timestamp": "2026-07-09T14:44:48Z"
+            },
+            {
+                "ns": 0,
+                "title": "Comité de vigilance des intellectuels antifascistes",
+                "pageid": 7932537,
+                "size": 9307,
+                "wordcount": 1010,
+                "snippet": "Founded by Pierre Gérôme, philosopher Alain, physicist <span class=\"searchmatch\">Paul<\/span> Langevin and ethnologist <span class=\"searchmatch\">Paul<\/span> <span class=\"searchmatch\">Rivet<\/span>, it edited a newsletter, Vigilance, and boasted more than",
+                "timestamp": "2026-07-09T18:34:52Z"
+            },
+            {
+                "ns": 0,
+                "title": "Kristen McDonald Rivet",
+                "pageid": 72263270,
+                "size": 21686,
+                "wordcount": 1352,
+                "snippet": "Kristen Lee McDonald <span class=\"searchmatch\">Rivet<\/span> (/ˈrɪvɪt/; born July 11, 1970) is an American politician who has served as the U.S. representative for Michigan&#039;s 8th congressional",
+                "timestamp": "2026-06-29T18:41:59Z"
+            },
+            {
+                "ns": 0,
+                "title": "Rivet (surname)",
+                "pageid": 39374100,
+                "size": 445,
+                "wordcount": 96,
+                "snippet": "<span class=\"searchmatch\">Rivet<\/span> is a surname. Notable people with the surname include: André <span class=\"searchmatch\">Rivet<\/span> (1572–1651), French Huguenot theologian Craig <span class=\"searchmatch\">Rivet<\/span> (born 1974), Canadian hockey",
+                "timestamp": "2026-04-27T19:07:28Z"
+            }
+        ]
+    }
+}
