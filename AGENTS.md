@@ -146,6 +146,23 @@ See `dev-notes/FUNCTION-INVENTORY.md` for comprehensive breakdown.
   - Covers all 9 functions in get-wikipedia-text.R
   - Tests content, types, pagination output, caching, error handling
 
+### Phase 3.5: Additional Testing (July 18, 2026)
+- [x] test-wikidata-presence.R — 57 tests using Q978708 (PM of East Timor) fixture
+  - Fixture: tests/testthat/fixtures/inst_q978708.rds (6 PMs, 84 language codes)
+  - Uses local_mocked_bindings() — no API calls in tests
+  - get_wikidata_instances() extended with object_type = "position_held" (P39)
+  - wikidata_instance_wikipedia_presence() and resume_...() now accept object_type
+- [x] test-wikiblame.R — 51 tests using Paul Rivet (121 revisions, httptest + synthetic mocks)
+- [x] R/*.R file names converted to underscores (7 files renamed via git mv)
+- [x] test-get_wikidata_instances.R — expanded to 53 tests
+  - Covers: .build_sparql_query, .extract_instance_or_subclass, simplify_list_columns,
+    .parse_entity (position_held branch), get_wikidata_instances integration (httptest),
+    resume_get_wikidata_instances validation
+  - Fixtures: query.wikidata.org/sparql-7ae1e7.R, www.wikidata.org/w/api.php-bd18af.json
+- [x] test-search_wikipedia_one.R — 30 tests covering search_wikipedia_one() directly
+  - Fixtures: api.php-48c94f.json (Paul Rivet search), api.php-72b8b1.json (no results)
+  - Also covers add_wikipedia_matches() tryCatch, data.frame output, limit forwarding
+
 ### Phase 4: Polish & Release
 - [ ] Run `devtools::check()` and fix all warnings/notes
 - [ ] Create README.md with installation and usage examples

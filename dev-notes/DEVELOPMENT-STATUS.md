@@ -40,16 +40,9 @@
 | **test-wikipedia-tools.R** | 516 | 104 | ⭐⭐⭐⭐⭐ Excellent | ✅ 100% (8 non-API functions) |
 | **TOTAL** | **1,413** | **200** | **⭐⭐⭐⭐ Very Good** | **\~85% estimated** |
 
-**Coverage Highlights:**
-- `test-wikipedia-tools.R`: 516 lines with 104 tests covering 8 text-processing functions (extract_clean_fragments, as_wikitable, extract_infobox, clean_infobox_value, count_citations, count_refs, extract_census_years)
-- `test-create-quick-statement.R`: 451 lines with 30+ test cases covering all statement types
-- `test-add-wikipedia-matches.R`: 185 lines testing search, API fallbacks, error handling
-- `test-str-equivalent.R`: 159 lines testing matching with case/accent/whitespace variations
-- `test-get_wikidata_instances.R`: 101 lines testing Wikidata API, parsing, batch operations
+**Coverage Highlights:** - `test-wikipedia-tools.R`: 516 lines with 104 tests covering 8 text-processing functions (extract_clean_fragments, as_wikitable, extract_infobox, clean_infobox_value, count_citations, count_refs, extract_census_years) - `test-create-quick-statement.R`: 451 lines with 30+ test cases covering all statement types - `test-add-wikipedia-matches.R`: 185 lines testing search, API fallbacks, error handling - `test-str-equivalent.R`: 159 lines testing matching with case/accent/whitespace variations - `test-get_wikidata_instances.R`: 101 lines testing Wikidata API, parsing, batch operations
 
-**Remaining Gaps:**
-- 7 functions still need API mocking (requires httr/WikipediR mocks)
-- cache_wikitext() needs file I/O + API mocking
+**Remaining Gaps:** - 7 functions still need API mocking (requires httr/WikipediR mocks) - cache_wikitext() needs file I/O + API mocking
 
 ## What's Done ✅
 
@@ -79,29 +72,33 @@
 ## Remaining Gaps ⚠️
 
 ### 1. **API Function Testing** (7 functions require mocking)
-   - `get_wikitext_by_name()` - MediaWiki API via WikipediR::query()
-   - `get_wikitext_by_revid()` - Revision ID lookup via WikipediR::query()
-   - `get_wikitext_from_url()` - URL parsing + dispatch to above
-   - `get_wp_category_members()` - Category listing via httr::GET()
-   - `get_wp_subcategories()` - Wrapper around category_members
-   - `get_wp_category_pages()` - Wrapper around category_members
-   - `get_page_info_batch()` - Batch metadata via httr::GET()
-   
-   **Effort:** Estimated 100-150 additional test lines with proper mocking setup
+
+- `get_wikitext_by_name()` - MediaWiki API via WikipediR::query()
+- `get_wikitext_by_revid()` - Revision ID lookup via WikipediR::query()
+- `get_wikitext_from_url()` - URL parsing + dispatch to above
+- `get_wp_category_members()` - Category listing via httr::GET()
+- `get_wp_subcategories()` - Wrapper around category_members
+- `get_wp_category_pages()` - Wrapper around category_members
+- `get_page_info_batch()` - Batch metadata via httr::GET()
+
+**Effort:** Estimated 100-150 additional test lines with proper mocking setup
 
 ### 2. **File I/O Testing**
-   - `cache_wikitext()` - Partially testable (file I/O works, but API call needs mock)
+
+- `cache_wikitext()` - Partially testable (file I/O works, but API call needs mock)
 
 ### 3. **Documentation & Polish** (Optional)
-   - Add more detailed `@examples` to API functions (currently \`\dontrun{}\`)
-   - Create vignettes for user onboarding
-   - Create comprehensive README with quick start
-   - No CI/CD pipeline yet (GitHub Actions, codecov)
+
+- Add more detailed `@examples` to API functions (currently \`\dontrun{}\`)
+- Create vignettes for user onboarding
+- Create comprehensive README with quick start
+- No CI/CD pipeline yet (GitHub Actions, codecov)
 
 ### 4. **Quality Assurance** (Optional)
-   - Run `devtools::check()` and document results
-   - Test coverage measurement with covr package
-   - GitHub Actions CI/CD setup
+
+- Run `devtools::check()` and document results
+- Test coverage measurement with covr package
+- GitHub Actions CI/CD setup
 
 ## Immediate Next Steps
 
@@ -148,66 +145,34 @@
 
 ### ✅ FULLY TESTED (16 of 28 exported functions, 100% coverage)
 
-**Text Processing (8 functions)** - test-wikipedia-tools.R: 516 lines, 104 tests
-- `extract_clean_fragments()` - 15 tests ✅
-- `as_wikitable()` - 10 tests ✅
-- `extract_infobox()` - 10 tests ✅
-- `clean_infobox_value()` - 16 tests ✅
-- `count_citations()` - 6 tests ✅
-- `count_refs()` - 6 tests ✅
-- `extract_census_years()` - 16 tests ✅
-- Internal helpers (split_on_top_level_pipes, etc.) - implicit ✅
+**Text Processing (8 functions)** - test-wikipedia-tools.R: 516 lines, 104 tests - `extract_clean_fragments()` - 15 tests ✅ - `as_wikitable()` - 10 tests ✅ - `extract_infobox()` - 10 tests ✅ - `clean_infobox_value()` - 16 tests ✅ - `count_citations()` - 6 tests ✅ - `count_refs()` - 6 tests ✅ - `extract_census_years()` - 16 tests ✅ - Internal helpers (split_on_top_level_pipes, etc.) - implicit ✅
 
-**Wikidata (4 functions)** - test-get_wikidata_instances.R: 101 lines, 8+ tests
-- `get_wikidata_instances()` ✅
-- `parse_entity()` ✅
-- `extract_claims_from_entity()` ✅
-- `.extract_numeric_list_property()` ✅
+**Wikidata (4 functions)** - test-get_wikidata_instances.R: 101 lines, 8+ tests - `get_wikidata_instances()` ✅ - `parse_entity()` ✅ - `extract_claims_from_entity()` ✅ - `.extract_numeric_list_property()` ✅
 
-**QuickStatements (4 functions)** - test-create-quick-statement.R: 451 lines, 30+ tests
-- `add_quick_statement_column()` ✅
-- `create_string_statement()` ✅
-- `create_monolingual_statement()` ✅
-- `create_value_statement()` ✅
+**QuickStatements (4 functions)** - test-create-quick-statement.R: 451 lines, 30+ tests - `add_quick_statement_column()` ✅ - `create_string_statement()` ✅ - `create_monolingual_statement()` ✅ - `create_value_statement()` ✅
 
-**Search (1 function)** - test-add-wikipedia-matches.R: 185 lines, 13+ tests
-- `add_wikipedia_matches()` ✅
+**Search (1 function)** - test-add-wikipedia-matches.R: 185 lines, 13+ tests - `add_wikipedia_matches()` ✅
 
-**String Utilities (3 functions)** - test-str-equivalent.R: 159 lines, 15+ tests
-- `str_equivalent()` ✅
-- `equivalent_index()` ✅
-- `equivalent_which()` ✅
+**String Utilities (3 functions)** - test-str-equivalent.R: 159 lines, 15+ tests - `str_equivalent()` ✅ - `equivalent_index()` ✅ - `equivalent_which()` ✅
 
 ### ❌ UNTESTED (12 functions - all require API mocking)
 
-**Wikipedia API Functions (7)**
-- `get_wikitext_by_name()` - Needs WikipediR::query() mock
-- `get_wikitext_by_revid()` - Needs WikipediR::query() mock
-- `get_wikitext_from_url()` - Needs dispatch mocking
-- `get_wp_category_members()` - Needs httr::GET() mock with pagination
-- `get_wp_subcategories()` - Wrapper, depends on category_members
-- `get_wp_category_pages()` - Wrapper, depends on category_members
-- `get_page_info_batch()` - Needs httr::GET() mock
+**Wikipedia API Functions (7)** - `get_wikitext_by_name()` - Needs WikipediR::query() mock - `get_wikitext_by_revid()` - Needs WikipediR::query() mock - `get_wikitext_from_url()` - Needs dispatch mocking - `get_wp_category_members()` - Needs httr::GET() mock with pagination - `get_wp_subcategories()` - Wrapper, depends on category_members - `get_wp_category_pages()` - Wrapper, depends on category_members - `get_page_info_batch()` - Needs httr::GET() mock
 
-**File I/O (1)**
-- `cache_wikitext()` - Partially testable, needs API mock for full coverage
+**File I/O (1)** - `cache_wikitext()` - Partially testable, needs API mock for full coverage
 
-**Other (4)**
-- `.sparql_get_qids()` - Internal helper, needs SPARQL mock
-- `extract_references()` - Not yet implemented or tested
-- Wikidata batch functions - Needs mocking
-- Others with minimal/no coverage
+**Other (4)** - `.sparql_get_qids()` - Internal helper, needs SPARQL mock - `extract_references()` - Not yet implemented or tested - Wikidata batch functions - Needs mocking - Others with minimal/no coverage
 
 ## Estimated Effort to Release v0.2.0
 
-| Task                          | Lines | Hours  | Status             |
-|-------------------------------|-------|--------|-------------------|
-| Add API mocking + tests       | +100  | 3-4    | 🟡 Recommended    |
-| Run devtools::check()         | 0     | 0.5    | 🟢 Quick          |
-| README + basic vignette       | 100   | 2      | 🟡 Nice-to-have   |
-| Codecov/CI/CD setup           | 50    | 1-2    | 🟡 Nice-to-have   |
-| **TOTAL (critical path)**     |       | **0.5**| Ready for v0.2.0  |
-| **TOTAL (with polish)**       |       | **5-6**|                 |
+| Task                      | Lines | Hours   | Status           |
+|---------------------------|-------|---------|------------------|
+| Add API mocking + tests   | +100  | 3-4     | 🟡 Recommended   |
+| Run devtools::check()     | 0     | 0.5     | 🟢 Quick         |
+| README + basic vignette   | 100   | 2       | 🟡 Nice-to-have  |
+| Codecov/CI/CD setup       | 50    | 1-2     | 🟡 Nice-to-have  |
+| **TOTAL (critical path)** |       | **0.5** | Ready for v0.2.0 |
+| **TOTAL (with polish)**   |       | **5-6** |                  |
 
 ## Success Criteria for v0.2.0
 
@@ -215,7 +180,7 @@
 
 - [x] test-wikipedia-tools.R expanded to 516 lines with 104 tests (✨ 3,433% growth!)
 - [x] All non-API functions have comprehensive tests (16 of 28 exported functions)
-- [x] Test coverage reached ~85% (up from ~75%)
+- [x] Test coverage reached \~85% (up from \~75%)
 - [x] All documented functions have passing tests
 
 ### 🟢 READY NOW (Critical path for v0.2.0)
