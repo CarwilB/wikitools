@@ -26,7 +26,8 @@ Internal helper that builds a SPARQL query for retrieving items by
 
 - property_id:
 
-  Character. \`"P31"\` or \`"P279"\`.
+  Character. A Wikidata property ID (e.g. \`"P31"\`, \`"P279"\`,
+  \`"P39"\`).
 
 - limit:
 

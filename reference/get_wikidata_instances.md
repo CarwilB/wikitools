@@ -107,9 +107,22 @@ get_wikidata_instances(
 
 - object_type:
 
-  Character. Either "instance" (default) to retrieve items where P31
-  (instance of) equals `class_qid`, or "subclass" to retrieve items
-  where P279 (subclass of) equals `class_qid`.
+  Character. Controls which Wikidata property is used for the SPARQL
+  query:
+
+  "instance"
+
+  :   P31 (instance of) — the default.
+
+  "subclass"
+
+  :   P279 (subclass of).
+
+  "position_held"
+
+  :   P39 (position held) — retrieves items (typically persons) that
+      have held the specified office or position. Adds a
+      \`position_held\` list-column to the result.
 
 - verbose:
 

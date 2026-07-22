@@ -14,6 +14,8 @@ Useful links:
 
 - <https://github.com/CarwilB/wikitools>
 
+- <https://carwilb.github.io/wikitools/>
+
 - Report bugs at <https://github.com/CarwilB/wikitools/issues>
 
 ## Author

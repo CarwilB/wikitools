@@ -32,8 +32,16 @@
   : Extract Clean Text Fragments from Wikitext
 - [`extract_infobox()`](https://carwilb.github.io/wikitools/reference/extract_infobox.md)
   : Extract the First Infobox from Wikitext
+- [`extract_refs_from_wikitext()`](https://carwilb.github.io/wikitools/reference/extract_refs_from_wikitext.md)
+  : Extract Citation References from Wikitext
+- [`find_sentence_insertion()`](https://carwilb.github.io/wikitools/reference/find_sentence_insertion.md)
+  : Find the Revision Where a Sentence Was First Inserted
 - [`get_page_info_batch()`](https://carwilb.github.io/wikitools/reference/get_page_info_batch.md)
   : Fetch Page Metadata in Batches
+- [`get_plain_text()`](https://carwilb.github.io/wikitools/reference/get_plain_text.md)
+  : Fetch Plain Text of a Wikipedia Article
+- [`get_revision_history_map()`](https://carwilb.github.io/wikitools/reference/get_revision_history_map.md)
+  : Fetch the Full Revision History of a Wikipedia Article
 - [`get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/get_wikidata_instances.md)
   : Get All Instances of a Wikidata Class
 - [`get_wikitext_by_name()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_name.md)
@@ -52,9 +60,17 @@
   : Add a QuickStatements Column for Removing Statements to a Data Frame
 - [`resume_get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/resume_get_wikidata_instances.md)
   : Resume a Partially-Completed get_wikidata_instances() Query
+- [`resume_wikidata_instance_wikipedia_presence()`](https://carwilb.github.io/wikitools/reference/resume_wikidata_instance_wikipedia_presence.md)
+  : Resume a partially completed Wikipedia presence query
 - [`simplify_list_columns()`](https://carwilb.github.io/wikitools/reference/simplify_list_columns.md)
   : Simplify Single-Value List Columns in a Data Frame
 - [`str_equivalent()`](https://carwilb.github.io/wikitools/reference/str_equivalent.md)
   : Normalize and Compare Two Strings
 - [`str_equivalent_list()`](https://carwilb.github.io/wikitools/reference/str_equivalent_list.md)
   : Check Whether Any String in a Vector Is Equivalent
+- [`track_wikipedia_sentences()`](https://carwilb.github.io/wikitools/reference/track_wikipedia_sentences.md)
+  : Track Insertion Dates for Multiple Wikipedia Sentences
+- [`wikidata_instance_wikipedia_presence()`](https://carwilb.github.io/wikitools/reference/wikidata_instance_wikipedia_presence.md)
+  : Wikipedia language presence matrix for instances of a Wikidata class
+- [`wikitext_to_plain()`](https://carwilb.github.io/wikitools/reference/wikitext_to_plain.md)
+  : Convert Wikitext to Plain Text via Pandoc

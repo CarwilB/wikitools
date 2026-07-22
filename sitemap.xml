@@ -26,7 +26,12 @@
 <url><loc>https://carwilb.github.io/wikitools/reference/extract_census_years.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/extract_clean_fragments.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/extract_infobox.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/extract_refs_from_wikitext.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/find_sentence_insertion.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/get_page_info_batch.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/get_plain_text.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/get_revision_history_map.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/get_revision_text_safe.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/get_wikidata_instances.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/get_wikitext_by_name.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/get_wikitext_by_revid.html</loc></url>
@@ -38,11 +43,15 @@
 <url><loc>https://carwilb.github.io/wikitools/reference/pipe.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/remove_quick_statement_column.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/resume_get_wikidata_instances.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/resume_wikidata_instance_wikipedia_presence.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/search_wikipedia_one.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/simplify_list_columns.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/split_on_top_level_pipes.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/str_equivalent.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/str_equivalent_list.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/track_wikipedia_sentences.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/wikidata_instance_wikipedia_presence.html</loc></url>
+<url><loc>https://carwilb.github.io/wikitools/reference/wikitext_to_plain.html</loc></url>
 <url><loc>https://carwilb.github.io/wikitools/reference/wikitools-package.html</loc></url>
 </urlset>
 

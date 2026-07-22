@@ -15,7 +15,7 @@ Items are fetched from the Wikidata API in batches of batch_size
 
     <a class="navbar-brand me-2" href="../index.html">wikitools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,9 +147,20 @@ to request from <code>wbgetentities</code> (e.g. "labels|sitelinks"). Default is
 
 
 <dt id="arg-object-type">object_type<a class="anchor" aria-label="anchor" href="#arg-object-type"></a></dt>
-<dd><p>Character. Either "instance" (default) to retrieve items
-where P31 (instance of) equals <code>class_qid</code>, or "subclass" to retrieve
-items where P279 (subclass of) equals <code>class_qid</code>.</p></dd>
+<dd><p>Character. Controls which Wikidata property is used for
+the SPARQL query:</p><dl><dt>"instance"</dt>
+<dd><p>P31 (instance of) — the default.</p></dd>
+
+  <dt>"subclass"</dt>
+<dd><p>P279 (subclass of).</p></dd>
+
+  <dt>"position_held"</dt>
+<dd><p>P39 (position held) — retrieves items (typically
+    persons) that have held the specified office or position. Adds a
+    `position_held` list-column to the result.</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>

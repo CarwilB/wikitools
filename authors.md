@@ -11,13 +11,13 @@ Source:
 [`DESCRIPTION`](https://github.com/CarwilB/wikitools/blob/main/DESCRIPTION)
 
 Bjork-James C (2026). *wikitools: Tools to Engage with Wikipedia and
-Wikidata*. R package version 0.1.0,
+Wikidata*. R package version 0.1.5,
 <https://github.com/CarwilB/wikitools>.
 
     @Manual{,
       title = {wikitools: Tools to Engage with Wikipedia and Wikidata},
       author = {Carwil Bjork-James},
       year = {2026},
-      note = {R package version 0.1.0},
+      note = {R package version 0.1.5},
       url = {https://github.com/CarwilB/wikitools},
     }

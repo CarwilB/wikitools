@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">wikitools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,89 +78,127 @@
 <div class="section level3">
 <h3 id="source-files">Source Files<a class="anchor" aria-label="anchor" href="#source-files"></a></h3>
 <ol style="list-style-type: decimal"><li>
-<strong>R/wikipedia-tools.R</strong> (17 functions)
-<ul><li>Wikipedia text fetching and caching</li>
-<li>Wikitext parsing (infoboxes, citations, census years)</li>
-<li>Category management</li>
-<li>Page metadata retrieval</li>
+<p><strong>R/wikipedia-tools.R</strong> — Wikitext parsing utilities (no internet)</p>
+<ul><li>extract_clean_fragments, as_wikitable, extract_infobox, clean_infobox_value</li>
+<li>count_citations, count_refs, extract_census_years, wikitext_to_plain</li>
 </ul></li>
 <li>
-<strong>R/get_wikidata_instances.R</strong> (13 functions)
-<ul><li>Wikidata instance/class retrieval</li>
-<li>SPARQL queries</li>
-<li>Batch API handling</li>
-<li>Entity parsing</li>
+<p><strong>R/get-wikipedia-text.R</strong> — Wikipedia API fetch functions</p>
+<ul><li>get_wikitext_by_name, get_wikitext_by_revid, get_wikitext_from_url</li>
+<li>get_wp_category_members, get_wp_subcategories, get_wp_category_pages</li>
+<li>get_page_info_batch, cache_wikitext, get_plain_text</li>
 </ul></li>
 <li>
-<strong>R/create_quick_statement.R</strong> (4 functions)
-<ul><li>QuickStatements V1 command generation</li>
-<li>Support for various data types and references</li>
+<p><strong>R/get_wikidata_instances.R</strong> — Wikidata instance/class retrieval</p>
+<ul><li>get_wikidata_instances, resume_get_wikidata_instances</li>
+<li>SPARQL queries, batch API handling, entity parsing (13 functions)</li>
 </ul></li>
 <li>
-<strong>R/str-equivalent.R</strong> (4 functions)
-<ul><li>String matching with accent/case/whitespace handling</li>
-<li>Index and match utilities</li>
+<p><strong>R/wikidata-presence.R</strong> — Wikipedia language presence analysis</p>
+<ul><li>wikidata_instance_wikipedia_presence</li>
+<li>resume_wikidata_instance_wikipedia_presence</li>
 </ul></li>
 <li>
-<strong>R/add-wikipedia-matches.R</strong> (1 function)
-<ul><li>Wikipedia search with fallback API strategies</li>
+<p><strong>R/wikiblame.R</strong> — Revision history and text tracing</p>
+<ul><li>get_revision_history_map, find_sentence_insertion</li>
+<li>track_wikipedia_sentences (+ internal helpers)</li>
 </ul></li>
+<li>
+<p><strong>R/wiki-refs.R</strong> — Citation reference extraction</p>
+<ul><li>extract_refs_from_wikitext (+ internal parsing helpers)</li>
+</ul></li>
+<li><p><strong>R/create_quick_statement.R</strong> — QuickStatements V1 command generation (4 functions)</p></li>
+<li><p><strong>R/str-equivalent.R</strong> — String matching utilities (4 functions)</p></li>
+<li><p><strong>R/add-wikipedia-matches.R</strong> — Wikipedia search with fallback strategies (1 function)</p></li>
 </ol></div>
 </div>
 <div class="section level2">
+<h2 id="status-update-july-18-2026">Status Update (July 18, 2026)<a class="anchor" aria-label="anchor" href="#status-update-july-18-2026"></a></h2>
+<p>✅ <strong>MAJOR MILESTONE:</strong> test-get-wikipedia-text.R created with 86 tests using httptest mocks - All 8 API functions now covered: get_wikitext_by_name, get_wikitext_by_revid, get_wikitext_from_url, get_wp_category_members, get_wp_subcategories, get_wp_category_pages, get_page_info_batch, cache_wikitext, get_plain_text - Fixtures captured from real Wikipedia API for Mark Twain, Ada Lovelace, Steve Biko, 6 elements batch, and Category:Noble gases (pages + subcategories) - Fixtures stored in tests/testthat/en.wikipedia.org/w/api.php-*.json - Tests use httptest::with_mock_dir(“.”) pattern (httptest 4.x) - Total package test suite: 343 tests, 0 failures</p>
+<hr></div>
+<div class="section level2">
 <h2 id="development-priorities">Development Priorities<a class="anchor" aria-label="anchor" href="#development-priorities"></a></h2>
 <div class="section level3">
-<h3 id="phase-1-critical-testing-gaps">Phase 1: Critical Testing Gaps<a class="anchor" aria-label="anchor" href="#phase-1-critical-testing-gaps"></a></h3>
+<h3 id="phase-1-critical-testing-gaps-white_check_mark-complete">Phase 1: Critical Testing Gaps ✅ COMPLETE<a class="anchor" aria-label="anchor" href="#phase-1-critical-testing-gaps-white_check_mark-complete"></a></h3>
 <ol style="list-style-type: decimal"><li>
-<strong>test-wikipedia-tools.R</strong> - Expand from 3 to ~50+ lines
-<ul><li>Mock Wikipedia API responses</li>
-<li>Test wikitext extraction, parsing, fragment cleaning</li>
-<li>Test category member retrieval</li>
-<li>Test page info batch retrieval</li>
+<strong>test-wikipedia-tools.R</strong> ✅ DONE
+<ul><li>Expanded from 3 to 516 lines</li>
+<li>104 tests covering all text-processing functions</li>
+<li>Zero-internet functions: extract_clean_fragments, as_wikitable, extract_infobox, clean_infobox_value, count_citations, count_refs, extract_census_years</li>
 </ul></li>
 <li>
-<strong>test-add-wikipedia-matches.R</strong> (NEW)
-<ul><li>Create comprehensive test suite</li>
-<li>Mock Wikipedia search API</li>
-<li>Test fallback to direct API calls</li>
-<li>Test error handling for bad queries</li>
+<strong>test-add-wikipedia-matches.R</strong> ✅ DONE
+<ul><li>185 lines with 13+ test cases</li>
+<li>Tests search, API fallbacks, error handling</li>
 </ul></li>
 <li>
-<strong>test-create-quick-statement.R</strong> (NEW)
-<ul><li>Test all statement types (string, monolingual, label, description, item, etc.)</li>
-<li>Test reference handling</li>
-<li>Test qualifier syntax</li>
-<li>Test edge cases (special characters, nulls, LAST keyword)</li>
+<strong>test-create-quick-statement.R</strong> ✅ DONE
+<ul><li>451 lines with 30+ test cases</li>
+<li>All statement types (string, monolingual, label, description, item, etc.)</li>
 </ul></li>
 </ol></div>
 <div class="section level3">
-<h3 id="phase-2-documentation-enhancement">Phase 2: Documentation Enhancement<a class="anchor" aria-label="anchor" href="#phase-2-documentation-enhancement"></a></h3>
+<h3 id="phase-2-code-organization-white_check_mark-complete">Phase 2: Code Organization ✅ COMPLETE<a class="anchor" aria-label="anchor" href="#phase-2-code-organization-white_check_mark-complete"></a></h3>
 <ul class="task-list"><li>
-<label><input type="checkbox">Audit each function’s @param and @return tags</label>
-<ul><li>Priority: add-wikipedia-matches.R (only 17 Roxygen lines)</li>
+<label><input type="checkbox" checked>Extract API functions to get-wikipedia-text.R</label>
+<ul><li>get_wikitext_by_name()</li>
+<li>get_wikitext_by_revid()</li>
+<li>get_wikitext_from_url()</li>
+<li>get_wp_category_members()</li>
+<li>get_wp_subcategories()</li>
+<li>get_wp_category_pages()</li>
+<li>get_page_info_batch()</li>
+<li>cache_wikitext()</li>
 </ul></li>
 <li>
-<label><input type="checkbox">Add realistic @examples to all functions</label>
-<ul><li>Ensure examples don’t require external API calls</li>
-<li>Use mock data or commented examples</li>
+<label><input type="checkbox" checked>wikipedia-tools.R now contains only text-processing functions</label>
+<ul><li>All functions are pure utilities with no internet access</li>
+<li>All 104 tests in test-wikipedia-tools.R passing</li>
 </ul></li>
-<li><label><input type="checkbox">Standardize documentation style across all files</label></li>
-<li><label><input type="checkbox">Add @seealso cross-references between related functions</label></li>
 </ul></div>
 <div class="section level3">
-<h3 id="phase-3-polish--release">Phase 3: Polish &amp; Release<a class="anchor" aria-label="anchor" href="#phase-3-polish--release"></a></h3>
-<ul class="task-list"><li><label><input type="checkbox">Create README.md with installation and usage examples</label></li>
+<h3 id="phase-3-api-testing-white_check_mark-complete">Phase 3: API Testing ✅ COMPLETE<a class="anchor" aria-label="anchor" href="#phase-3-api-testing-white_check_mark-complete"></a></h3>
+<ul class="task-list"><li>
+<label><input type="checkbox" checked>Create test-get-wikipedia-text.R with httptest mocks (86 tests)</label>
+<ul><li>Real fixtures captured from Wikipedia API (9 fixture files)</li>
+<li>Covers all 9 functions in get-wikipedia-text.R</li>
+<li>Tests content, types, pagination output, caching, error handling</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="phase-35-additional-testing-july-18-2026">Phase 3.5: Additional Testing (July 18, 2026)<a class="anchor" aria-label="anchor" href="#phase-35-additional-testing-july-18-2026"></a></h3>
+<ul class="task-list"><li>
+<label><input type="checkbox" checked>test-wikidata-presence.R — 57 tests using Q978708 (PM of East Timor) fixture</label>
+<ul><li>Fixture: tests/testthat/fixtures/inst_q978708.rds (6 PMs, 84 language codes)</li>
+<li>Uses local_mocked_bindings() — no API calls in tests</li>
+<li>get_wikidata_instances() extended with object_type = “position_held” (P39)</li>
+<li>wikidata_instance_wikipedia_presence() and resume_…() now accept object_type</li>
+</ul></li>
+<li><label><input type="checkbox" checked>test-wikiblame.R — 51 tests using Paul Rivet (121 revisions, httptest + synthetic mocks)</label></li>
+<li><label><input type="checkbox" checked>R/*.R file names converted to underscores (7 files renamed via git mv)</label></li>
+<li>
+<label><input type="checkbox" checked>test-get_wikidata_instances.R — expanded to 53 tests</label>
+<ul><li>Covers: .build_sparql_query, .extract_instance_or_subclass, simplify_list_columns, .parse_entity (position_held branch), get_wikidata_instances integration (httptest), resume_get_wikidata_instances validation</li>
+<li>Fixtures: query.wikidata.org/sparql-7ae1e7.R, www.wikidata.org/w/api.php-bd18af.json</li>
+</ul></li>
+<li>
+<label><input type="checkbox" checked>test-search_wikipedia_one.R — 30 tests covering search_wikipedia_one() directly</label>
+<ul><li>Fixtures: api.php-48c94f.json (Paul Rivet search), api.php-72b8b1.json (no results)</li>
+<li>Also covers add_wikipedia_matches() tryCatch, data.frame output, limit forwarding</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="phase-4-polish--release">Phase 4: Polish &amp; Release<a class="anchor" aria-label="anchor" href="#phase-4-polish--release"></a></h3>
+<ul class="task-list"><li><label><input type="checkbox">Run <code>devtools::check()</code> and fix all warnings/notes</label></li>
+<li><label><input type="checkbox">Create README.md with installation and usage examples</label></li>
 <li><label><input type="checkbox">Create vignette: “Getting Started with wikitools”</label></li>
-<li><label><input type="checkbox">Create vignette: “Wikidata Workflows”</label></li>
-<li><label><input type="checkbox">Run <code>devtools::check()</code> and fix all warnings/notes</label></li>
-<li><label><input type="checkbox">Add codecov badge to README</label></li>
 <li><label><input type="checkbox">Version bump to 0.2.0</label></li>
-<li><label><input type="checkbox">Consider CRAN submission</label></li>
+<li><label><input type="checkbox">GitHub Actions CI/CD setup (optional)</label></li>
 </ul></div>
 </div>
 <div class="section level2">
 <h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a></h2>
-<p><strong>Required:</strong> - dplyr - httr - jsonlite - stringi - stringr - tibble - WikipediR</p>
+<p><strong>Required:</strong> - dplyr - httr - jsonlite - magrittr - purrr - rmarkdown - rvest - stringi - stringr - tibble</p>
 <p><strong>Suggested:</strong> - testthat (≥3.0.0) - knitr - rmarkdown</p>
 </div>
 <div class="section level2">
@@ -169,15 +207,15 @@
 <div class="section level3">
 <h3 id="migration-candidates-from-wiki-graph">Migration Candidates from wiki-graph<a class="anchor" aria-label="anchor" href="#migration-candidates-from-wiki-graph"></a></h3>
 <ul><li>
-<code>get_plain_text()</code> - Wikipedia text extraction</li>
+<code><a href="reference/get_plain_text.html">get_plain_text()</a></code> - Wikipedia text extraction</li>
 <li>
-<code>extract_refs_from_wikitext()</code> - Reference extraction</li>
+<code><a href="reference/extract_refs_from_wikitext.html">extract_refs_from_wikitext()</a></code> - Reference extraction</li>
 <li>
-<code>wikidata_instance_wikipedia_presence()</code> - Presence checking</li>
+<code><a href="reference/wikidata_instance_wikipedia_presence.html">wikidata_instance_wikipedia_presence()</a></code> - Presence checking</li>
 <li>
 <code>get_wikidata_frequencies()</code> - Frequency analysis</li>
 <li>
-<code>track_wikipedia_sentences()</code> - Edit tracking</li>
+<code><a href="reference/track_wikipedia_sentences.html">track_wikipedia_sentences()</a></code> - Edit tracking</li>
 </ul></div>
 </div>
 <div class="section level2">
