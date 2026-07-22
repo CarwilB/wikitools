@@ -264,14 +264,15 @@ add_wikidata_property <- function(df, property, name = property) {
 #'   by `instance of` or `subclass of` with an optional country filter.
 #' @param class_qid Character class QID.
 #' @param country Optional character country QID.
-#' @param property_id Character. `"P31"` or `"P279"`.
+#' @param property_id Character. A Wikidata property ID (e.g. `"P31"`,
+#'   `"P279"`, `"P39"`).
 #' @param limit Integer result limit.
 #' @return A character SPARQL query string.
 #' @keywords internal
 
 .build_sparql_query <- function(class_qid, country = NULL, property_id = "P31", limit = 1000) {
-  if (!property_id %in% c("P31", "P279")) {
-    stop("property_id must be 'P31' (instance of) or 'P279' (subclass of)")
+  if (!grepl("^P\\d+$", property_id)) {
+    stop("property_id must be a Wikidata property ID in format 'P123'")
   }
 
   country_triple <- if (!is.null(country)) {
@@ -418,9 +419,19 @@ add_wikidata_property <- function(df, property, name = property) {
     result
   } else list()
 
-  # Extract P31 (instance of) or P279 (subclass of) statements
-  property_id <- if (object_type == "instance") "P31" else "P279"
-  column_name <- if (object_type == "instance") "instance_of" else "subclass_of"
+  # Extract P31 (instance of), P279 (subclass of), or P39 (position held) statements
+  property_id <- switch(object_type,
+    instance        = "P31",
+    subclass        = "P279",
+    position_held   = "P39",
+    "P31"
+  )
+  column_name <- switch(object_type,
+    instance        = "instance_of",
+    subclass        = "subclass_of",
+    position_held   = "position_held",
+    "instance_of"
+  )
   hierarchy_vals <- tryCatch({
     .extract_instance_or_subclass(entity, property_id)
   }, error = function(e) {
@@ -647,9 +658,15 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @param entity_props Character. Pipe-separated list of Wikidata entity props
 #'   to request from \code{wbgetentities} (e.g. "labels|sitelinks"). Default is
 #'   "labels|descriptions|claims|sitelinks".
-#' @param object_type Character. Either "instance" (default) to retrieve items
-#'   where P31 (instance of) equals \code{class_qid}, or "subclass" to retrieve
-#'   items where P279 (subclass of) equals \code{class_qid}.
+#' @param object_type Character. Controls which Wikidata property is used for
+#'   the SPARQL query:
+#'   \describe{
+#'     \item{"instance"}{P31 (instance of) — the default.}
+#'     \item{"subclass"}{P279 (subclass of).}
+#'     \item{"position_held"}{P39 (position held) — retrieves items (typically
+#'       persons) that have held the specified office or position. Adds a
+#'       `position_held` list-column to the result.}
+#'   }
 #' @param verbose Logical. If `TRUE`, print SPARQL query and detailed parse diagnostics.
 #'
 #' @return A tibble with columns:
@@ -692,8 +709,8 @@ get_wikidata_instances <- function(class_qid,
                                    verbose                     = FALSE) {
 
   # Validate object_type
-  if (!object_type %in% c("instance", "subclass")) {
-    stop('object_type must be "instance" or "subclass"')
+  if (!object_type %in% c("instance", "subclass", "position_held")) {
+    stop('object_type must be "instance", "subclass", or "position_held"')
   }
 
   # Resolve column names for regular extra properties
@@ -742,8 +759,16 @@ get_wikidata_instances <- function(class_qid,
   }
 
   # Determine property ID and message suffix
-  property_id <- if (object_type == "instance") "P31" else "P279"
-  type_label <- if (object_type == "instance") "instances" else "subclasses"
+  property_id <- switch(object_type,
+    instance      = "P31",
+    subclass      = "P279",
+    position_held = "P39"
+  )
+  type_label <- switch(object_type,
+    instance      = "instances",
+    subclass      = "subclasses",
+    position_held = "position holders"
+  )
 
   # Step 1: SPARQL -- get all QIDs
   if (verbose) {
@@ -841,8 +866,8 @@ resume_get_wikidata_instances <- function(partial_result,
     stop("partial_result must contain a 'qid' column")
   if (!grepl("^Q\\d+$", class_qid))
     stop("class_qid must be in format 'Q123'")
-  if (!object_type %in% c("instance", "subclass"))
-    stop('object_type must be "instance" or "subclass"')
+  if (!object_type %in% c("instance", "subclass", "position_held"))
+    stop('object_type must be "instance", "subclass", or "position_held"')
   batch_size <- min(as.integer(batch_size), 50L)
 
   # Resolve property names
@@ -878,8 +903,16 @@ resume_get_wikidata_instances <- function(partial_result,
   }
 
   # Determine property ID
-  property_id <- if (object_type == "instance") "P31" else "P279"
-  type_label <- if (object_type == "instance") "instances" else "subclasses"
+  property_id <- switch(object_type,
+    instance      = "P31",
+    subclass      = "P279",
+    position_held = "P39"
+  )
+  type_label <- switch(object_type,
+    instance      = "instances",
+    subclass      = "subclasses",
+    position_held = "position holders"
+  )
 
   # Step 1: re-run SPARQL to get the complete QID list
   message("Re-running SPARQL query for ", class_qid, "...")
