@@ -61,7 +61,7 @@ returned entity into row records.
 
 - object_type:
 
-  Character. \`"instance"\` or \`"subclass"\`.
+  Character. \`"instance"\` or \`"subclass"\` or \`"position_held"\`
 
 - verbose:
 

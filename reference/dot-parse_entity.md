@@ -51,7 +51,7 @@ for tabular binding.
 
 - object_type:
 
-  Character. \`"instance"\` or \`"subclass"\`.
+  Character. \`"instance"\`, \`"subclass"\`,
 
 - verbose:
 

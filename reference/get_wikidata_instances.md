@@ -207,18 +207,18 @@ get_wikidata_instances("Q34770", object_type = "subclass")
 #>   Batch 3/3 (11 items)...
 #> Successfully retrieved 111 items
 #> # A tibble: 111 × 7
-#>    qid        label_en        label_es description_en description_es subclass_of
-#>    <chr>      <chr>           <chr>    <chr>          <chr>          <list>     
-#>  1 Q104804164 artificial lan… lenguaj… language whic… NA             <chr [1]>  
-#>  2 Q104925791 NA              NA       NA             NA             <chr [1]>  
-#>  3 Q107031344 any language    NA       state of comm… NA             <chr [1]>  
-#>  4 Q107617697 natiolect       NA       national vari… NA             <chr [1]>  
-#>  5 Q123961776 monocentric la… NA       NA             NA             <chr [1]>  
-#>  6 Q124156877 majority langu… lengua … NA             NA             <chr [1]>  
-#>  7 Q132860982 religiolect     NA       Language vari… NA             <chr [3]>  
-#>  8 Q135976069 indirective la… NA       language in w… NA             <chr [1]>  
-#>  9 Q136193547 NA              NA       NA             NA             <chr [1]>  
-#> 10 Q136193548 NA              NA       NA             NA             <chr [1]>  
+#>    qid     label_en           label_es description_en description_es subclass_of
+#>    <chr>   <chr>              <chr>    <chr>          <chr>          <list>     
+#>  1 Q125421 second language    segunda… language spok… idioma no nat… <chr [1]>  
+#>  2 Q150352 foreign language   lengua … non-native la… lengua difere… <chr [1]>  
+#>  3 Q156967 idioglossia        Idioglo… idiosyncratic… idioma idiosi… <chr [1]>  
+#>  4 Q178435 nominative–accusa… lengua … language whic… idioma que tr… <chr [1]>  
+#>  5 Q184767 signed language    lenguaj… linguistic gr… grupo lingüís… <chr [2]>  
+#>  6 Q191328 tonal language     lengua … language in w… idioma donde … <chr [1]>  
+#>  7 Q193983 metalanguage       metalen… linguistics t… NA             <chr [1]>  
+#>  8 Q206577 proto-language     protole… postulated co… reconstrucció… <chr [2]>  
+#>  9 Q209544 analytic language  lengua … language that… NA             <chr [1]>  
+#> 10 Q246801 Paleohispanic      Lenguas… languages of … lenguas prerr… <chr [1]>  
 #> # ℹ 101 more rows
 #> # ℹ 1 more variable: wikipedia_articles <list>
 

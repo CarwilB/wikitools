@@ -61,6 +61,10 @@ resume_wikidata_instance_wikipedia_presence(
 
   See \[wikidata_instance_wikipedia_presence()\].
 
+- object_type:
+
+  Character. \`"instance"\` or \`"subclass"\` or \`"position_held"\`
+
 ## Value
 
 Same structure as \[wikidata_instance_wikipedia_presence()\].

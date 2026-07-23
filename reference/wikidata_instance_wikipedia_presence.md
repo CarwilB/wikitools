@@ -62,6 +62,10 @@ wikidata_instance_wikipedia_presence(
   Logical. If \`TRUE\` (default) and \`languages\` is not \`NULL\`,
   sitelinks for languages not in \`languages\` are ignored.
 
+- object_type:
+
+  Character. \`"instance"\` or \`"subclass"\` or \`"position_held"\`
+
 - debug:
 
   Logical. If \`TRUE\`, attach a \`\$debug\` element to the return value

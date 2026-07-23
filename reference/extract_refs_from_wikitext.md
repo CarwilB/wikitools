@@ -1,9 +1,8 @@
 # Extract Citation References from Wikitext
 
-Parses all \`Cite book\`, \`Cite journal\`, \`Cite web\`, and related
-Wikipedia citation templates from raw wikitext into a tidy reference
-tibble. Also captures bare \`\<ref\>\` notes that contain no citation
-template.
+Parses Wikipedia citation templates (Cite book, Cite journal, Cite web,
+and related) from raw wikitext into a tidy reference tibble. Also
+captures bare `<ref>` notes that contain no citation template.
 
 ## Usage
 
