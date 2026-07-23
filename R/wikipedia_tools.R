@@ -101,11 +101,14 @@ as_wikitable <- function(df, caption = NULL, class = "wikitable sortable",
 
 #' Extract the First Infobox from Wikitext
 #'
-#' Parses the first `\{\{Infobox ...\}\}` template from raw wikitext into a named
-#' list of field-value pairs. Uses brace-depth matching to correctly handle
-#' nested templates within field values. Only the first infobox is extracted
-#' if the article contains multiple. Field values are returned as-is (raw
-#' wikitext); use [clean_infobox_value()] to strip markup.
+#' Parses the first infobox template from raw wikitext into a named list of
+#' field-value pairs. Uses brace-depth matching to correctly handle nested
+#' templates within field values. Only the first infobox is extracted if the
+#' article contains multiple. Field values are returned as-is (raw wikitext);
+#' use [clean_infobox_value()] to strip markup.
+#'
+#' Recognises English (\code{Infobox}), Spanish (\code{Ficha de}), and
+#' Portuguese (\code{Info/}) infobox conventions.
 #'
 #' @param wikitext Character. Raw wikitext string, as returned by
 #'   [get_wikitext_by_name()] or [cache_wikitext()].
@@ -126,7 +129,10 @@ extract_infobox <- function(wikitext) {
     return(NULL)
   }
 
-  infobox_start <- regexpr("\\{\\{\\s*[Ii]nfobox", wikitext)
+  infobox_start <- regexpr(
+    "\\{\\{\\s*(?:[Ii]nfobox|[Ff]icha\\s+de|[Ii]nfo/)",
+    wikitext, perl = TRUE
+  )
   if (infobox_start == -1) {
     return(NULL)
   }
@@ -163,7 +169,10 @@ extract_infobox <- function(wikitext) {
   }
 
   infobox_text <- substr(txt, 1, end_pos)
-  inner <- sub("^\\{\\{\\s*[Ii]nfobox[^\\n|]*", "", infobox_text)
+  inner <- sub(
+    "^\\{\\{\\s*(?:[Ii]nfobox|[Ff]icha\\s+de|[Ii]nfo/)[^\\n|]*",
+    "", infobox_text, perl = TRUE
+  )
   inner <- sub("\\}\\}$", "", inner)
 
   params <- split_on_top_level_pipes(inner)
@@ -203,6 +212,22 @@ split_on_top_level_pipes <- function(text) {
   i <- 1
 
   while (i <= nchar(text)) {
+    # HTML comments: consume verbatim so "|" inside them isn't treated as a
+    # field delimiter (e.g. <!--| population = 1000--> in commented-out fields)
+    if (substr(text, i, i + 3) == "<!--") {
+      close_pos <- regexpr("-->", substr(text, i, nchar(text)), fixed = TRUE)
+      if (close_pos == -1) {
+        # Unclosed comment: consume the rest verbatim
+        current <- paste0(current, substr(text, i, nchar(text)))
+        i <- nchar(text) + 1L
+      } else {
+        end <- i + close_pos + 1L
+        current <- paste0(current, substr(text, i, end))
+        i <- end + 1L
+      }
+      next
+    }
+
     ch <- substr(text, i, i)
 
     if (ch == "{" && i < nchar(text) && substr(text, i + 1, i + 1) == "{") {

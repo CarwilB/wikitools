@@ -15,11 +15,15 @@ A named list where each element is a raw wikitext field value, or
   `NULL` if no infobox is found or `wikitext` is `NULL`.
 }
 \description{
-Parses the first `\{\{Infobox ...\}\}` template from raw wikitext into a named
-list of field-value pairs. Uses brace-depth matching to correctly handle
-nested templates within field values. Only the first infobox is extracted
-if the article contains multiple. Field values are returned as-is (raw
-wikitext); use [clean_infobox_value()] to strip markup.
+Parses the first infobox template from raw wikitext into a named list of
+field-value pairs. Uses brace-depth matching to correctly handle nested
+templates within field values. Only the first infobox is extracted if the
+article contains multiple. Field values are returned as-is (raw wikitext);
+use [clean_infobox_value()] to strip markup.
+}
+\details{
+Recognises English (\code{Infobox}), Spanish (\code{Ficha de}), and
+Portuguese (\code{Info/}) infobox conventions.
 }
 \examples{
 \dontrun{
