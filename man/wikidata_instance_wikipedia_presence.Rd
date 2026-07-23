@@ -41,6 +41,8 @@ columns from [get_wikidata_instances()] in the output data tibble.}
 \item{drop_other_langs}{Logical. If `TRUE` (default) and `languages` is not
 `NULL`, sitelinks for languages not in `languages` are ignored.}
 
+\item{object_type}{Character. `"instance"` or `"subclass"` or `"position_held"`}
+
 \item{debug}{Logical. If `TRUE`, attach a `$debug` element to the return
 value with notes on handling of missing/deleted items.}
 }

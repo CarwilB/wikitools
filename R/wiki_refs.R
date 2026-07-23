@@ -1,3 +1,5 @@
+utils::globalVariables("creators")
+
 # wiki_refs.R
 # Extract bibliographic references from Wikipedia article wikitext.
 # Parses {{Cite book}}, {{Cite journal}}, {{Cite web}}, and related templates
@@ -338,9 +340,9 @@ template_to_ref <- function(params) {
 
 #' Extract Citation References from Wikitext
 #'
-#' Parses all `{{Cite book}}`, `{{Cite journal}}`, `{{Cite web}}`, and related
-#' Wikipedia citation templates from raw wikitext into a tidy reference tibble.
-#' Also captures bare `<ref>` notes that contain no citation template.
+#' Parses Wikipedia citation templates (Cite book, Cite journal, Cite web, and related)
+#' from raw wikitext into a tidy reference tibble.
+#' Also captures bare \code{<ref>} notes that contain no citation template.
 #'
 #' Recognised template families: Cite book, Cite journal, Cite web, Cite news,
 #' Cite encyclopedia, Cite magazine, Cite thesis, Cite conference, Cite report,

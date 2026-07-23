@@ -20,9 +20,9 @@ A tibble with one row per citation found and columns:
   citation templates are found.
 }
 \description{
-Parses all `{{Cite book}}`, `{{Cite journal}}`, `{{Cite web}}`, and related
-Wikipedia citation templates from raw wikitext into a tidy reference tibble.
-Also captures bare `<ref>` notes that contain no citation template.
+Parses Wikipedia citation templates (Cite book, Cite journal, Cite web, and related)
+from raw wikitext into a tidy reference tibble.
+Also captures bare \code{<ref>} notes that contain no citation template.
 }
 \details{
 Recognised template families: Cite book, Cite journal, Cite web, Cite news,

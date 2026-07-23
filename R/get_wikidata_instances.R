@@ -297,7 +297,7 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @param languages Character vector of language codes.
 #' @param numeric_list_properties Optional character vector of numeric-list property IDs.
 #' @param numeric_list_property_names Character vector of output prefixes.
-#' @param object_type Character. `"instance"` or `"subclass"`.
+#' @param object_type Character. `"instance"`, `"subclass"`,
 #' @param verbose Logical. If `TRUE`, emit detailed parsing diagnostics.
 #' @return A named list representing one parsed entity row.
 #' @keywords internal
@@ -485,7 +485,7 @@ add_wikidata_property <- function(df, property, name = property) {
 #' @param numeric_list_properties Optional character vector of numeric-list property IDs.
 #' @param numeric_list_property_names Character vector of output prefixes.
 #' @param entity_props Character pipe-delimited `wbgetentities` props string.
-#' @param object_type Character. `"instance"` or `"subclass"`.
+#' @param object_type Character. `"instance"` or `"subclass"` or `"position_held"`
 #' @param verbose Logical. If `TRUE`, emit detailed parsing diagnostics.
 #' @return A list of parsed entity records.
 #' @keywords internal

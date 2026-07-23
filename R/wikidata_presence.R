@@ -27,6 +27,7 @@
 #'   columns from [get_wikidata_instances()] in the output data tibble.
 #' @param drop_other_langs Logical. If `TRUE` (default) and `languages` is not
 #'   `NULL`, sitelinks for languages not in `languages` are ignored.
+#' @param object_type Character. `"instance"` or `"subclass"` or `"position_held"`
 #' @param debug Logical. If `TRUE`, attach a `$debug` element to the return
 #'   value with notes on handling of missing/deleted items.
 #'
@@ -159,6 +160,7 @@ wikidata_instance_wikipedia_presence <- function(class_qid,
 #' @param batch_delay See [wikidata_instance_wikipedia_presence()].
 #' @param include_labels See [wikidata_instance_wikipedia_presence()].
 #' @param drop_other_langs See [wikidata_instance_wikipedia_presence()].
+#' @param object_type Character. `"instance"` or `"subclass"` or `"position_held"`
 #'
 #' @return Same structure as [wikidata_instance_wikipedia_presence()].
 #'

@@ -31,7 +31,7 @@
 
 \item{numeric_list_property_names}{Character vector of output prefixes.}
 
-\item{object_type}{Character. `"instance"` or `"subclass"`.}
+\item{object_type}{Character. `"instance"`, `"subclass"`,}
 
 \item{verbose}{Logical. If `TRUE`, emit detailed parsing diagnostics.}
 }

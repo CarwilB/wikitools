@@ -21,7 +21,6 @@ Imports:
     jsonlite,
     magrittr,
     purrr,
-    rmarkdown,
     rvest,
     stats,
     stringi,
@@ -29,9 +28,11 @@ Imports:
     tibble,
     utils
 Suggests:
-    testthat (>= 3.0.0),
+    httptest,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr
 RoxygenNote: 8.0.0
 URL: https://github.com/CarwilB/wikitools, https://carwilb.github.io/wikitools/
 BugReports: https://github.com/CarwilB/wikitools/issues

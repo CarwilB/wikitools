@@ -37,6 +37,8 @@ resume_wikidata_instance_wikipedia_presence(
 \item{include_labels}{See [wikidata_instance_wikipedia_presence()].}
 
 \item{drop_other_langs}{See [wikidata_instance_wikipedia_presence()].}
+
+\item{object_type}{Character. `"instance"` or `"subclass"` or `"position_held"`}
 }
 \value{
 Same structure as [wikidata_instance_wikipedia_presence()].

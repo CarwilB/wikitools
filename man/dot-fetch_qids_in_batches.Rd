@@ -37,7 +37,7 @@
 
 \item{entity_props}{Character pipe-delimited `wbgetentities` props string.}
 
-\item{object_type}{Character. `"instance"` or `"subclass"`.}
+\item{object_type}{Character. `"instance"` or `"subclass"` or `"position_held"`}
 
 \item{verbose}{Logical. If `TRUE`, emit detailed parsing diagnostics.}
 }
