@@ -97,6 +97,7 @@ Items are fetched from the Wikidata API in batches of \code{batch_size}
 Get All Instances of a Wikidata Class
 }
 \examples{
+\dontrun{
 get_wikidata_instances("Q250050", languages = c("en", "es"))
 
 get_wikidata_instances(
@@ -112,5 +113,6 @@ get_wikidata_instances("Q34770", object_type = "subclass")
 
 get_wikidata_instances("Q4193029", property = "P1448",
   property_names = "official_name", verbose = TRUE)
+}
 
 }

@@ -677,6 +677,7 @@ add_wikidata_property <- function(df, property, name = property) {
 #'   - wikipedia_articles
 #'
 #' @examples
+#' \dontrun{
 #' get_wikidata_instances("Q250050", languages = c("en", "es"))
 #'
 #' get_wikidata_instances(
@@ -692,6 +693,7 @@ add_wikidata_property <- function(df, property, name = property) {
 #'
 #' get_wikidata_instances("Q4193029", property = "P1448",
 #'   property_names = "official_name", verbose = TRUE)
+#' }
 #'
 #' @export
 get_wikidata_instances <- function(class_qid,
