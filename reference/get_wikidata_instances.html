@@ -183,24 +183,8 @@ the SPARQL query:</p><dl><dt>"instance"</dt>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_wikidata_instances</span><span class="op">(</span><span class="st">"Q250050"</span>, languages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"en"</span>, <span class="st">"es"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 10 instances. Retrieving details in batches of 50...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 1/1 (10 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Successfully retrieved 10 items</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    qid      label_en          label_es description_en description_es instance_of</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Q233169  Beni Department   Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Q233917  Cochabamba Depar… Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Q233933  Tarija Department Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Q235106  Santa Cruz Depar… Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Q235110  Chuquisaca Depar… Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Q235362  Pando Department  Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Q238079  Potosí Department Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Q272784  La Paz Department Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Q844510  Litoral           Departa… former depart… antiguo depar… <span style="color: #949494;">&lt;chr [3]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Q1061368 Oruro Department  Departa… department of… departamento … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: wikipedia_articles &lt;list&gt;</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="fu">get_wikidata_instances</span><span class="op">(</span><span class="st">"Q250050"</span>, languages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"en"</span>, <span class="st">"es"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_wikidata_instances</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"Q1062710"</span>,</span></span>
@@ -209,89 +193,13 @@ the SPARQL query:</p><dl><dt>"instance"</dt>
 <span class="r-in"><span>  numeric_list_properties     <span class="op">=</span> <span class="st">"P1082"</span>,</span></span>
 <span class="r-in"><span>  numeric_list_property_names <span class="op">=</span> <span class="st">"population"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 341 instances. Retrieving details in batches of 50...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 1/7 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 2/7 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 3/7 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 4/7 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 5/7 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 6/7 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 7/7 (41 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Successfully retrieved 341 items</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 341 × 42</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    qid     label_en    label_es description_en description_es located_in country</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Q121543 Villa Vaca… Villa V… municipality … municipio de … <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Q174806 Esmeralda   Esmeral… municipality … municipio bol… <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Q182203 Poroma      Poroma   municipality … municipio bol… <span style="color: #949494;">&lt;chr [2]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Q195218 San Lorenzo San Lor… municipality … municipio bol… <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Q198351 Municipio … Ingavi   municipality … municipio bol… <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Q198348 Municipio … Sena     municipality … municipio bol… <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Q198355 Municipio … Puerto … municipality … municipio bol… <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Q198353 Bolpebra M… Municip… municipality … municipio bol… <span style="color: #949494;">&lt;chr [1]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Q198359 Municipio … Santos … municipality … municipio bol… <span style="color: #949494;">&lt;chr [2]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Q198357 Municipio … Villa N… municipality … municipio de … <span style="color: #949494;">&lt;chr [2]&gt;</span>  Q750   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 331 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 35 more variables: ine_code &lt;chr&gt;, population &lt;dbl&gt;, population_n &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   population_1 &lt;dbl&gt;, population_1_year &lt;int&gt;, population_1_ref &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   population_2 &lt;dbl&gt;, population_2_year &lt;int&gt;, population_2_ref &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   population_3 &lt;dbl&gt;, population_3_year &lt;int&gt;, population_3_ref &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   population_4 &lt;dbl&gt;, population_4_year &lt;int&gt;, population_4_ref &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   population_5 &lt;dbl&gt;, population_5_year &lt;int&gt;, population_5_ref &lt;chr&gt;, …</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve subclasses instead of instances</span></span></span>
 <span class="r-in"><span><span class="fu">get_wikidata_instances</span><span class="op">(</span><span class="st">"Q34770"</span>, object_type <span class="op">=</span> <span class="st">"subclass"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 111 subclasses. Retrieving details in batches of 50...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 1/3 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 2/3 (50 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 3/3 (11 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Successfully retrieved 111 items</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 111 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    qid     label_en           label_es description_en description_es subclass_of</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Q125421 second language    segunda… language spok… idioma no nat… <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Q150352 foreign language   lengua … non-native la… lengua difere… <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Q156967 idioglossia        Idioglo… idiosyncratic… idioma idiosi… <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Q178435 nominative–accusa… lengua … language whic… idioma que tr… <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Q184767 signed language    lenguaj… linguistic gr… grupo lingüís… <span style="color: #949494;">&lt;chr [2]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Q191328 tonal language     lengua … language in w… idioma donde … <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Q193983 metalanguage       metalen… linguistics t… <span style="color: #BB0000;">NA</span>             <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Q206577 proto-language     protole… postulated co… reconstrucció… <span style="color: #949494;">&lt;chr [2]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Q209544 analytic language  lengua … language that… <span style="color: #BB0000;">NA</span>             <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Q246801 Paleohispanic      Lenguas… languages of … lenguas prerr… <span style="color: #949494;">&lt;chr [1]&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 101 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: wikipedia_articles &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_wikidata_instances</span><span class="op">(</span><span class="st">"Q4193029"</span>, property <span class="op">=</span> <span class="st">"P1448"</span>,</span></span>
 <span class="r-in"><span>  property_names <span class="op">=</span> <span class="st">"official_name"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SPARQL query:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SELECT DISTINCT ?item WHERE {</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   ?item wdt:P31 wd:Q4193029 .</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> LIMIT 1000</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 13 instances. Retrieving details in batches of 50...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Batch 1/1 (13 items)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     HTTP status code: 200</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Raw response (first 500 chars): {"entities":{"Q8679":{"type":"item","id":"Q8679","labels":{"nb":{"language":"nb","value":"Fiskene"},"fr":{"language":"fr","value":"Poissons"},"en":{"language":"en","value":"Pisces"},"it":{"language":"it","value":"Pesci"},"de":{"language":"de","value":"Fische"},"af":{"language":"af","value":"Visse"},"ar":{"language":"ar","value":"\u0627\u0644\u062d\u0648\u062a"},"be":{"language":"be","value":"\u0420\u044b\u0431\u044b"},"bg":{"language":"bg","value":"\u0420\u0438\u0431\u0438"},"bn":{"language":"bn</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     QIDs in entities: Q8679, Q8842, Q8849, Q8853, Q8866, Q8865, Q8906, Q8923, Q10535, Q10570, Q10576, Q10580, Q10584</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Successfully retrieved 13 items</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    qid    label_en    label_es    description_en    description_es official_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Q8679  Pisces      Piscis      zodiac constella… constelación   Pisces       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Q8842  Virgo       Virgo       zodiac constella… constelación   Virgo        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Q8849  Cancer      Cáncer      zodiac constella… constelación … Cancer       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Q8853  Leo         Leo         zodiac constella… constelación   Leo          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Q8866  Sagittarius Sagitario   zodiac constella… constelación … Sagittarius  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Q8865  Scorpius    Escorpio    zodiac constella… constelación   Scorpius     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Q8906  Ophiuchus   Ofiuco      zodiac constella… una de las co… Ophiuchus    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Q8923  Gemini      Géminis     zodiac constella… constelación   Gemini       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Q10535 Capricornus Capricornio zodiac constella… constelación … Capricornus  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Q10570 Taurus      Tauro       zodiac constella… constelación … Taurus       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Q10576 Aquarius    Acuario     zodiac constella… una de las co… Aquarius     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Q10580 Libra       Libra       zodiac constella… constelación   Libra        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Q10584 Aries       Aries       zodiac constella… constelación   Aries        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: instance_of &lt;list&gt;, wikipedia_articles &lt;list&gt;</span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
