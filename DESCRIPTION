@@ -1,7 +1,7 @@
 Package: wikitools
 Type: Package
 Title: Tools to Engage with Wikipedia and Wikidata
-Version: 0.1.6
+Version: 0.1.6.9000
 Authors@R: 
     person(
     "Carwil", "Bjork-James",
