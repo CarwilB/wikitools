@@ -1,6 +1,6 @@
 # Functions in wikitools Project
 
-**Total: 35 functions**
+**Last Updated:** July 30, 2026\
 
 ## Exported Functions
 
@@ -72,3 +72,6 @@
 - `R/get_wikidata_instances.R` - Wikidata instance retrieval functions
 - `R/str-equivalent.R` - String equivalence/matching functions
 - `R/wikipedia-tools.R` - General Wikipedia tools and utilities
+**Wikidata (6 functions)** - test-get_wikidata_instances.R: 101 lines, 8+ tests - `get_wikidata_instances()` ✅ - `parse_entity()` ✅ - `extract_claims_from_entity()` ✅ - `.extract_numeric_list_property()` ✅ - `wikidata_instance_wikipedia_presence()` ✅ - `resume_wikidata_instance_wikipedia_presence()` ✅
+**Reference Management (1 function)** - test-wiki-refs.R: 451 lines, 30+ tests - `extract_refs_from_wikitext()` ✅
+**Wikiblame (3 functions)** - test-wikiblame.R: 51 tests - `find_sentence_insertion()` ✅ - `get_revision_history_map()` ✅ - `track_wikipedia_sentences()` ✅

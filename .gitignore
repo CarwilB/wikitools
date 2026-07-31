@@ -2,7 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-.positai
+.posit/assistant
 .httr-oauth
 .DS_Store
 .quarto

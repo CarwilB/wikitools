@@ -1,6 +1,6 @@
 # wikitools Package Development Status
 
-**Last Updated:** July 17, 2026\
+**Last Updated:** July 30, 2026\
 **Current Version:** 0.1.0\
 **Priority:** Building production-ready R package
 
@@ -147,11 +147,11 @@
 
 **Text Processing (8 functions)** - test-wikipedia-tools.R: 516 lines, 104 tests - `extract_clean_fragments()` - 15 tests ✅ - `as_wikitable()` - 10 tests ✅ - `extract_infobox()` - 10 tests ✅ - `clean_infobox_value()` - 16 tests ✅ - `count_citations()` - 6 tests ✅ - `count_refs()` - 6 tests ✅ - `extract_census_years()` - 16 tests ✅ - Internal helpers (split_on_top_level_pipes, etc.) - implicit ✅
 
-**Wikidata (4 functions)** - test-get_wikidata_instances.R: 101 lines, 8+ tests - `get_wikidata_instances()` ✅ - `parse_entity()` ✅ - `extract_claims_from_entity()` ✅ - `.extract_numeric_list_property()` ✅
+**Wikidata (6 functions)** - test-get_wikidata_instances.R: 101 lines, 8+ tests - `get_wikidata_instances()` ✅ - `parse_entity()` ✅ - `extract_claims_from_entity()` ✅ - `.extract_numeric_list_property()` ✅ - `wikidata_instance_wikipedia_presence()` ✅ - `resume_wikidata_instance_wikipedia_presence()` ✅
 
-**QuickStatements (4 functions)** - test-create-quick-statement.R: 451 lines, 30+ tests - `add_quick_statement_column()` ✅ - `create_string_statement()` ✅ - `create_monolingual_statement()` ✅ - `create_value_statement()` ✅
+**Reference Management (1 function)** - test-wiki-refs.R: 451 lines, 30+ tests - `extract_refs_from_wikitext()` ✅
 
-**Search (1 function)** - test-add-wikipedia-matches.R: 185 lines, 13+ tests - `add_wikipedia_matches()` ✅
+**Wikiblame (3 functions)** - test-wikiblame.R: 51 tests - `find_sentence_insertion()` ✅ - `get_revision_history_map()` ✅ - `track_wikipedia_sentences()` ✅
 
 **String Utilities (3 functions)** - test-str-equivalent.R: 159 lines, 15+ tests - `str_equivalent()` ✅ - `equivalent_index()` ✅ - `equivalent_which()` ✅
 

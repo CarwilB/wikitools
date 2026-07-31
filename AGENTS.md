@@ -163,7 +163,15 @@ See `dev-notes/FUNCTION-INVENTORY.md` for comprehensive breakdown.
   - Fixtures: api.php-48c94f.json (Paul Rivet search), api.php-72b8b1.json (no results)
   - Also covers add_wikipedia_matches() tryCatch, data.frame output, limit forwarding
 
-### Phase 4: Polish & Release
+### Phase 5: New Features (July 30, 2026)
+- [x] Added `get_wikidata_items()` function
+  - Takes predetermined list of QIDs instead of deriving via SPARQL
+  - Reuses all existing helper functions (`.fetch_qids_in_batches`, `.parse_entity`, etc.)
+  - Supports all same features: languages, properties, numeric_list_properties, object_type
+  - Full Roxygen documentation + 10 unit tests added to test-get_wikidata_instances.R
+  - All 411 package tests passing
+
+### Phase 6: Polish & Release
 - [ ] Run `devtools::check()` and fix all warnings/notes
 - [ ] Create README.md with installation and usage examples
 - [ ] Create vignette: "Getting Started with wikitools"

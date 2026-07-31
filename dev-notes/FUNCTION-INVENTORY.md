@@ -57,12 +57,16 @@ This document compares function definitions across the two projects.
 ### Functions in BOTH Projects
 
 These functions exist in both wikitools and wiki-graph:
-- `add_quick_statement_column` - Used in add_ine_codes_to_wikidata.R
-- `add_quick_statement_column_q` - Used in cpv2024-population-quickstatements.qmd
-- `add_wikidata_property` - Used in get_wikidata_instances_v1.R
-- `create_quick_statement` - Core wikidata editing
 - `extract_clean_fragments` - Text extraction from Wikipedia
-- `get_wikidata_instances` - Wikidata instance queries
+- `get_plain_text` - Wikipedia text extraction
+- `wikitext_to_plain` - Convert wikitext to plain text
+- `get_wikidata_frequencies` - Property frequency analysis
+- `wiki_refs_pipeline` - Reference extraction pipeline
+- `track_wikipedia_sentences` - Edit tracking
+- `find_sentence_insertion` - Edit tracking
+- `wikidata_instance_wikipedia_presence` - Presence analysis
+- `extract_refs_from_wikitext` - Reference extraction
+- `create_quick_statement` - Core wikidata editing
 - `resume_get_wikidata_instances` - Resume interrupted queries
 - `simplify_list_columns` - Data frame manipulation
 - `add_wikipedia_matches` - Wikipedia search (referenced in workflows)
@@ -84,14 +88,6 @@ These are general-purpose utilities:
 
 These are mostly project-specific:
 - **High-value candidates for wikitools migration:**
-  - `get_plain_text()`, `wikitext_to_plain()` - Wikipedia text extraction
-  - `get_wikidata_frequencies()` - Property frequency analysis
-  - `wiki_refs_pipeline()` - Reference extraction pipeline
-  - `track_wikipedia_sentences()`, `find_sentence_insertion()` - Edit tracking
-  - `wikidata_instance_wikipedia_presence()` - Presence analysis
-  - `extract_refs_from_wikitext()` - Reference extraction
-  
-- **Specialized/domain-specific:**
   - Census/INE code functions (add_ine_code_* family)
   - Zotero integration (multiple ref_to_* functions)
   - Bolivia-specific generators (compose_* functions)

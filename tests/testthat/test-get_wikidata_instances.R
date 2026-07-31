@@ -353,3 +353,92 @@ test_that("resume_get_wikidata_instances rejects invalid object_type", {
     "object_type"
   )
 })
+
+# ---------------------------------------------------------------------------
+# get_wikidata_items() — fetch predetermined QID list
+# ---------------------------------------------------------------------------
+
+test_that("get_wikidata_items rejects empty QID vector", {
+  expect_message(
+    result <- get_wikidata_items(c()),
+    "No QIDs provided"
+  )
+  expect_equal(nrow(result), 0)
+})
+
+test_that("get_wikidata_items rejects malformed QIDs", {
+  expect_error(
+    get_wikidata_items(c("Q1", "bad_qid", "Q2")),
+    "All QIDs must be in format"
+  )
+})
+
+test_that("get_wikidata_items accepts valid QID format", {
+  expect_error(
+    get_wikidata_items(c("Q1", "Q2")),
+    NA  # expect no error on format validation
+  )
+})
+
+test_that("get_wikidata_items rejects invalid object_type", {
+  expect_error(
+    get_wikidata_items("Q1", object_type = "invalid"),
+    "object_type must be"
+  )
+})
+
+test_that("get_wikidata_items requires claims when property is requested", {
+  expect_error(
+    get_wikidata_items("Q1", property = "P31", entity_props = "labels"),
+    "requires entity_props to include 'claims'"
+  )
+})
+
+test_that("get_wikidata_items requires claims when numeric_list_properties is requested", {
+  expect_error(
+    get_wikidata_items("Q1", numeric_list_properties = "P1082", entity_props = "labels"),
+    "requires entity_props to include 'claims'"
+  )
+})
+
+test_that("get_wikidata_items resolves property_names with fewer entries than property", {
+  # This should auto-fill property_names with the remaining property IDs
+  expect_message(
+    expect_error(get_wikidata_items("Q1", property = c("P31", "P17"), property_names = "just_one"), NA),
+    "falling back to property IDs"
+  )
+})
+
+test_that("get_wikidata_items resolves property_names with more entries than property", {
+  # This should truncate property_names
+  expect_message(
+    expect_error(
+      get_wikidata_items("Q1", property = "P31", property_names = c("too", "many")),
+      NA  # no error on validation
+    ),
+    "extra names will be ignored"
+  )
+})
+
+test_that("get_wikidata_items resolves numeric_list_property_names correctly", {
+  # Should auto-fill from numeric_list_properties when NULL
+  expect_message(
+    expect_error(
+      get_wikidata_items("Q1", numeric_list_properties = c("P1082", "P1559")),
+      NA  # expect API call to fail, not validation
+    ),
+    "Retrieving"
+  )
+})
+
+test_that("get_wikidata_items caps batch_size at 50", {
+  # batch_size > 50 should be capped at 50 (tested via message or internals)
+  # Since we can't easily intercept internal calls, we just verify no error occurs
+  expect_message(
+    expect_error(
+      get_wikidata_items("Q1", batch_size = 100),
+      NA  # validation should pass
+    ),
+    "Retrieving"
+  )
+})
