@@ -472,3 +472,95 @@ wikitext_to_plain <- function(wikitext) {
 
   paste(readLines(output_file, warn = FALSE), collapse = "\n")
 }
+
+#' Unpack Wikipedia Article Information by Language
+#'
+#' Extracts Wikipedia article information from a list column containing language-tagged
+#' article titles (e.g., "en: Article Title") and creates separate columns for each
+#' specified language. For each language, creates three columns: `{lang}_present`
+#' (logical), `{lang}_article` (character), and `{lang}_url` (character).
+#'
+#' @param df A data frame or tibble containing a column of Wikipedia article info.
+#' @param wiki_col Name of the column containing Wikipedia article information
+#'   (default: "wikipedia_articles"). Should contain character vectors with entries
+#'   formatted as "lang_code: Article Title".
+#' @param langs Character vector of language codes to extract (default: c("en", "es")).
+#'   Language codes should match the format in the source data (e.g., "en", "es", "fr").
+#'
+#' @return A tibble with the same rows as `df`, plus new columns for each language:
+#'   - `{lang}_present`: Logical indicating whether an article exists in that language
+#'   - `{lang}_article`: Character string of the article title (NA if not present)
+#'   - `{lang}_url`: Character string of the Wikipedia URL
+#'     (e.g., "https://en.wikipedia.org/wiki/Article_Title")
+#'
+#' @details
+#' The function searches for entries matching the pattern "lang_code: " in the Wikipedia
+#' articles list. Article titles are converted to URL-safe format by replacing spaces
+#' with underscores.
+#'
+#' @examples
+#' \dontrun{
+#' # Given wiki_special_info with wikipedia_articles column
+#' result <- unpack_wikipedia_article_info(
+#'   wiki_special_info,
+#'   wiki_col = "wikipedia_articles",
+#'   langs = c("en", "es", "fr")
+#' )
+#'
+#' # New columns added:
+#' # en_present, en_article, en_url
+#' # es_present, es_article, es_url
+#' # fr_present, fr_article, fr_url
+#' }
+#'
+#' @export
+unpack_wikipedia_article_info <- function(df,
+                                          wiki_col = "wikipedia_articles",
+                                          langs = c("en", "es")) {
+  # Input validation
+  if (!is.data.frame(df)) {
+    stop("`df` must be a data frame or tibble.")
+  }
+  if (!wiki_col %in% names(df)) {
+    stop(sprintf("Column '%s' not found in data frame.", wiki_col))
+  }
+  if (!is.character(langs) || length(langs) == 0) {
+    stop("`langs` must be a non-empty character vector.")
+  }
+
+  # Extract Wikipedia articles list
+  wiki_articles <- df[[wiki_col]]
+
+  # For each language, create three columns
+  for (lang in langs) {
+    pattern <- paste0("^", lang, ": ")
+
+    # Extract article titles for this language
+    articles <- purrr::map_chr(wiki_articles, function(vec) {
+      match_idx <- stringr::str_which(vec, pattern)
+      if (length(match_idx) == 0) {
+        return(NA_character_)
+      }
+      # Extract the article title by removing the "lang: " prefix
+      stringr::str_remove(vec[match_idx[1]], pattern)
+    })
+
+    # Create _present column (logical)
+    col_present <- paste0(lang, "_present")
+    df[[col_present]] <- !is.na(articles)
+
+    # Create _article column (character)
+    col_article <- paste0(lang, "_article")
+    df[[col_article]] <- articles
+
+    # Create _url column (character)
+    col_url <- paste0(lang, "_url")
+    df[[col_url]] <- dplyr::if_else(
+      is.na(articles),
+      NA_character_,
+      paste0("https://", lang, ".wikipedia.org/wiki/", stringr::str_replace_all(articles, " ", "_"))
+    )
+  }
+
+  tibble::as_tibble(df)
+}

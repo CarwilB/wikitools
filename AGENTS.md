@@ -163,13 +163,22 @@ See `dev-notes/FUNCTION-INVENTORY.md` for comprehensive breakdown.
   - Fixtures: api.php-48c94f.json (Paul Rivet search), api.php-72b8b1.json (no results)
   - Also covers add_wikipedia_matches() tryCatch, data.frame output, limit forwarding
 
-### Phase 5: New Features (July 30, 2026)
+### Phase 5: New Features (July 30-31, 2026)
 - [x] Added `get_wikidata_items()` function
   - Takes predetermined list of QIDs instead of deriving via SPARQL
   - Reuses all existing helper functions (`.fetch_qids_in_batches`, `.parse_entity`, etc.)
   - Supports all same features: languages, properties, numeric_list_properties, object_type
   - Full Roxygen documentation + 10 unit tests added to test-get_wikidata_instances.R
   - All 411 package tests passing
+
+- [x] Added `unpack_wikipedia_article_info()` function (July 31, 2026)
+  - Unpacks list column of Wikipedia article info (from `get_wikidata_items()` or `get_wikidata_instances()`)
+  - Takes format: `"lang_code: Article Title"`
+  - Creates 3 columns per language: `{lang}_present` (logical), `{lang}_article` (character), `{lang}_url` (character)
+  - Default languages: `c("en", "es")`, customizable via `langs` parameter
+  - Custom column name supported via `wiki_col` parameter
+  - Full Roxygen documentation + 14 comprehensive unit tests
+  - All 704 package tests passing
 
 ### Phase 6: Polish & Release
 - [ ] Run `devtools::check()` and fix all warnings/notes
