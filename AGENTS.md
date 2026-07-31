@@ -195,7 +195,7 @@ directly
 - Also covers add_wikipedia_matches() tryCatch, data.frame output, limit
   forwarding
 
-### Phase 5: New Features (July 30, 2026)
+### Phase 5: New Features (July 30-31, 2026)
 
 Added
 [`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
@@ -209,6 +209,20 @@ function
 - Full Roxygen documentation + 10 unit tests added to
   test-get_wikidata_instances.R
 - All 411 package tests passing
+
+Added `unpack_wikipedia_article_info()` function (July 31, 2026)
+
+- Unpacks list column of Wikipedia article info (from
+  [`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
+  or
+  [`get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/get_wikidata_instances.md))
+- Takes format: `"lang_code: Article Title"`
+- Creates 3 columns per language: `{lang}_present` (logical),
+  `{lang}_article` (character), `{lang}_url` (character)
+- Default languages: `c("en", "es")`, customizable via `langs` parameter
+- Custom column name supported via `wiki_col` parameter
+- Full Roxygen documentation + 14 comprehensive unit tests
+- All 704 package tests passing
 
 ### Phase 6: Polish & Release
 

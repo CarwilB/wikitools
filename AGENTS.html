@@ -188,7 +188,7 @@
 </ul></li>
 </ul></div>
 <div class="section level3">
-<h3 id="phase-5-new-features-july-30-2026">Phase 5: New Features (July 30, 2026)<a class="anchor" aria-label="anchor" href="#phase-5-new-features-july-30-2026"></a></h3>
+<h3 id="phase-5-new-features-july-30-31-2026">Phase 5: New Features (July 30-31, 2026)<a class="anchor" aria-label="anchor" href="#phase-5-new-features-july-30-31-2026"></a></h3>
 <ul class="task-list"><li>
 <label><input type="checkbox" checked>Added <code><a href="reference/get_wikidata_items.html">get_wikidata_items()</a></code> function</label>
 <ul><li>Takes predetermined list of QIDs instead of deriving via SPARQL</li>
@@ -196,6 +196,17 @@
 <li>Supports all same features: languages, properties, numeric_list_properties, object_type</li>
 <li>Full Roxygen documentation + 10 unit tests added to test-get_wikidata_instances.R</li>
 <li>All 411 package tests passing</li>
+</ul></li>
+<li>
+<label><input type="checkbox" checked>Added <code>unpack_wikipedia_article_info()</code> function (July 31, 2026)</label>
+<ul><li>Unpacks list column of Wikipedia article info (from <code><a href="reference/get_wikidata_items.html">get_wikidata_items()</a></code> or <code><a href="reference/get_wikidata_instances.html">get_wikidata_instances()</a></code>)</li>
+<li>Takes format: <code>"lang_code: Article Title"</code>
+</li>
+<li>Creates 3 columns per language: <code>{lang}_present</code> (logical), <code>{lang}_article</code> (character), <code>{lang}_url</code> (character)</li>
+<li>Default languages: <code>c("en", "es")</code>, customizable via <code>langs</code> parameter</li>
+<li>Custom column name supported via <code>wiki_col</code> parameter</li>
+<li>Full Roxygen documentation + 14 comprehensive unit tests</li>
+<li>All 704 package tests passing</li>
 </ul></li>
 </ul></div>
 <div class="section level3">
