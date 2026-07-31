@@ -72,6 +72,8 @@
   : Check Whether Any String in a Vector Is Equivalent
 - [`track_wikipedia_sentences()`](https://carwilb.github.io/wikitools/reference/track_wikipedia_sentences.md)
   : Track Insertion Dates for Multiple Wikipedia Sentences
+- [`unpack_wikipedia_article_info()`](https://carwilb.github.io/wikitools/reference/unpack_wikipedia_article_info.md)
+  : Unpack Wikipedia Article Information by Language
 - [`wikidata_instance_wikipedia_presence()`](https://carwilb.github.io/wikitools/reference/wikidata_instance_wikipedia_presence.md)
   : Wikipedia language presence matrix for instances of a Wikidata class
 - [`wikitext_to_plain()`](https://carwilb.github.io/wikitools/reference/wikitext_to_plain.md)

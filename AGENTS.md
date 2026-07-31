@@ -210,7 +210,9 @@ function
   test-get_wikidata_instances.R
 - All 411 package tests passing
 
-Added `unpack_wikipedia_article_info()` function (July 31, 2026)
+Added
+[`unpack_wikipedia_article_info()`](https://carwilb.github.io/wikitools/reference/unpack_wikipedia_article_info.md)
+function (July 31, 2026)
 
 - Unpacks list column of Wikipedia article info (from
   [`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
