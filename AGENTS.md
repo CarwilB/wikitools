@@ -195,7 +195,22 @@ directly
 - Also covers add_wikipedia_matches() tryCatch, data.frame output, limit
   forwarding
 
-### Phase 4: Polish & Release
+### Phase 5: New Features (July 30, 2026)
+
+Added
+[`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
+function
+
+- Takes predetermined list of QIDs instead of deriving via SPARQL
+- Reuses all existing helper functions (`.fetch_qids_in_batches`,
+  `.parse_entity`, etc.)
+- Supports all same features: languages, properties,
+  numeric_list_properties, object_type
+- Full Roxygen documentation + 10 unit tests added to
+  test-get_wikidata_instances.R
+- All 411 package tests passing
+
+### Phase 6: Polish & Release
 
 Run `devtools::check()` and fix all warnings/notes
 

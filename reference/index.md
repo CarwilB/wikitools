@@ -44,6 +44,8 @@
   : Fetch the Full Revision History of a Wikipedia Article
 - [`get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/get_wikidata_instances.md)
   : Get All Instances of a Wikidata Class
+- [`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
+  : Get Wikidata Items by QID
 - [`get_wikitext_by_name()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_name.md)
   : Fetch Raw Wikitext by Article Name
 - [`get_wikitext_by_revid()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_revid.md)

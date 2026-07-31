@@ -109,10 +109,10 @@ create_quick_statement("Q1001", property = "D",
 # With reference URL
 create_quick_statement("Q42", "P19", "Q350", type = "item",
                       reference_url = "https://example.com")
-#> [1] "Q42 | P19 | Q350 | S854 | \"https://example.com\" | S813 | +2026-07-23T00:00:00Z/11"
+#> [1] "Q42 | P19 | Q350 | S854 | \"https://example.com\" | S813 | +2026-07-31T00:00:00Z/11"
 
 # With stated-in reference
 create_quick_statement("Q42", "P19", "Q350", type = "item",
                       reference_qid = "Q36578")
-#> [1] "Q42 | P19 | Q350 | S248 | Q36578 | S813 | +2026-07-23T00:00:00Z/11"
+#> [1] "Q42 | P19 | Q350 | S248 | Q36578 | S813 | +2026-07-31T00:00:00Z/11"
 ```

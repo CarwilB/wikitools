@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">wikitools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -188,7 +188,18 @@
 </ul></li>
 </ul></div>
 <div class="section level3">
-<h3 id="phase-4-polish--release">Phase 4: Polish &amp; Release<a class="anchor" aria-label="anchor" href="#phase-4-polish--release"></a></h3>
+<h3 id="phase-5-new-features-july-30-2026">Phase 5: New Features (July 30, 2026)<a class="anchor" aria-label="anchor" href="#phase-5-new-features-july-30-2026"></a></h3>
+<ul class="task-list"><li>
+<label><input type="checkbox" checked>Added <code><a href="reference/get_wikidata_items.html">get_wikidata_items()</a></code> function</label>
+<ul><li>Takes predetermined list of QIDs instead of deriving via SPARQL</li>
+<li>Reuses all existing helper functions (<code>.fetch_qids_in_batches</code>, <code>.parse_entity</code>, etc.)</li>
+<li>Supports all same features: languages, properties, numeric_list_properties, object_type</li>
+<li>Full Roxygen documentation + 10 unit tests added to test-get_wikidata_instances.R</li>
+<li>All 411 package tests passing</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="phase-6-polish--release">Phase 6: Polish &amp; Release<a class="anchor" aria-label="anchor" href="#phase-6-polish--release"></a></h3>
 <ul class="task-list"><li><label><input type="checkbox">Run <code>devtools::check()</code> and fix all warnings/notes</label></li>
 <li><label><input type="checkbox">Create README.md with installation and usage examples</label></li>
 <li><label><input type="checkbox">Create vignette: “Getting Started with wikitools”</label></li>
