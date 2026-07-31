@@ -477,8 +477,9 @@ wikitext_to_plain <- function(wikitext) {
 #'
 #' Extracts Wikipedia article information from a list column containing language-tagged
 #' article titles (e.g., "en: Article Title") and creates separate columns for each
-#' specified language. For each language, creates three columns: `{lang}_present`
-#' (logical), `{lang}_article` (character), and `{lang}_url` (character).
+#' specified language. For each language, creates three columns beginning with their
+#' lowercase letter code: e.g., `en_present`
+#' (logical), `en_article` (character), and `en_url` (character).
 #'
 #' @param df A data frame or tibble containing a column of Wikipedia article info.
 #' @param wiki_col Name of the column containing Wikipedia article information
@@ -487,10 +488,11 @@ wikitext_to_plain <- function(wikitext) {
 #' @param langs Character vector of language codes to extract (default: c("en", "es")).
 #'   Language codes should match the format in the source data (e.g., "en", "es", "fr").
 #'
-#' @return A tibble with the same rows as `df`, plus new columns for each language:
-#'   - `{lang}_present`: Logical indicating whether an article exists in that language
-#'   - `{lang}_article`: Character string of the article title (NA if not present)
-#'   - `{lang}_url`: Character string of the Wikipedia URL
+#' @return A tibble with the same rows as `df`, plus new columns for each language
+#'   beginning with their lowercase letter code:
+#'   - `LANG_present`: Logical indicating whether an article exists in that language
+#'   - `LANG_article`: Character string of the article title (NA if not present)
+#'   - `LANG_url`: Character string of the Wikipedia URL
 #'     (e.g., "https://en.wikipedia.org/wiki/Article_Title")
 #'
 #' @details
