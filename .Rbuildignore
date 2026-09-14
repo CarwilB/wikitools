@@ -11,3 +11,4 @@
 ^\.github$
 ^codecov\.yml$
 ^\.posit/assistant$
+^vignettes$
