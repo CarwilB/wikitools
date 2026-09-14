@@ -6,6 +6,8 @@
   : Add a QuickStatements Column to a Data Frame
 - [`add_quick_statement_column_q()`](https://carwilb.github.io/wikitools/reference/add_quick_statement_column_q.md)
   : Add a QuickStatements Column with Qualifiers to a Data Frame
+- [`add_wikidata_matches()`](https://carwilb.github.io/wikitools/reference/add_wikidata_matches.md)
+  : Add Wikidata Search Matches to a Data Frame
 - [`add_wikidata_property()`](https://carwilb.github.io/wikitools/reference/add_wikidata_property.md)
   : Add a Wikidata Property to a Data Frame
 - [`add_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/add_wikipedia_matches.md)
@@ -14,6 +16,10 @@
   : Format a Data Frame as a MediaWiki Wikitable
 - [`cache_wikitext()`](https://carwilb.github.io/wikitools/reference/cache_wikitext.md)
   : Cache Wikitext Locally
+- [`choose_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/choose_wikipedia_matches.md)
+  : Interactively Choose Wikipedia Articles from Search Candidates
+- [`clean_column_headers()`](https://carwilb.github.io/wikitools/reference/clean_column_headers.md)
+  : Clean the Column Headers of a Wikitable into Variable Names
 - [`clean_infobox_value()`](https://carwilb.github.io/wikitools/reference/clean_infobox_value.md)
   : Clean a Single Infobox Field Value
 - [`count_citations()`](https://carwilb.github.io/wikitools/reference/count_citations.md)
@@ -36,6 +42,8 @@
   : Extract Citation References from Wikitext
 - [`find_sentence_insertion()`](https://carwilb.github.io/wikitools/reference/find_sentence_insertion.md)
   : Find the Revision Where a Sentence Was First Inserted
+- [`find_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/find_wikipedia_matches.md)
+  : Find the Top Wikipedia Search Candidates for Each String
 - [`get_page_info_batch()`](https://carwilb.github.io/wikitools/reference/get_page_info_batch.md)
   : Fetch Page Metadata in Batches
 - [`get_plain_text()`](https://carwilb.github.io/wikitools/reference/get_plain_text.md)
@@ -46,6 +54,8 @@
   : Get All Instances of a Wikidata Class
 - [`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
   : Get Wikidata Items by QID
+- [`get_wikitable()`](https://carwilb.github.io/wikitools/reference/get_wikitable.md)
+  : Get a Wikitable from a Wikipedia Article
 - [`get_wikitext_by_name()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_name.md)
   : Fetch Raw Wikitext by Article Name
 - [`get_wikitext_by_revid()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_revid.md)
@@ -58,6 +68,8 @@
   : Get Pages in a Wikipedia Category
 - [`get_wp_subcategories()`](https://carwilb.github.io/wikitools/reference/get_wp_subcategories.md)
   : Get Subcategories of a Wikipedia Category
+- [`link_to_article_name()`](https://carwilb.github.io/wikitools/reference/link_to_article_name.md)
+  : Extract a Wikipedia Article Name from a Link
 - [`remove_quick_statement_column()`](https://carwilb.github.io/wikitools/reference/remove_quick_statement_column.md)
   : Add a QuickStatements Column for Removing Statements to a Data Frame
 - [`resume_get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/resume_get_wikidata_instances.md)

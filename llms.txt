@@ -1,6 +1,182 @@
-Tools for retrieving, parsing, and matching Wikipedia and Wikidata
-content, including helpers for wikitext analysis and QuickStatements
-generation workflows.
+# wikitools
+
+wikitools provides R functions for retrieving, parsing, and matching
+Wikipedia and Wikidata content. It covers searching both platforms,
+navigating Wikipedia categories and Wikidata class hierarchies, fetching
+and parsing article text, tables, and revision histories, and generating
+QuickStatements commands for editing Wikidata.
+
+## Installation
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("CarwilB/wikitools")
+```
+
+## Searching Wikipedia and Wikidata
+
+[`add_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/add_wikipedia_matches.md)
+and
+[`add_wikidata_matches()`](https://carwilb.github.io/wikitools/reference/add_wikidata_matches.md)
+search each value in a name column against Wikipedia article titles or
+Wikidata labels and aliases, and append match metadata to the data
+frame: whether anything was found, whether the top hit is an exact text
+match, the matched title or QID, URL, and description. Both accept a
+vector of language codes, searching each language in turn and appending
+one set of columns per language.
+
+The top search hit is not always the intended article — an album title
+may also name a film, or a name may be shared by two people.
+[`find_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/find_wikipedia_matches.md)
+returns the top `n` candidates (six by default) for each string as a
+ranked, long-format tibble, and
+[`choose_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/choose_wikipedia_matches.md)
+presents those candidates in an interactive menu, with each article’s
+short description shown alongside the title. Results from the
+interactive menu can be saved and reloaded so that subsequent runs of a
+script do not require re-prompting the user.
+
+## Navigating Wikipedia by categories
+
+[`get_wp_category_members()`](https://carwilb.github.io/wikitools/reference/get_wp_category_members.md)
+returns the pages and/or subcategories of a Wikipedia category, while
+limiting API calls so as to limit demand on the API server.
+[`get_wp_category_pages()`](https://carwilb.github.io/wikitools/reference/get_wp_category_pages.md)
+and
+[`get_wp_subcategories()`](https://carwilb.github.io/wikitools/reference/get_wp_subcategories.md)
+are convenience wrappers that restrict the result to articles or
+subcategories, respectively. Results are returned as tibbles of page
+IDs, namespaces, and titles.
+[`get_page_info_batch()`](https://carwilb.github.io/wikitools/reference/get_page_info_batch.md)
+fetches metadata, while batching API requests.
+
+## Navigating Wikidata by instances and subclasses
+
+[`get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/get_wikidata_instances.md)
+retrieves, via SPARQL, all items that are an instance (P31) or subclass
+(P279) of a given class, or all persons on Wikidata that have held a
+given position (P39), with an optional country filter. Items are fetched
+from the Wikidata API in batches of 50, with labels and descriptions in
+the requested languages, optional additional properties, and
+multi-valued quantity properties (such as population figures recorded
+across several years) unpacked into value, year, and reference columns.
+Long-running queries record their progress and can be resumed with
+[`resume_get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/resume_get_wikidata_instances.md).
+[`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
+performs the same retrieval and enrichment for a predetermined list of
+QIDs, without the SPARQL step.
+
+Wikidata items record sitelinks to each corresponding Wikipedia page.
+Using this information, the package also has functions for checking
+Wikipedia coverage:
+[`wikidata_instance_wikipedia_presence()`](https://carwilb.github.io/wikitools/reference/wikidata_instance_wikipedia_presence.md)
+builds a matrix indicating which Wikipedia language editions have an
+article for each instance, and
+[`unpack_wikipedia_article_info()`](https://carwilb.github.io/wikitools/reference/unpack_wikipedia_article_info.md)
+reshapes the resulting sitelink list-column into per-language presence,
+title, and URL columns. When this search is interrupted, it can be
+resumed with `resume_wikidata_instance_wikipedia_presence().`
+
+## Retrieving and analyzing Wikipedia pages
+
+Raw wikitext can be fetched by article name
+([`get_wikitext_by_name()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_name.md)),
+by revision ID
+([`get_wikitext_by_revid()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_revid.md)),
+or from a URL
+([`get_wikitext_from_url()`](https://carwilb.github.io/wikitools/reference/get_wikitext_from_url.md)),
+including `?oldid=` revision links, with the language inferred from the
+subdomain.
+[`cache_wikitext()`](https://carwilb.github.io/wikitools/reference/cache_wikitext.md)
+downloads and stores wikitext locally for reuse, and
+[`get_plain_text()`](https://carwilb.github.io/wikitools/reference/get_plain_text.md)
+converts Wikitext into plain text, stripping away any markup.
+
+A set of parsing functions then operates on wikitext without requiring
+further network access.
+[`extract_infobox()`](https://carwilb.github.io/wikitools/reference/extract_infobox.md)
+parses the first infobox (recognizing English `Infobox`, Spanish
+`Ficha de`, and Portuguese `Info/` conventions) into a named list of
+fields, using brace-depth matching to handle nested templates, and
+[`clean_infobox_value()`](https://carwilb.github.io/wikitools/reference/clean_infobox_value.md)
+strips markup from an individual field (flag templates, `{{convert}}`
+units, `<ref>` tags, wikilinks) to produce plain text.
+[`extract_clean_fragments()`](https://carwilb.github.io/wikitools/reference/extract_clean_fragments.md)
+splits an article into sentence-like plain-text fragments, and
+[`wikitext_to_plain()`](https://carwilb.github.io/wikitools/reference/wikitext_to_plain.md)
+converts wikitext to plain text via Pandoc. For citation analysis,
+[`count_citations()`](https://carwilb.github.io/wikitools/reference/count_citations.md)
+and
+[`count_refs()`](https://carwilb.github.io/wikitools/reference/count_refs.md)
+count citation templates and `<ref>` tags, and
+[`extract_refs_from_wikitext()`](https://carwilb.github.io/wikitools/reference/extract_refs_from_wikitext.md)
+parses sixteen citation template families (Cite book, Cite journal, Cite
+web, and related templates) into a tidy tibble of authors, titles,
+dates, publishers, and identifiers.
+
+A related set of functions traces when content was added to an article.
+[`get_revision_history_map()`](https://carwilb.github.io/wikitools/reference/get_revision_history_map.md)
+fetches an article’s full revision history, paginating automatically
+over articles with thousands of revisions.
+[`find_sentence_insertion()`](https://carwilb.github.io/wikitools/reference/find_sentence_insertion.md)
+performs a binary search over that history to identify the revision in
+which a given sentence first appeared, requiring at most about 10 API
+calls for an article with 1,000 revisions.
+[`track_wikipedia_sentences()`](https://carwilb.github.io/wikitools/reference/track_wikipedia_sentences.md)
+applies this search to a list of sentences, recording who added each one
+and when.
+
+## Retrieving Wikipedia tables
+
+[`get_wikitable()`](https://carwilb.github.io/wikitools/reference/get_wikitable.md)
+retrieves a rendered `wikitable` from a Wikipedia article, selecting the
+table by matching a substring against its caption (and listing available
+captions if no match is found). The article link behind each row’s
+header cell can also be extracted into an adjacent `_link` column.
+[`clean_column_headers()`](https://carwilb.github.io/wikitools/reference/clean_column_headers.md)
+converts raw header text into snake_case variable names, preserving
+acronyms such as `UK`, and
+[`link_to_article_name()`](https://carwilb.github.io/wikitools/reference/link_to_article_name.md)
+converts a link URL back into a plain article title.
+
+## Turning data into wikitext tables
+
+[`as_wikitable()`](https://carwilb.github.io/wikitools/reference/as_wikitable.md)
+performs the reverse conversion, formatting an R data frame as MediaWiki
+wikitable markup, with columns as headers, rows as table rows, and `NA`
+values rendered as empty cells. An optional caption and CSS class can be
+supplied.
+
+## Editing Wikidata via QuickStatements
+
+[`create_quick_statement()`](https://carwilb.github.io/wikitools/reference/create_quick_statement.md)
+generates a single QuickStatements V1 command for strings, monolingual
+text, labels, descriptions, aliases, items, times, quantities, or
+coordinates, with optional qualifiers, references, and retrieved dates.
+[`add_quick_statement_column()`](https://carwilb.github.io/wikitools/reference/add_quick_statement_column.md),
+[`add_quick_statement_column_q()`](https://carwilb.github.io/wikitools/reference/add_quick_statement_column_q.md)
+(with qualifiers), and
+[`remove_quick_statement_column()`](https://carwilb.github.io/wikitools/reference/remove_quick_statement_column.md)
+generate the corresponding commands for every row of a data frame.
+[`add_wikidata_property()`](https://carwilb.github.io/wikitools/reference/add_wikidata_property.md)
+performs the reverse operation, reading a single-valued property from
+Wikidata and appending it as a new column to a data frame that contains
+a `qid` column.
+
+## Other utilities
+
+[`str_equivalent()`](https://carwilb.github.io/wikitools/reference/str_equivalent.md)
+compares two strings after normalizing whitespace, accents, and case, so
+that, for example, `" Café"` and `"cafe"` are considered equivalent.
+[`equivalent_which()`](https://carwilb.github.io/wikitools/reference/equivalent_which.md),
+[`equivalent_match()`](https://carwilb.github.io/wikitools/reference/equivalent_match.md),
+and
+[`str_equivalent_list()`](https://carwilb.github.io/wikitools/reference/str_equivalent_list.md)
+apply this comparison to find matching positions, matching values, or
+any-match flags within a vector.
+[`simplify_list_columns()`](https://carwilb.github.io/wikitools/reference/simplify_list_columns.md)
+unlists single-value list columns in a data frame into plain vectors.
 
 # Package index
 
@@ -10,6 +186,8 @@ generation workflows.
   : Add a QuickStatements Column to a Data Frame
 - [`add_quick_statement_column_q()`](https://carwilb.github.io/wikitools/reference/add_quick_statement_column_q.md)
   : Add a QuickStatements Column with Qualifiers to a Data Frame
+- [`add_wikidata_matches()`](https://carwilb.github.io/wikitools/reference/add_wikidata_matches.md)
+  : Add Wikidata Search Matches to a Data Frame
 - [`add_wikidata_property()`](https://carwilb.github.io/wikitools/reference/add_wikidata_property.md)
   : Add a Wikidata Property to a Data Frame
 - [`add_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/add_wikipedia_matches.md)
@@ -18,6 +196,10 @@ generation workflows.
   : Format a Data Frame as a MediaWiki Wikitable
 - [`cache_wikitext()`](https://carwilb.github.io/wikitools/reference/cache_wikitext.md)
   : Cache Wikitext Locally
+- [`choose_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/choose_wikipedia_matches.md)
+  : Interactively Choose Wikipedia Articles from Search Candidates
+- [`clean_column_headers()`](https://carwilb.github.io/wikitools/reference/clean_column_headers.md)
+  : Clean the Column Headers of a Wikitable into Variable Names
 - [`clean_infobox_value()`](https://carwilb.github.io/wikitools/reference/clean_infobox_value.md)
   : Clean a Single Infobox Field Value
 - [`count_citations()`](https://carwilb.github.io/wikitools/reference/count_citations.md)
@@ -40,6 +222,8 @@ generation workflows.
   : Extract Citation References from Wikitext
 - [`find_sentence_insertion()`](https://carwilb.github.io/wikitools/reference/find_sentence_insertion.md)
   : Find the Revision Where a Sentence Was First Inserted
+- [`find_wikipedia_matches()`](https://carwilb.github.io/wikitools/reference/find_wikipedia_matches.md)
+  : Find the Top Wikipedia Search Candidates for Each String
 - [`get_page_info_batch()`](https://carwilb.github.io/wikitools/reference/get_page_info_batch.md)
   : Fetch Page Metadata in Batches
 - [`get_plain_text()`](https://carwilb.github.io/wikitools/reference/get_plain_text.md)
@@ -50,6 +234,8 @@ generation workflows.
   : Get All Instances of a Wikidata Class
 - [`get_wikidata_items()`](https://carwilb.github.io/wikitools/reference/get_wikidata_items.md)
   : Get Wikidata Items by QID
+- [`get_wikitable()`](https://carwilb.github.io/wikitools/reference/get_wikitable.md)
+  : Get a Wikitable from a Wikipedia Article
 - [`get_wikitext_by_name()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_name.md)
   : Fetch Raw Wikitext by Article Name
 - [`get_wikitext_by_revid()`](https://carwilb.github.io/wikitools/reference/get_wikitext_by_revid.md)
@@ -62,6 +248,8 @@ generation workflows.
   : Get Pages in a Wikipedia Category
 - [`get_wp_subcategories()`](https://carwilb.github.io/wikitools/reference/get_wp_subcategories.md)
   : Get Subcategories of a Wikipedia Category
+- [`link_to_article_name()`](https://carwilb.github.io/wikitools/reference/link_to_article_name.md)
+  : Extract a Wikipedia Article Name from a Link
 - [`remove_quick_statement_column()`](https://carwilb.github.io/wikitools/reference/remove_quick_statement_column.md)
   : Add a QuickStatements Column for Removing Statements to a Data Frame
 - [`resume_get_wikidata_instances()`](https://carwilb.github.io/wikitools/reference/resume_get_wikidata_instances.md)
@@ -83,3 +271,11 @@ generation workflows.
 - [`wikitext_to_plain()`](https://carwilb.github.io/wikitools/reference/wikitext_to_plain.md)
   : Convert Wikitext to Plain Text via Pandoc
 
+# Articles
+
+### All vignettes
+
+- [Matching Names to Wikipedia and
+  Wikidata](https://carwilb.github.io/wikitools/articles/add-wikipedia-matches.md):
+- [Retrieving a Wikipedia Table: The Beatles' Studio
+  Albums](https://carwilb.github.io/wikitools/articles/get-wikitable.md):

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">wikitools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,13 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/add-wikipedia-matches.html">Matching Names to Wikipedia and Wikidata</a></li>
+    <li><a class="dropdown-item" href="articles/get-wikitable.html">Retrieving a Wikipedia Table: The Beatles' Studio Albums</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -45,8 +52,62 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
-Tools for retrieving, parsing, and matching Wikipedia and Wikidata content, including helpers for wikitext analysis and QuickStatements generation workflows.
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="wikitools">wikitools<a class="anchor" aria-label="anchor" href="#wikitools"></a>
+</h1></div>
+<p>wikitools provides R functions for retrieving, parsing, and matching Wikipedia and Wikidata content. It covers searching both platforms, navigating Wikipedia categories and Wikidata class hierarchies, fetching and parsing article text, tables, and revision histories, and generating QuickStatements commands for editing Wikidata.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CarwilB/wikitools"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="searching-wikipedia-and-wikidata">Searching Wikipedia and Wikidata<a class="anchor" aria-label="anchor" href="#searching-wikipedia-and-wikidata"></a>
+</h2>
+<p><code><a href="reference/add_wikipedia_matches.html">add_wikipedia_matches()</a></code> and <code><a href="reference/add_wikidata_matches.html">add_wikidata_matches()</a></code> search each value in a name column against Wikipedia article titles or Wikidata labels and aliases, and append match metadata to the data frame: whether anything was found, whether the top hit is an exact text match, the matched title or QID, URL, and description. Both accept a vector of language codes, searching each language in turn and appending one set of columns per language.</p>
+<p>The top search hit is not always the intended article — an album title may also name a film, or a name may be shared by two people. <code><a href="reference/find_wikipedia_matches.html">find_wikipedia_matches()</a></code> returns the top <code>n</code> candidates (six by default) for each string as a ranked, long-format tibble, and <code><a href="reference/choose_wikipedia_matches.html">choose_wikipedia_matches()</a></code> presents those candidates in an interactive menu, with each article’s short description shown alongside the title. Results from the interactive menu can be saved and reloaded so that subsequent runs of a script do not require re-prompting the user.</p>
+</div>
+<div class="section level2">
+<h2 id="navigating-wikipedia-by-categories">Navigating Wikipedia by categories<a class="anchor" aria-label="anchor" href="#navigating-wikipedia-by-categories"></a>
+</h2>
+<p><code><a href="reference/get_wp_category_members.html">get_wp_category_members()</a></code> returns the pages and/or subcategories of a Wikipedia category, while limiting API calls so as to limit demand on the API server. <code><a href="reference/get_wp_category_pages.html">get_wp_category_pages()</a></code> and <code><a href="reference/get_wp_subcategories.html">get_wp_subcategories()</a></code> are convenience wrappers that restrict the result to articles or subcategories, respectively. Results are returned as tibbles of page IDs, namespaces, and titles. <code><a href="reference/get_page_info_batch.html">get_page_info_batch()</a></code> fetches metadata, while batching API requests.</p>
+</div>
+<div class="section level2">
+<h2 id="navigating-wikidata-by-instances-and-subclasses">Navigating Wikidata by instances and subclasses<a class="anchor" aria-label="anchor" href="#navigating-wikidata-by-instances-and-subclasses"></a>
+</h2>
+<p><code><a href="reference/get_wikidata_instances.html">get_wikidata_instances()</a></code> retrieves, via SPARQL, all items that are an instance (P31) or subclass (P279) of a given class, or all persons on Wikidata that have held a given position (P39), with an optional country filter. Items are fetched from the Wikidata API in batches of 50, with labels and descriptions in the requested languages, optional additional properties, and multi-valued quantity properties (such as population figures recorded across several years) unpacked into value, year, and reference columns. Long-running queries record their progress and can be resumed with <code><a href="reference/resume_get_wikidata_instances.html">resume_get_wikidata_instances()</a></code>. <code><a href="reference/get_wikidata_items.html">get_wikidata_items()</a></code> performs the same retrieval and enrichment for a predetermined list of QIDs, without the SPARQL step.</p>
+<p>Wikidata items record sitelinks to each corresponding Wikipedia page. Using this information, the package also has functions for checking Wikipedia coverage: <code><a href="reference/wikidata_instance_wikipedia_presence.html">wikidata_instance_wikipedia_presence()</a></code> builds a matrix indicating which Wikipedia language editions have an article for each instance, and <code><a href="reference/unpack_wikipedia_article_info.html">unpack_wikipedia_article_info()</a></code> reshapes the resulting sitelink list-column into per-language presence, title, and URL columns. When this search is interrupted, it can be resumed with <code>resume_wikidata_instance_wikipedia_presence().</code></p>
+</div>
+<div class="section level2">
+<h2 id="retrieving-and-analyzing-wikipedia-pages">Retrieving and analyzing Wikipedia pages<a class="anchor" aria-label="anchor" href="#retrieving-and-analyzing-wikipedia-pages"></a>
+</h2>
+<p>Raw wikitext can be fetched by article name (<code><a href="reference/get_wikitext_by_name.html">get_wikitext_by_name()</a></code>), by revision ID (<code><a href="reference/get_wikitext_by_revid.html">get_wikitext_by_revid()</a></code>), or from a URL (<code><a href="reference/get_wikitext_from_url.html">get_wikitext_from_url()</a></code>), including <code>?oldid=</code> revision links, with the language inferred from the subdomain. <code><a href="reference/cache_wikitext.html">cache_wikitext()</a></code> downloads and stores wikitext locally for reuse, and <code><a href="reference/get_plain_text.html">get_plain_text()</a></code> converts Wikitext into plain text, stripping away any markup.</p>
+<p>A set of parsing functions then operates on wikitext without requiring further network access. <code><a href="reference/extract_infobox.html">extract_infobox()</a></code> parses the first infobox (recognizing English <code>Infobox</code>, Spanish <code>Ficha de</code>, and Portuguese <code>Info/</code> conventions) into a named list of fields, using brace-depth matching to handle nested templates, and <code><a href="reference/clean_infobox_value.html">clean_infobox_value()</a></code> strips markup from an individual field (flag templates, <code>{{convert}}</code> units, <code>&lt;ref&gt;</code> tags, wikilinks) to produce plain text. <code><a href="reference/extract_clean_fragments.html">extract_clean_fragments()</a></code> splits an article into sentence-like plain-text fragments, and <code><a href="reference/wikitext_to_plain.html">wikitext_to_plain()</a></code> converts wikitext to plain text via Pandoc. For citation analysis, <code><a href="reference/count_citations.html">count_citations()</a></code> and <code><a href="reference/count_refs.html">count_refs()</a></code> count citation templates and <code>&lt;ref&gt;</code> tags, and <code><a href="reference/extract_refs_from_wikitext.html">extract_refs_from_wikitext()</a></code> parses sixteen citation template families (Cite book, Cite journal, Cite web, and related templates) into a tidy tibble of authors, titles, dates, publishers, and identifiers.</p>
+<p>A related set of functions traces when content was added to an article. <code><a href="reference/get_revision_history_map.html">get_revision_history_map()</a></code> fetches an article’s full revision history, paginating automatically over articles with thousands of revisions. <code><a href="reference/find_sentence_insertion.html">find_sentence_insertion()</a></code> performs a binary search over that history to identify the revision in which a given sentence first appeared, requiring at most about 10 API calls for an article with 1,000 revisions. <code><a href="reference/track_wikipedia_sentences.html">track_wikipedia_sentences()</a></code> applies this search to a list of sentences, recording who added each one and when.</p>
+</div>
+<div class="section level2">
+<h2 id="retrieving-wikipedia-tables">Retrieving Wikipedia tables<a class="anchor" aria-label="anchor" href="#retrieving-wikipedia-tables"></a>
+</h2>
+<p><code><a href="reference/get_wikitable.html">get_wikitable()</a></code> retrieves a rendered <code>wikitable</code> from a Wikipedia article, selecting the table by matching a substring against its caption (and listing available captions if no match is found). The article link behind each row’s header cell can also be extracted into an adjacent <code>_link</code> column. <code><a href="reference/clean_column_headers.html">clean_column_headers()</a></code> converts raw header text into snake_case variable names, preserving acronyms such as <code>UK</code>, and <code><a href="reference/link_to_article_name.html">link_to_article_name()</a></code> converts a link URL back into a plain article title.</p>
+</div>
+<div class="section level2">
+<h2 id="turning-data-into-wikitext-tables">Turning data into wikitext tables<a class="anchor" aria-label="anchor" href="#turning-data-into-wikitext-tables"></a>
+</h2>
+<p><code><a href="reference/as_wikitable.html">as_wikitable()</a></code> performs the reverse conversion, formatting an R data frame as MediaWiki wikitable markup, with columns as headers, rows as table rows, and <code>NA</code> values rendered as empty cells. An optional caption and CSS class can be supplied.</p>
+</div>
+<div class="section level2">
+<h2 id="editing-wikidata-via-quickstatements">Editing Wikidata via QuickStatements<a class="anchor" aria-label="anchor" href="#editing-wikidata-via-quickstatements"></a>
+</h2>
+<p><code><a href="reference/create_quick_statement.html">create_quick_statement()</a></code> generates a single QuickStatements V1 command for strings, monolingual text, labels, descriptions, aliases, items, times, quantities, or coordinates, with optional qualifiers, references, and retrieved dates. <code><a href="reference/add_quick_statement_column.html">add_quick_statement_column()</a></code>, <code><a href="reference/add_quick_statement_column_q.html">add_quick_statement_column_q()</a></code> (with qualifiers), and <code><a href="reference/remove_quick_statement_column.html">remove_quick_statement_column()</a></code> generate the corresponding commands for every row of a data frame. <code><a href="reference/add_wikidata_property.html">add_wikidata_property()</a></code> performs the reverse operation, reading a single-valued property from Wikidata and appending it as a new column to a data frame that contains a <code>qid</code> column.</p>
+</div>
+<div class="section level2">
+<h2 id="other-utilities">Other utilities<a class="anchor" aria-label="anchor" href="#other-utilities"></a>
+</h2>
+<p><code><a href="reference/str_equivalent.html">str_equivalent()</a></code> compares two strings after normalizing whitespace, accents, and case, so that, for example, <code>"  Café"</code> and <code>"cafe"</code> are considered equivalent. <code><a href="reference/equivalent_which.html">equivalent_which()</a></code>, <code><a href="reference/equivalent_match.html">equivalent_match()</a></code>, and <code><a href="reference/str_equivalent_list.html">str_equivalent_list()</a></code> apply this comparison to find matching positions, matching values, or any-match flags within a vector. <code><a href="reference/simplify_list_columns.html">simplify_list_columns()</a></code> unlists single-value list columns in a data frame into plain vectors.</p>
+</div>
+</div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">

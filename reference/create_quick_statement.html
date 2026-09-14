@@ -9,7 +9,7 @@ monolingual text, labels, and descriptions with optional references."></head><bo
 
     <a class="navbar-brand me-2" href="../index.html">wikitools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,6 +18,11 @@ monolingual text, labels, and descriptions with optional references."></head><bo
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/add-wikipedia-matches.html">Matching Names to Wikipedia and Wikidata</a></li>
+    <li><a class="dropdown-item" href="../articles/get-wikitable.html">Retrieving a Wikipedia Table: The Beatles' Studio Albums</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/CarwilB/wikitools/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -145,12 +150,12 @@ https://meta.wikimedia.org/wiki/QuickStatements_3.0</p>
 <span class="r-in"><span><span class="co"># With reference URL</span></span></span>
 <span class="r-in"><span><span class="fu">create_quick_statement</span><span class="op">(</span><span class="st">"Q42"</span>, <span class="st">"P19"</span>, <span class="st">"Q350"</span>, type <span class="op">=</span> <span class="st">"item"</span>,</span></span>
 <span class="r-in"><span>                      reference_url <span class="op">=</span> <span class="st">"https://example.com"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Q42 | P19 | Q350 | S854 | \"https://example.com\" | S813 | +2026-07-31T00:00:00Z/11"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Q42 | P19 | Q350 | S854 | \"https://example.com\" | S813 | +2026-09-14T00:00:00Z/11"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With stated-in reference</span></span></span>
 <span class="r-in"><span><span class="fu">create_quick_statement</span><span class="op">(</span><span class="st">"Q42"</span>, <span class="st">"P19"</span>, <span class="st">"Q350"</span>, type <span class="op">=</span> <span class="st">"item"</span>,</span></span>
 <span class="r-in"><span>                      reference_qid <span class="op">=</span> <span class="st">"Q36578"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Q42 | P19 | Q350 | S248 | Q36578 | S813 | +2026-07-31T00:00:00Z/11"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Q42 | P19 | Q350 | S248 | Q36578 | S813 | +2026-09-14T00:00:00Z/11"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
