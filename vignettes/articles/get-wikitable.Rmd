@@ -1,0 +1,305 @@
+---
+title: "Retrieving a Wikipedia Table: The Beatles' Studio Albums"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(wikitools)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(ggplot2)
+```
+
+`wikitools` is built to facilitate the retrieval and manipulation of Wikipedia data. [as_wikitable()] converts an R data frame
+*into* wikitext table markup for pasting into an article. [get_wikitable()] goes the other direction: it fetches the live, rendered HTML of a Wikipedia
+article and pulls one of its `class="wikitable"` tables back out as a tidy
+tibble.
+
+This article walks through fetching one real table -- the studio-album
+discography on [en.wikipedia.org/wiki/The_Beatles_albums_discography](https://en.wikipedia.org/wiki/The_Beatles_albums_discography)
+-- and cleaning it up for analysis, which is most of the actual work: a
+Wikipedia table's cells are HTML, not neatly typed data, so bullet lists,
+footnote markers, and placeholder dashes all need to be dealt with before
+anything downstream (a chart, a join, a summary) will work.
+
+## Fetching the table
+
+The page has several `wikitable`s -- one each for studio albums, live
+albums, compilation albums, mash-ups, box sets, and EPs. `get_wikitable()`
+picks one out by matching a (case-insensitive) substring against each
+table's `<caption>`:
+
+```{r}
+albums <- get_wikitable(
+  "The Beatles albums discography",
+  match = "List of studio albums, with selected chart positions and certification"
+)
+
+albums
+```
+
+Three attributes travel along with the tibble: the caption actually
+matched, the article URL that was fetched, and any single-cell "legend"
+rows that were pulled out of the table body rather than kept as a data row:
+
+```{r}
+attr(albums, "caption")
+attr(albums, "notes")
+```
+
+That note explains the `"\u2014"` placeholders scattered through the chart
+columns below -- worth keeping in mind once those columns get converted to
+numbers.
+
+(One caveat surfaced while writing this: the page actually has *two*
+captions containing "studio albums" -- a near-duplicate, much shorter table
+further down covers a US-only release, "Introducing... The Beatles", that
+isn't part of the main UK-catalog list above. `get_wikitable()` uses the
+first match and prints a message when a `match` string is ambiguous like
+this, so it's worth passing enough of the caption text to disambiguate, as
+done above.)
+
+## Header names and article links
+
+By default, `get_wikitable()` also picks out any row-header column that
+links to another article -- here, each album title links to its own page
+-- and adds it as an adjacent `Title_link` column holding the absolute URL.
+Ordinary cells (like the record label link buried inside `Album details`)
+are left alone; only the row-header link is extracted, since it is the one
+most likely to identify the row's own subject.
+
+Two small helpers turn this into something more usable: `clean_column_headers()`
+converts the raw header text into snake_case variable names (lower-casing
+words but leaving all-caps acronyms like `UK`/`AUS` alone), and
+`link_to_article_name()` turns a `_link` column's URL into a plain article
+title:
+
+```{r}
+albums <- albums |>
+  clean_column_headers() |>
+  mutate(title_article = link_to_article_name(title_link)) |>
+  relocate(title_article, .after = title)
+
+albums |> select(title, title_article, title_link)
+```
+
+Worth a glance before moving on: the linked article title doesn't always
+match the display title verbatim. *Revolver* links to the disambiguated
+article "Revolver (Beatles album)", and "The Beatles (\"The White
+Album\")" links to plain "The Beatles (album)" -- useful to know if
+`title_article` is ever used as a join key against another data source.
+
+## Choosing the right article interactively
+
+`title_article` is a high-quality key because it reflects a Wikipedia
+editor's deliberate choice of which article each album title links to. But
+when a table *doesn't* link its rows (or when matching names against
+Wikipedia from scratch), the usual fallback is search — and the top search
+hit is not always the right article. Searching "A Hard Day's Night" puts
+the film above the album; searching "With the Beatles" returns the band's
+article; searching "Revolver" returns the firearm.
+
+`choose_wikipedia_matches()` handles this interactively: for each name it
+shows the top `n` search candidates (six by default) in a `utils::menu()`,
+with each article's short description appended so similarly-titled articles
+are easy to tell apart, plus a "None of these (skip)" option:
+
+```{r eval = FALSE}
+album_choices <- choose_wikipedia_matches(albums, name_col = "title")
+```
+
+```
+Which article matches "Revolver"?
+
+1: Revolver — Firearm with a cylinder holding cartridges
+2: Revolver (Beatles album) — 1966 studio album by the Beatles
+3: Revolver (disambiguation) — Topics referred to by the same term
+...
+7: None of these (skip)
+```
+
+The result is one row per query with `found`, `chosen`, the `rank` of the
+selected candidate, and its `title`, `url`, and `description`.
+
+### Making interactive choices reproducible
+
+An interactive menu can't be part of a reproducible pipeline, but the
+*choices* can. The pattern: run the picker once interactively, save the
+result with `saveRDS()`, and have the script read the saved file on
+subsequent (including non-interactive, e.g. knitted) runs:
+
+```{r}
+choices_file <- "album_choices.rds"
+
+if (file.exists(choices_file)) {
+  # Replay the previously recorded choices
+  album_choices <- readRDS(choices_file)
+} else if (interactive()) {
+  album_choices <- choose_wikipedia_matches(albums, name_col = "title")
+  saveRDS(album_choices, choices_file)
+} else {
+  stop("Run this script once interactively to record the choices.")
+}
+
+album_choices
+```
+
+The saved file is small and safe to commit alongside the script, so anyone
+re-rendering this document gets exactly the choices that were made
+interactively. (The `rank` column also documents how far down the list the
+correct article was at the time the choices were made — search rankings do
+drift over time, which is another reason to pin the result.)
+
+### Comparing the two processes
+
+The interactive choices can now be checked against what a fully automatic
+top-hit search would have returned. Since the choices above were made using
+the page's own links as the reference, `chosen_title` is the "right answer"
+here — the question is how often [add_wikipedia_matches()] (which keeps
+only the top search hit) lands on the same article:
+
+Like the interactive choices, the automatic results are cached the first
+time they're generated, so the comparison below stays fixed even as
+Wikipedia's search rankings drift:
+
+```{r}
+auto_file <- "album_auto_matches.rds"
+
+if (file.exists(auto_file)) {
+  # Replay the previously recorded automatic matches
+  album_auto_matches <- readRDS(auto_file)
+} else if (interactive()) {
+  album_auto_matches <- add_wikipedia_matches(albums, "title") |>
+    select(title, automatic_title = wp_title, automatic_match = wp_match)
+  saveRDS(album_auto_matches, auto_file)
+} else {
+  stop("Run this script once interactively to record the automatic matches.")
+}
+
+album_choices |>
+  select(title = query, chosen_title = title, chosen_rank = rank) |>
+  left_join(album_auto_matches, by = "title") |>
+  mutate(same_article = chosen_title == automatic_title)
+```
+
+Nine of twelve agree. The three disagreements are the instructive ones:
+
+- **"With the Beatles"** — the automatic top hit is the band's own article,
+  not the album.
+- **"A Hard Day's Night"** — the top hit is the *film*, not the album.
+- **"Revolver"** — the top hit is the *firearm* article, and
+  `automatic_match` is even `TRUE` (the title matches exactly!), so the
+  exact-match flag would not have caught this. Only the short descriptions
+  in the interactive picker make the firearm/album distinction visible.
+
+Conversely, `automatic_match = FALSE` is not proof of a wrong result
+either: for "The Beatles (\"The White Album\")", "Yellow Submarine", and
+"Let It Be", the automatic search resolved to the correct disambiguated
+article despite the display-title mismatch. The interactive step — or an
+editor-curated link like `title_article` — is what turns these ambiguous
+cases into confirmed matches.
+
+## Cleaning the columns
+
+Every column comes back as character data -- Wikipedia tables mix numbers,
+dashes, and footnoted text too freely to safely guess types automatically.
+The table has three groups of columns that each need different treatment:
+`title` (and now `title_link`/`title_article`), plain text; the
+chart-position columns (`UK`, `AUS`, `CAN`, `FRA`, `GER`, `NOR`, `US`),
+which are almost numeric; and `album_details`, `certifications`, and
+`sales`, which are really several lines of text packed into one cell.
+
+### Chart positions
+
+The `"\u2014"` placeholder (meaning "did not chart") needs to become `NA`
+before these columns are usable as numbers:
+
+```{r}
+chart_cols <- c("UK", "AUS", "CAN", "FRA", "GER", "NOR", "US")
+
+albums <- albums |>
+  mutate(across(all_of(chart_cols), ~ na_if(.x, "\u2014"))) |>
+  mutate(across(all_of(chart_cols), as.integer))
+
+albums |> select(title, all_of(chart_cols))
+```
+
+### Release date and label
+
+`album_details` packs a release date and a record label into one cell,
+separated by a line break -- a pattern common to Wikipedia's `{{Plainlist}}`
+and `<ul>` infobox-style cells:
+
+```{r}
+albums <- albums |>
+  mutate(
+    released = str_extract(album_details, "(?<=Released: )[^\\n]+") |> str_trim(),
+    label    = str_extract(album_details, "(?<=Label: )[^\\n]+")    |> str_trim(),
+    released = as.Date(released, format = "%d %B %Y")
+  )
+
+albums |> select(title, released, label)
+```
+
+### Certifications, reshaped long
+
+`certifications` holds a variable number of `"Agency: Level"` lines per
+album -- exactly the kind of one-cell-holds-many-values structure that
+calls for `tidyr::separate_longer_delim()` followed by splitting each piece
+on its colon:
+
+```{r}
+album_certifications <- albums |>
+  select(title, certifications) |>
+  filter(nzchar(certifications)) |>
+  separate_longer_delim(certifications, delim = "\n") |>
+  separate_wider_delim(certifications, delim = ": ", names = c("agency", "level")) |>
+  mutate(agency = str_trim(agency), level = str_trim(level))
+
+album_certifications
+```
+
+## A quick look: UK vs. US chart peaks over time
+
+With `released` as a real date and the chart columns as real integers, a
+release-order comparison of the two best-covered markets is a one-liner.
+Remember that these are *chart positions*, so lower is better -- the axis
+is flipped to read top-to-bottom as "higher on the chart" is "higher on the
+plot":
+
+```{r}
+albums |>
+  select(title, released, UK, US) |>
+  pivot_longer(c(UK, US), names_to = "chart", values_to = "position") |>
+  ggplot(aes(x = released, y = position, color = chart)) +
+  geom_line(aes(group = chart)) +
+  geom_point() +
+  scale_y_reverse(breaks = c(1, 5, 10, 20, 40)) +
+  labs(
+    x = NULL, y = "Peak chart position", color = "Chart",
+    title = "The Beatles: UK vs. US studio album chart peaks"
+  )
+```
+
+Both charts show the same broad pattern -- every studio album from *Help!*
+onward peaked at number one in the UK, while the US chart (which, unlike
+the UK, treated several early releases as compilations rather than studio
+albums, and so omits or reorders some titles) shows more variation early
+on.
+
+## Where this could go next
+
+This is a first pass at the table, not a finished analysis. A few natural
+extensions: joining `album_certifications` back to `albums` to compare
+certification counts against chart performance; pulling in the other five
+discography tables (live albums, compilations, etc.) with the same
+`get_wikitable()` call and a different `match`; or cross-referencing
+`title_article` against [add_wikidata_matches()] to attach each album's
+Wikidata QID for further enrichment.

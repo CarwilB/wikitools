@@ -1,0 +1,28 @@
+{
+    "batchcomplete": "",
+    "query": {
+        "pages": {
+            "25794": {
+                "pageid": 25794,
+                "ns": 0,
+                "title": "Revolver",
+                "description": "Firearm with a cylinder holding cartridges",
+                "descriptionsource": "local"
+            },
+            "74983": {
+                "pageid": 74983,
+                "ns": 0,
+                "title": "Revolver (Beatles album)",
+                "description": "1966 studio album by the Beatles",
+                "descriptionsource": "local"
+            },
+            "2033293": {
+                "pageid": 2033293,
+                "ns": 0,
+                "title": "Revolver (disambiguation)",
+                "description": "Topics referred to by the same term",
+                "descriptionsource": "local"
+            }
+        }
+    }
+}

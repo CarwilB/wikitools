@@ -136,9 +136,9 @@ test_that("add_wikipedia_matches tryCatch returns found=FALSE when search errors
     .package = "wikitools"
   )
   result <- add_wikipedia_matches(tibble::tibble(name = "Any Name"), delay = 0)
-  expect_false(result$wikipedia_found)
-  expect_false(result$wikipedia_match)
-  expect_true(is.na(result$wikipedia_title))
+  expect_false(result$wp_found)
+  expect_false(result$wp_match)
+  expect_true(is.na(result$wp_title))
 })
 
 test_that("add_wikipedia_matches forwards limit to search_wikipedia_one", {
@@ -155,7 +155,7 @@ test_that("add_wikipedia_matches forwards limit to search_wikipedia_one", {
   expect_equal(received_limit, 3L)
 })
 
-test_that("add_wikipedia_matches wikipedia_snippet is populated from search result", {
+test_that("add_wikipedia_matches wp_snippet is populated from search result", {
   local_mocked_bindings(
     search_wikipedia_one = function(...) list(found = TRUE, title = "Paul Rivet",
                                              url = "https://en.wikipedia.org/wiki/Paul_Rivet",
@@ -163,15 +163,15 @@ test_that("add_wikipedia_matches wikipedia_snippet is populated from search resu
     .package = "wikitools"
   )
   result <- add_wikipedia_matches(tibble::tibble(name = "Paul Rivet"), delay = 0)
-  expect_equal(result$wikipedia_snippet, "French ethnologist")
+  expect_equal(result$wp_snippet, "French ethnologist")
 })
 
-test_that("add_wikipedia_matches wikipedia_snippet is NA when found=FALSE", {
+test_that("add_wikipedia_matches wp_snippet is NA when found=FALSE", {
   local_mocked_bindings(
     search_wikipedia_one = function(...) list(found = FALSE, title = NA_character_,
                                              url = NA_character_, snippet = NA_character_),
     .package = "wikitools"
   )
   result <- add_wikipedia_matches(tibble::tibble(name = "Unknown Person"), delay = 0)
-  expect_true(is.na(result$wikipedia_snippet))
+  expect_true(is.na(result$wp_snippet))
 })

@@ -1,7 +1,7 @@
 Package: wikitools
 Type: Package
 Title: Tools to Engage with Wikipedia and Wikidata
-Version: 0.1.6.9001
+Version: 0.0.0.9003
 Authors@R: 
     person(
     "Carwil", "Bjork-James",
@@ -28,10 +28,12 @@ Imports:
     tibble,
     utils
 Suggests:
+    ggplot2,
     httptest,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
+    tidyr,
     withr
 RoxygenNote: 8.0.0
 URL: https://github.com/CarwilB/wikitools, https://carwilb.github.io/wikitools/

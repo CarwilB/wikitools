@@ -1,0 +1,140 @@
+{
+    "searchinfo": {
+        "search": "NYC"
+    },
+    "search": [
+        {
+            "id": "Q60",
+            "title": "Q60",
+            "pageid": 186,
+            "concepturi": "http://www.wikidata.org/entity/Q60",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q60",
+            "display": {
+                "label": {
+                    "value": "New York City",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "most populous city in the United States",
+                    "language": "en"
+                }
+            },
+            "label": "New York City",
+            "description": "most populous city in the United States",
+            "match": {
+                "type": "alias",
+                "language": "mul",
+                "text": "NYC"
+            },
+            "aliases": [
+                "NYC"
+            ]
+        },
+        {
+            "id": "Q133189",
+            "title": "Q133189",
+            "pageid": 134963,
+            "concepturi": "http://www.wikidata.org/entity/Q133189",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q133189",
+            "display": {
+                "label": {
+                    "value": "Nyctereutes procyonoides",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "species of mammal",
+                    "language": "en"
+                }
+            },
+            "label": "Nyctereutes procyonoides",
+            "description": "species of mammal",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Nyctereutes procyonoides"
+            }
+        },
+        {
+            "id": "Q602790",
+            "title": "Q602790",
+            "pageid": 567412,
+            "concepturi": "http://www.wikidata.org/entity/Q602790",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q602790",
+            "display": {
+                "label": {
+                    "value": "Nyctemera",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "genus of insects",
+                    "language": "en"
+                }
+            },
+            "label": "Nyctemera",
+            "description": "genus of insects",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Nyctemera"
+            }
+        },
+        {
+            "id": "Q156227",
+            "title": "Q156227",
+            "pageid": 157367,
+            "concepturi": "http://www.wikidata.org/entity/Q156227",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q156227",
+            "display": {
+                "label": {
+                    "value": "Nyctaginaceae",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "family of plants",
+                    "language": "en"
+                }
+            },
+            "label": "Nyctaginaceae",
+            "description": "family of plants",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Nyctaginaceae"
+            }
+        },
+        {
+            "id": "Q126216",
+            "title": "Q126216",
+            "pageid": 128314,
+            "concepturi": "http://www.wikidata.org/entity/Q126216",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q126216",
+            "display": {
+                "label": {
+                    "value": "black-crowned night heron",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "species of bird",
+                    "language": "en"
+                }
+            },
+            "label": "black-crowned night heron",
+            "description": "species of bird",
+            "match": {
+                "type": "alias",
+                "language": "en",
+                "text": "Nycticorax nycticorax"
+            },
+            "aliases": [
+                "Nycticorax nycticorax"
+            ]
+        }
+    ],
+    "search-continue": 5,
+    "success": 1
+}

@@ -1,0 +1,124 @@
+{
+    "searchinfo": {
+        "search": "Paul Rivet"
+    },
+    "search": [
+        {
+            "id": "Q694431",
+            "title": "Q694431",
+            "pageid": 654179,
+            "concepturi": "http://www.wikidata.org/entity/Q694431",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q694431",
+            "display": {
+                "label": {
+                    "value": "Paul Rivet",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "French ethnologist (1876-1958)",
+                    "language": "en"
+                }
+            },
+            "label": "Paul Rivet",
+            "description": "French ethnologist (1876-1958)",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Paul Rivet"
+            }
+        },
+        {
+            "id": "Q79783977",
+            "title": "Q79783977",
+            "pageid": 79196285,
+            "concepturi": "http://www.wikidata.org/entity/Q79783977",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q79783977",
+            "display": {
+                "label": {
+                    "value": "Paul Rivet",
+                    "language": "en"
+                }
+            },
+            "label": "Paul Rivet",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Paul Rivet"
+            }
+        },
+        {
+            "id": "Q99484570",
+            "title": "Q99484570",
+            "pageid": 97419004,
+            "concepturi": "http://www.wikidata.org/entity/Q99484570",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q99484570",
+            "display": {
+                "label": {
+                    "value": "Paul Rivet",
+                    "language": "mul"
+                }
+            },
+            "label": "Paul Rivet",
+            "match": {
+                "type": "label",
+                "language": "mul",
+                "text": "Paul Rivet"
+            }
+        },
+        {
+            "id": "Q101486276",
+            "title": "Q101486276",
+            "pageid": 98770699,
+            "concepturi": "http://www.wikidata.org/entity/Q101486276",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q101486276",
+            "display": {
+                "label": {
+                    "value": "Paul Rivett",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "British racing driver",
+                    "language": "en"
+                }
+            },
+            "label": "Paul Rivett",
+            "description": "British racing driver",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Paul Rivett"
+            }
+        },
+        {
+            "id": "Q141411219",
+            "title": "Q141411219",
+            "pageid": 134941839,
+            "concepturi": "http://www.wikidata.org/entity/Q141411219",
+            "repository": "wikidata",
+            "url": "//www.wikidata.org/wiki/Q141411219",
+            "display": {
+                "label": {
+                    "value": "Paul Rivet: As origens do homem",
+                    "language": "en"
+                },
+                "description": {
+                    "value": "scholarly article published in Revista de Antropologia (Universidade de São Paulo), vol. 1, no. 2 (1953) (DOI: 10.11606/2179-0892.RA.1953.131282)",
+                    "language": "en"
+                }
+            },
+            "label": "Paul Rivet: As origens do homem",
+            "description": "scholarly article published in Revista de Antropologia (Universidade de São Paulo), vol. 1, no. 2 (1953) (DOI: 10.11606/2179-0892.RA.1953.131282)",
+            "match": {
+                "type": "label",
+                "language": "en",
+                "text": "Paul Rivet: As origens do homem"
+            }
+        }
+    ],
+    "search-continue": 5,
+    "success": 1
+}
